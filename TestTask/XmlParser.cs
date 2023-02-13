@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+
 using System.Xml;
-using System.Threading.Tasks;
-using System.Net;
-using System.Xml.Serialization;
-using System.IO;
+
 
 namespace TestTask
 {
@@ -19,25 +15,32 @@ namespace TestTask
             Adress = adress;
         }
 
-        public HashSet<string> ParseUrl()
+        public HashSet<string> ParseUrl() //retrieves all url's from sitemap.xml
         {
-            using (var reader = XmlReader.Create(Adress))
+            HashSet<string> url = new HashSet<string>();
+            try
             {
-
-                HashSet<string> url = new HashSet<string>();
-                while (reader.Read())
+                using (var reader = XmlReader.Create(Adress))
                 {
-                    if (reader.Name == "loc")
-                    {
 
-                        url.Add(reader.ReadInnerXml());
+                    
+                    while (reader.Read())
+                    {
+                        if (reader.Name == "loc")
+                        {
+
+                            url.Add(reader.ReadInnerXml());
+                        }
                     }
+                    return url;
                 }
-                return url;
+            }catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+                
             }
 
-
-            
+            return url;
 
         }
     }
