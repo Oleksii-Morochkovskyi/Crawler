@@ -8,7 +8,7 @@ namespace TestTask
     public class XmlParser
     {
         private string Adress { get; set; }
-        
+
 
         public XmlParser(string adress)
         {
@@ -23,27 +23,35 @@ namespace TestTask
                 using (var reader = XmlReader.Create(Adress))
                 {
 
-                    
+
                     while (reader.Read())
                     {
                         if (reader.Name == "loc")
                         {
-
-                            url.Add(reader.ReadInnerXml());
+                            var absUrl = GetAbsoluteUrlString(Adress, reader.ReadInnerXml());
+                            url.Add(absUrl);
                         }
                     }
                     return url;
                 }
-            }catch(Exception e)
+            }
+            catch (Exception e)
             {
                 Console.WriteLine(e.Message);
-                
+
             }
 
             return url;
 
         }
+        private string GetAbsoluteUrlString(string baseUrl, string url) //gets absolute url if it is relative
+        {
+            var uri = new Uri(url, UriKind.RelativeOrAbsolute);
+            if (!uri.IsAbsoluteUri)
+                uri = new Uri(new Uri(baseUrl), uri);
+            return uri.ToString();
+        }
     }
-   
+
 
 }
