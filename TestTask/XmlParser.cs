@@ -14,7 +14,15 @@ namespace TestTask
         {
             Adress = adress;
         }
-
+        public bool CheckIfSiteIsHtmlDoc(string adress)
+        {
+            var httpclient = new HttpClient();
+            using var request = new HttpRequestMessage(HttpMethod.Get, adress);
+            using var response = httpclient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead).Result;
+            if (response.Content.Headers.ContentType.MediaType == "text/html")
+                return true;
+            else return false;
+        }
         public HashSet<string> ParseUrl() //retrieves all url's from sitemap.xml
         {
             HashSet<string> url = new HashSet<string>();
@@ -29,7 +37,8 @@ namespace TestTask
                         if (reader.Name == "loc")
                         {
                             var absUrl = GetAbsoluteUrlString(Adress, reader.ReadInnerXml());
-                            url.Add(absUrl);
+                            if(CheckIfSiteIsHtmlDoc(absUrl))
+                                url.Add(absUrl);
                         }
                     }
                     return url;

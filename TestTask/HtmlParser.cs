@@ -33,6 +33,15 @@ namespace TestTask
                 return true;
             else return false;
         }
+        public bool CheckIfSiteIsHtmlDoc(string adress)
+        {
+            var httpclient = new HttpClient();
+            using var request = new HttpRequestMessage(HttpMethod.Get, adress);
+            using var response = httpclient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead).Result;
+            if (response.Content.Headers.ContentType.MediaType == "text/html")
+                return true;
+            else return false;
+        }
         public HashSet<string> ParseUrl(string adress) //method for crawling page and finding urls on it
         {
             CheckedUrl.Add(adress);
@@ -44,18 +53,18 @@ namespace TestTask
                 try
                 {
                     var absUrl = GetAbsoluteUrlString(Adress, href);
-                    if (!UrlList.Contains(absUrl) && CheckUrl(absUrl))
+                    if (!UrlList.Contains(absUrl) && CheckUrl(absUrl) && CheckIfSiteIsHtmlDoc(absUrl))
                     {
                         UrlList.Add(absUrl);
                         if (!CheckedUrl.Contains(absUrl)) //check if url contains website's domain to prevent crawling all WWW
                         {
                             ParseUrl(absUrl);
-                        }
-                        else
-                        {
-                            CheckedUrl.Add(absUrl);
+                        }                     
+                    }
+                    else
+                    {
+                        CheckedUrl.Add(absUrl);
 
-                        }
                     }
                 }
                 catch (Exception e)

@@ -21,9 +21,18 @@ namespace TestTask
                 Console.WriteLine($"Ooooops, seems like you entered wrong url. {e.Message}. Please, try again.");
                 return;
             }
+            if (!Htmlcrawler.CheckUrl(adress))
+            {
+                Console.WriteLine($"Ooooops, seems like you entered wrong url. Please, try again.");
+                return;
+            }
             HashSet<string> parsedHtml = new HashSet<string>();
             HashSet<string> parsedSitemap = new HashSet<string>();
-
+            if (adress.EndsWith('/'))
+            {
+                adress = adress.Substring(0, adress.Length - 1);
+            }
+            
             Console.WriteLine("\n\nPlease wait. A process may take time.\n\n");
             parsedHtml = Htmlcrawler.ParseUrl(adress);
 
@@ -48,16 +57,22 @@ namespace TestTask
             }
             else
             {
-
-
-                Console.WriteLine("\nUrls FOUND IN SITEMAP.XML but not founded after crawling a website: \n");
                 var res1 = ListManager.CompareResult(parsedSitemap, parsedHtml);
-                ListManager.Print(res1);
+                var res2 = ListManager.CompareResult(parsedHtml, parsedSitemap);
+                
+                Console.WriteLine("\nUrls FOUND IN SITEMAP.XML but not founded after crawling a website: \n");
+                if (res1.Count() == 0)
+                    Console.WriteLine("List is empty");              
+                else
+                    ListManager.Print(res1);
+                
                 Console.WriteLine("---------------------------------------------------");
 
                 Console.WriteLine("\nUrls FOUND BY CRAWLING THE WEBSITE but not in sitemap.xml: \n");
-                var res2 = ListManager.CompareResult(parsedHtml, parsedSitemap);
-                ListManager.Print(res2);
+                if (res2.Count() == 0)
+                    Console.WriteLine("List is empty");
+                else
+                    ListManager.Print(res2);
                 Console.WriteLine("---------------------------------------------------");
 
 

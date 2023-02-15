@@ -35,7 +35,7 @@ namespace TestTask
                 var timer = Stopwatch.StartNew();
                 try
                 {
-                    HttpResponseMessage response = httpClient.GetAsync(el).Result;
+                    using HttpResponseMessage response = httpClient.GetAsync(el).Result;
                 }
                 catch (Exception e)
                 {
