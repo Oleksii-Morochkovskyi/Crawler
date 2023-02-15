@@ -1,7 +1,5 @@
 ﻿
 using System.Diagnostics;
-using System.Collections;
-using System.Net;
 
 
 namespace TestTask

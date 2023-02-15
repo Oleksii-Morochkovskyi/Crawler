@@ -1,11 +1,4 @@
 ﻿using HtmlAgilityPack;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 
 namespace TestTask
@@ -78,7 +71,12 @@ namespace TestTask
             var uri = new Uri(url, UriKind.RelativeOrAbsolute);
             if (!uri.IsAbsoluteUri)
                 uri = new Uri(new Uri(baseUrl), uri);
-            return uri.ToString();
+            string result = uri.ToString();
+            if (result.EndsWith('/'))
+            {
+                result = result.Substring(0, result.Length - 1);
+            }
+            return result;
         }
         private string GetHost(string url) //gets domain of website.
         {

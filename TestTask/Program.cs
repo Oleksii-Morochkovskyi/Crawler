@@ -37,7 +37,7 @@ namespace TestTask
             parsedSitemap = xmlcrawler.ParseUrl();
             if (parsedSitemap.Count() == 0)
             {
-                Console.WriteLine("\nSite doesn't have sitemap.xml\n");
+                Console.WriteLine("\nWebsite doesn't have sitemap.xml\n");
                 Console.WriteLine("The list with url and response time for each page: \n");
                 ListManager.GetResponseTime(parsedHtml);
                 Console.WriteLine("---------------------------------------------------");
@@ -50,7 +50,7 @@ namespace TestTask
             {
 
 
-                Console.WriteLine("\nUrls FOUND IN SITEMAP.XML but not founded after crawling a web site: \n");
+                Console.WriteLine("\nUrls FOUND IN SITEMAP.XML but not founded after crawling a website: \n");
                 var res1 = ListManager.CompareResult(parsedSitemap, parsedHtml);
                 ListManager.Print(res1);
                 Console.WriteLine("---------------------------------------------------");
@@ -65,7 +65,7 @@ namespace TestTask
 
                 Console.WriteLine("\n\nList with url and response time for each page: \n");
                 ListManager.GetResponseTime(res3);
-
+               
                 Console.WriteLine("---------------------------------------------------");
                 Console.WriteLine($"Urls(html documents) found after crawling a website: {parsedHtml.Count()}");
                 Console.WriteLine("---------------------------------------------------");
