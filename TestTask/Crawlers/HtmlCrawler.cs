@@ -17,8 +17,6 @@ namespace CrawlerLogic.Crawlers
         {
             _httpClient = new HttpClient();
 
-            //_address = address;
-
             _urlList = new HashSet<string>();
             _checkedUrlList = new HashSet<string>();
 
@@ -62,7 +60,6 @@ namespace CrawlerLogic.Crawlers
                     var absoluteUrl = GetAbsoluteUrlString(address, href);
 
                     await AddUrl(absoluteUrl);
-
                 }
                 catch (Exception)
                 {

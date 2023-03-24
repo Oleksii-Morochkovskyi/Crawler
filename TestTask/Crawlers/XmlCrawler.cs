@@ -6,7 +6,7 @@ namespace CrawlerLogic.Crawlers
 {
     public class XmlCrawler
     {
-        public async Task<bool> CheckIfSiteIsHtmlDoc(string address)
+        private async Task<bool> CheckIfSiteIsHtmlDoc(string address)
         {
             var httpClient = new HttpClient();
 
@@ -21,12 +21,7 @@ namespace CrawlerLogic.Crawlers
 
             try
             {
-                var settings = new XmlReaderSettings
-                {
-                    Async = true
-                };
-
-                using var reader = XmlReader.Create(address, settings);
+                using var reader = CreateXmlReader(address);
 
                 while (await reader.ReadAsync())
                 {
@@ -35,8 +30,6 @@ namespace CrawlerLogic.Crawlers
                         urlList = await AddUrl(reader, urlList, address);
                     }
                 }
-
-                return urlList;
             }
             catch (Exception exception)
             {
@@ -44,6 +37,16 @@ namespace CrawlerLogic.Crawlers
             }
 
             return urlList;
+        }
+
+        private XmlReader CreateXmlReader(string address)
+        {
+            var settings = new XmlReaderSettings
+            {
+                Async = true
+            };
+
+           return XmlReader.Create(address, settings);
         }
 
         private async Task<HashSet<string>> AddUrl(XmlReader reader, HashSet<string> urlList, string address)
