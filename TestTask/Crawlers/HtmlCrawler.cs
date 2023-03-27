@@ -8,29 +8,32 @@ namespace CrawlerLogic.Crawlers
         private HashSet<string> _checkedUrlList;
 
         private readonly UrlManager _urlManager;
+        private readonly UrlValidator _validator;
         private readonly HttpClient _httpClient;
 
         public HtmlCrawler(string address, HttpClient client)
         {
             _httpClient = client;
-            _urlManager = new UrlManager(address, _httpClient);
+
+            _urlManager = new UrlManager();
+            _validator = new UrlValidator(address, _httpClient);
+
             _urlList = new HashSet<string>();
             _checkedUrlList = new HashSet<string>();
-
         }
 
-        public async Task<ICollection<string>> ParseUrl(string address) //method for crawling page and finding urls on it
+        public async Task<ICollection<string>> ParseUrlAsync(string address) //method for crawling page and finding urls on it
         {
             _checkedUrlList.Add(address);
 
-            var nodes = await GetNodes(address);
+            var nodes = await GetNodesAsync(address);
 
-            await ExtractLinks(nodes, address);
+            await ExtractLinksAsync(nodes, address);
 
             return _urlList;
         }
 
-        private async Task ExtractLinks(HtmlNodeCollection nodes, string address)
+        private async Task ExtractLinksAsync(HtmlNodeCollection nodes, string address)
         {
             foreach (var node in nodes)
             {
@@ -40,7 +43,7 @@ namespace CrawlerLogic.Crawlers
                 {
                     var absoluteUrl = _urlManager.GetAbsoluteUrlString(address, href);
 
-                    await AddUrl(absoluteUrl);
+                    await AddUrlAsync(absoluteUrl);
                 }
                 catch (Exception)
                 {
@@ -49,9 +52,9 @@ namespace CrawlerLogic.Crawlers
             }
         }
 
-        private async Task AddUrl(string absoluteUrl)
+        private async Task AddUrlAsync(string absoluteUrl)
         {
-            if (_urlList.Contains(absoluteUrl) || !_urlManager.CheckUrl(absoluteUrl) || !await _urlManager.CheckIfSiteIsHtmlDoc(absoluteUrl))
+            if (_urlList.Contains(absoluteUrl) || !_validator.IsValidUrl(absoluteUrl) || !await _validator.IsHtmlDocAsync(absoluteUrl))
             {
                 _checkedUrlList.Add(absoluteUrl);
                 return;
@@ -61,15 +64,25 @@ namespace CrawlerLogic.Crawlers
 
             if (!_checkedUrlList.Contains(absoluteUrl))
             {
-                await ParseUrl(absoluteUrl);
+                await ParseUrlAsync(absoluteUrl);
             }
         }
 
-        private async Task<HtmlNodeCollection> GetNodes(string address)
+        private async Task<HtmlNodeCollection> GetNodesAsync(string address)
         {
-            var html = await _urlManager.GetHtml(address);
+            var html = await GetHtmlAsync(address);
 
             return html.DocumentNode.SelectNodes("//a[@href]");
+        }
+
+        public async Task<HtmlDocument> GetHtmlAsync(string address) //retrieves html document from url
+        {
+            var html = await _httpClient.GetStringAsync(address);
+
+            var htmlDoc = new HtmlDocument();
+            htmlDoc.LoadHtml(html);
+
+            return htmlDoc;
         }
     }
 }

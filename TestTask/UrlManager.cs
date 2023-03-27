@@ -27,7 +27,7 @@ namespace CrawlerLogic
 
         public async Task<bool> CheckIfSiteIsHtmlDoc(string address)
         {
-            using var response = await _httpClient.GetAsync(address, HttpCompletionOption.ResponseHeadersRead).ConfigureAwait(false);
+            using var response = await _httpClient.GetAsync(address, HttpCompletionOption.ResponseHeadersRead);
 
             return response.Content.Headers.ContentType?.MediaType == "text/html";
         }

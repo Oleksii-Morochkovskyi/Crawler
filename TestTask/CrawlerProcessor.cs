@@ -1,7 +1,6 @@
-﻿using CrawlerLogic;
-using CrawlerLogic.Crawlers;
+﻿using CrawlerLogic.Crawlers;
 
-namespace CrawlerManager
+namespace CrawlerLogic
 {
     public class CrawlerProcessor
     {

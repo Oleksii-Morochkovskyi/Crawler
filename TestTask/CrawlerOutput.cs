@@ -1,6 +1,6 @@
-﻿using CrawlerLogic;
+﻿using CrawlerLogic.Models;
 
-namespace CrawlerManager
+namespace CrawlerLogic
 {
     public class CrawlerOutput
     {
@@ -12,14 +12,14 @@ namespace CrawlerManager
             }
         }
 
-        public void PrintTimeResponse(ResponseTimeModel model)
+        public void PrintTimeResponse(IList<ResponseTime> urls)
         {
             Console.WriteLine("\n\nList with url and response time for each page: \n");
-            Console.WriteLine("\nURL".PadRight(50) + "Timing (ms)");
+            Console.WriteLine("\nURL".PadRight(50) + "Timing (ms)\n");
 
-            foreach (var pair in model.ResponseTime)
+            foreach (var url in urls)
             {
-                Console.WriteLine(pair.Key.PadRight(50) + pair.Value + "ms"); //print the result
+                Console.WriteLine(url._url.PadRight(50) + url._responseTime + "ms"); //print the result
             }
         }
 

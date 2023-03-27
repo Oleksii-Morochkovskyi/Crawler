@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace CrawlerManager
+namespace CrawlerLogic
 {
     public class CrawlerConfiguration
     {

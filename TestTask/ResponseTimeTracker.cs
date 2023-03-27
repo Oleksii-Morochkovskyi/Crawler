@@ -1,27 +1,31 @@
 ﻿using System.Diagnostics;
+using CrawlerLogic.Models;
 
 namespace CrawlerLogic
 {
     public class ResponseTimeTracker
     {
         private readonly HttpClient _httpClient;
-        private readonly ResponseTimeModel _responseModel;
+        private readonly ResponseTime _responseModel;
 
         public ResponseTimeTracker(HttpClient client)
         {
             _httpClient = client;
-            _responseModel = new ResponseTimeModel();
         }
 
-        public async Task<ResponseTimeModel> GetResponseTime(IEnumerable<string> urlList) //method gets response time of each url and sorts it ascending
+        public async Task<IList<ResponseTime>> GetResponseTime(IEnumerable<string> urlList) //method gets response time of each url and sorts it ascending
         {
+            IList<ResponseTime> responseTimeList = new List<ResponseTime>();
+
             foreach (var url in urlList)
             {
                 try
                 {
                     var time = await CalculateTime(url);
 
-                    _responseModel.ResponseTime.Add(url, time);
+                    var response = new ResponseTime(url, time);
+
+                    responseTimeList.Add(response);
                 }
                 catch (Exception e)
                 {
@@ -29,9 +33,7 @@ namespace CrawlerLogic
                 }
             }
 
-            _responseModel.ResponseTime = _responseModel.ResponseTime.OrderBy(x => x.Value).ToDictionary(x => x.Key, x => x.Value); //sorting of response time ascending
-            
-            return _responseModel;
+            return responseTimeList.OrderBy(x => x._responseTime).ToList();
         }
 
         private async Task<int> CalculateTime(string url)
