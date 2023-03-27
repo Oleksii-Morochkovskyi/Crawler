@@ -1,21 +1,21 @@
-﻿using CrawlerLogic.Crawlers;
-using CrawlerLogic;
+﻿using CrawlerLogic;
+using CrawlerLogic.Crawlers;
 
 namespace CrawlerManager
 {
-    internal class CrawlerProcessor
+    public class CrawlerProcessor
     {
         private readonly HttpClient _httpClient;
+        private readonly CrawlerOutput _crawlerOutput;
 
         public CrawlerProcessor(HttpClient client)
         {
+            _crawlerOutput = new CrawlerOutput();
             _httpClient = client;
         }
 
-        public async Task StartCrawler()
+        public async Task StartCrawler(string address)
         {
-            var address = GetAddress();
-
             var urlListFromHtmlCrawler = await StartHtmlCrawler(address);
 
             var urlListFromXmlCrawler = await StartXmlCrawler(address);
@@ -26,16 +26,7 @@ namespace CrawlerManager
 
             await GetResponseTime(allUrls);
 
-            PrintNumberOfLinks(urlListFromHtmlCrawler, urlListFromXmlCrawler);
-        }
-
-        private string GetAddress()
-        {
-            Console.WriteLine("Enter URL: ");
-
-            var input = Console.ReadLine();
-
-            return input.TrimEnd('/');
+            _crawlerOutput.PrintNumberOfLinks(urlListFromHtmlCrawler, urlListFromXmlCrawler);
         }
 
         private async Task<ICollection<string>> StartHtmlCrawler(string address)
@@ -85,7 +76,7 @@ namespace CrawlerManager
             {
                 Console.WriteLine("\nThere is no difference between the links obtained by the two methods");
 
-                PrintList(urlsFromHtmlCrawling);
+                _crawlerOutput.PrintList(urlsFromHtmlCrawling);
 
                 return;
             }
@@ -93,21 +84,13 @@ namespace CrawlerManager
             var differenceList = urlsFromHtmlCrawling.Except(urlsFromXmlCrawling);
 
             Console.WriteLine("\nUrls FOUND BY CRAWLING THE WEBSITE but not in sitemap.xml: \n");
-            PrintList(differenceList);
+            _crawlerOutput.PrintList(differenceList);
 
             differenceList = urlsFromXmlCrawling.Except(urlsFromHtmlCrawling);
 
             Console.WriteLine("\nUrls FOUND IN SITEMAP.XML but not founded after crawling a website: \n");
-            PrintList(differenceList);
+            _crawlerOutput.PrintList(differenceList);
 
-        }
-
-        private void PrintList(IEnumerable<string> urlList)
-        {
-            foreach (var url in urlList)
-            {
-                Console.WriteLine(url);
-            }
         }
 
         private async Task GetResponseTime(IEnumerable<string> urlList)
@@ -116,25 +99,7 @@ namespace CrawlerManager
 
             var responseTime = await tracker.GetResponseTime(urlList);
 
-            PrintTimeResponse(responseTime);
-        }
-
-        private void PrintTimeResponse(Dictionary<string, int> sortedDict)
-        {
-            Console.WriteLine("\n\nList with url and response time for each page: \n");
-            Console.WriteLine("\nURL".PadRight(50) + "Timing (ms)");
-
-            foreach (var pair in sortedDict)
-            {
-                Console.WriteLine(pair.Key.PadRight(50) + pair.Value + "ms"); //print the result
-            }
-        }
-
-        private void PrintNumberOfLinks(ICollection<string> urlsFromHtmlCrawling, ICollection<string> urlsFromXmlCrawling)
-        {
-            Console.WriteLine($"\nUrls(html documents) found after crawling a website: {urlsFromHtmlCrawling.Count}");
-
-            Console.WriteLine($"\nUrls found in sitemap: {urlsFromXmlCrawling.Count}");
+            _crawlerOutput.PrintTimeResponse(responseTime);
         }
     }
 }

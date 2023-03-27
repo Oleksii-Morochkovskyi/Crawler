@@ -1,28 +1,18 @@
-﻿
-using Microsoft.Extensions.DependencyInjection;
+﻿using CrawlerManager;
 
-namespace CrawlerManager
+namespace ConsoleManager
 {
-    internal class Program
+    public class Program
     {
         static async Task Main(string[] args)
         {
-            var client = ConfigureIHttpClientFactory();
+            var console = new ConsoleProcessor();
 
-            var console = new CrawlerProcessor(client);
+            var input = console.GetAddress();
 
-            await console.StartCrawler();
-        }
+            var crawler = new CrawlerConfiguration();
 
-        private static HttpClient ConfigureIHttpClientFactory()
-        {
-            var services = new ServiceCollection();
-            services.AddHttpClient();
-
-            var serviceProvider = services.BuildServiceProvider();
-            var clientFactory = serviceProvider.GetService<IHttpClientFactory>();
-
-            return clientFactory.CreateClient();
+            await crawler.ConfigureCrawler(input);
         }
     }
 }

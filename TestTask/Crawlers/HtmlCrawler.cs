@@ -1,15 +1,12 @@
 ﻿using HtmlAgilityPack;
-using System.Net;
-using System.Xml.Linq;
 
 namespace CrawlerLogic.Crawlers
 {
     public class HtmlCrawler
     {
-        //private string _address { get; }
-
         private HashSet<string> _urlList;
         private HashSet<string> _checkedUrlList;
+
         private readonly UrlManager _urlManager;
         private readonly HttpClient _httpClient;
 
