@@ -4,9 +4,9 @@ namespace CrawlerLogic
 {
     public class CrawlerOutput
     {
-        public void PrintList(IEnumerable<string> urlList)
+        public void PrintList(IEnumerable<string> urls)
         {
-            foreach (var url in urlList)
+            foreach (var url in urls)
             {
                 Console.WriteLine(url);
             }

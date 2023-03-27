@@ -13,29 +13,29 @@ namespace CrawlerLogic
             _httpClient = client;
         }
 
-        public async Task StartCrawler(string address)
+        public async Task StartCrawlerAsync(string address)
         {
-            var urlListFromHtmlCrawler = await StartHtmlCrawler(address);
+            var urlListFromHtmlCrawler = await StartHtmlCrawlerAsync(address);
 
-            var urlListFromXmlCrawler = await StartXmlCrawler(address);
+            var urlListFromXmlCrawler = await StartXmlCrawlerAsync(address);
 
             var allUrls = urlListFromHtmlCrawler.Union(urlListFromXmlCrawler);
 
             CompareCrawlResults(urlListFromHtmlCrawler, urlListFromXmlCrawler);
 
-            await GetResponseTime(allUrls);
+            await GetResponseTimeAsync(allUrls);
 
             _crawlerOutput.PrintNumberOfLinks(urlListFromHtmlCrawler, urlListFromXmlCrawler);
         }
 
-        private async Task<ICollection<string>> StartHtmlCrawler(string address)
+        private async Task<ICollection<string>> StartHtmlCrawlerAsync(string address)
         {
             var htmlCrawler = new HtmlCrawler(address, _httpClient);
-            var manager = new UrlManager(address, _httpClient);
+            var validator = new UrlValidator(address, _httpClient);
 
             try
             {
-                if (!manager.CheckUrl(address))
+                if (!validator.IsValidUrl(address))
                 {
                     throw new Exception();
                 }
@@ -45,16 +45,16 @@ namespace CrawlerLogic
                 Console.WriteLine($"\nOoooops, seems like you entered wrong url. {e.Message}. Please, try again.");
             }
 
-            return await htmlCrawler.ParseUrl(address);
+            return await htmlCrawler.ParseUrlAsync(address);
         }
 
-        private async Task<ICollection<string>> StartXmlCrawler(string address)
+        private async Task<ICollection<string>> StartXmlCrawlerAsync(string address)
         {
             address += "/sitemap.xml";
 
             var xmlCrawler = new XmlCrawler(_httpClient, address);
 
-            return await xmlCrawler.ParseUrl(address);
+            return await xmlCrawler.ParseUrlAsync(address);
         }
 
         private void CompareCrawlResults(ICollection<string> urlsFromHtmlCrawling, ICollection<string> urlsFromXmlCrawling)
@@ -92,11 +92,11 @@ namespace CrawlerLogic
 
         }
 
-        private async Task GetResponseTime(IEnumerable<string> urlList)
+        private async Task GetResponseTimeAsync(IEnumerable<string> urls)
         {
             var tracker = new ResponseTimeTracker(_httpClient);
 
-            var responseTime = await tracker.GetResponseTime(urlList);
+            var responseTime = await tracker.GetResponseTimeAsync(urls);
 
             _crawlerOutput.PrintTimeResponse(responseTime);
         }

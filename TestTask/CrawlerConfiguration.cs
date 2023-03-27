@@ -4,16 +4,16 @@ namespace CrawlerLogic
 {
     public class CrawlerConfiguration
     {
-        public async Task ConfigureCrawler(string address)
+        public async Task ConfigureCrawlerAsync(string address)
         {
-            var client = ConfigureIHttpClientFactory();
+            using var client = new HttpClient();
 
             var console = new CrawlerProcessor(client);
 
-            await console.StartCrawler(address);
+            await console.StartCrawlerAsync(address);
         }
 
-        private HttpClient ConfigureIHttpClientFactory()
+        /*private HttpClient ConfigureIHttpClientFactory()
         {
             var services = new ServiceCollection();
             services.AddHttpClient();
@@ -22,6 +22,6 @@ namespace CrawlerLogic
             var clientFactory = serviceProvider.GetService<IHttpClientFactory>();
 
             return clientFactory.CreateClient();
-        }
+        }*/
     }
 }

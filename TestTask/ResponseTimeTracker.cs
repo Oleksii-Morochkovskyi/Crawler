@@ -13,15 +13,15 @@ namespace CrawlerLogic
             _httpClient = client;
         }
 
-        public async Task<IList<ResponseTime>> GetResponseTime(IEnumerable<string> urlList) //method gets response time of each url and sorts it ascending
+        public async Task<IList<ResponseTime>> GetResponseTimeAsync(IEnumerable<string> urls) //method gets response time of each url and sorts it ascending
         {
             IList<ResponseTime> responseTimeList = new List<ResponseTime>();
 
-            foreach (var url in urlList)
+            foreach (var url in urls)
             {
                 try
                 {
-                    var time = await CalculateTime(url);
+                    var time = await CalculateTimeAsync(url);
 
                     var response = new ResponseTime(url, time);
 
@@ -36,7 +36,7 @@ namespace CrawlerLogic
             return responseTimeList.OrderBy(x => x._responseTime).ToList();
         }
 
-        private async Task<int> CalculateTime(string url)
+        private async Task<int> CalculateTimeAsync(string url)
         {
             var timer = Stopwatch.StartNew();
 
