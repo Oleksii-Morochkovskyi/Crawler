@@ -15,8 +15,6 @@ namespace CrawlerLogic
 
         public async Task<ResponseTimeModel> GetResponseTime(IEnumerable<string> urlList) //method gets response time of each url and sorts it ascending
         {
-            //var urlAndTimeResponse = new Dictionary<string, int>();
-
             foreach (var url in urlList)
             {
                 try
