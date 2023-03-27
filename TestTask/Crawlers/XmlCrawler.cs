@@ -1,35 +1,27 @@
-﻿using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Xml;
+﻿using System.Xml;
 
 namespace CrawlerLogic.Crawlers
 {
     public class XmlCrawler
     {
-        private async Task<bool> CheckIfSiteIsHtmlDoc(string address)
+        private readonly HttpClient _httpClient;
+        private readonly UrlManager _urlManager;
+
+        public XmlCrawler(HttpClient client, string address)
         {
-            var httpClient = new HttpClient();
-
-            using var response = await httpClient.GetAsync(address, HttpCompletionOption.ResponseHeadersRead);
-
-            return response.Content.Headers.ContentType?.MediaType == "text/html";
+            _httpClient = client;
+            _urlManager = new UrlManager(address, _httpClient);
         }
 
-        public async Task<HashSet<string>> ParseUrl(string address) //retrieves all urls from sitemap.xml
+        public async Task<ICollection<string>> ParseUrl(string address) //retrieves all urls from sitemap.xml
         {
-            var urlList = new HashSet<string>();
+            ICollection<string> urlList = new HashSet<string>();
 
             try
             {
                 using var reader = CreateXmlReader(address);
 
-                while (await reader.ReadAsync())
-                {
-                    if (reader.Name == "loc")
-                    {
-                        urlList = await AddUrl(reader, urlList, address);
-                    }
-                }
+                urlList = await ExtractLinks(reader, address);
             }
             catch (Exception exception)
             {
@@ -46,16 +38,31 @@ namespace CrawlerLogic.Crawlers
                 Async = true
             };
 
-           return XmlReader.Create(address, settings);
+            return XmlReader.Create(address, settings);
         }
 
-        private async Task<HashSet<string>> AddUrl(XmlReader reader, HashSet<string> urlList, string address)
+        private async Task<ICollection<string>> ExtractLinks(XmlReader reader, string address)
         {
-            var innerXml = await reader.ReadInnerXmlAsync().ConfigureAwait(false);
+            ICollection<string> urlList = new HashSet<string>();
 
-            var absoluteUrl = GetAbsoluteUrlString(address, innerXml);
+            while (await reader.ReadAsync())
+            {
+                if (reader.Name == "loc")
+                {
+                    urlList = await AddUrl(reader, urlList, address);
+                }
+            }
 
-            if (await CheckIfSiteIsHtmlDoc(absoluteUrl))
+            return urlList;
+        }
+
+        private async Task<ICollection<string>> AddUrl(XmlReader reader, ICollection<string> urlList, string address)
+        {
+            var innerXml = await reader.ReadInnerXmlAsync();
+
+            var absoluteUrl = _urlManager.GetAbsoluteUrlString(address, innerXml);
+
+            if (await _urlManager.CheckIfSiteIsHtmlDoc(absoluteUrl))
             {
                 urlList.Add(absoluteUrl);
             }
@@ -63,13 +70,5 @@ namespace CrawlerLogic.Crawlers
             return urlList;
         }
 
-        private string GetAbsoluteUrlString(string baseUrl, string url) //gets absolute url if it is relative
-        {
-            var absoluteUrl = new Uri(new Uri(baseUrl), url);
-
-            return absoluteUrl.ToString().TrimEnd('/');
-        }
     }
-
-
 }

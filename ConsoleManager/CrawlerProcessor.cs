@@ -1,11 +1,17 @@
 ﻿using CrawlerLogic.Crawlers;
 using CrawlerLogic;
-using Timer = CrawlerLogic.Timer;
 
-namespace ConsoleManager
+namespace CrawlerManager
 {
-    internal class ConsoleProcessor
+    internal class CrawlerProcessor
     {
+        private readonly HttpClient _httpClient;
+
+        public CrawlerProcessor(HttpClient client)
+        {
+            _httpClient = client;
+        }
+
         public async Task StartCrawler()
         {
             var address = GetAddress();
@@ -16,7 +22,7 @@ namespace ConsoleManager
 
             var allUrls = urlListFromHtmlCrawler.Union(urlListFromXmlCrawler);
 
-            
+            CompareCrawlResults(urlListFromHtmlCrawler, urlListFromXmlCrawler);
 
             await GetResponseTime(allUrls);
 
@@ -32,13 +38,14 @@ namespace ConsoleManager
             return input.TrimEnd('/');
         }
 
-        private async Task<HashSet<string>> StartHtmlCrawler(string address)
+        private async Task<ICollection<string>> StartHtmlCrawler(string address)
         {
-            var htmlCrawler = new HtmlCrawler(address);
+            var htmlCrawler = new HtmlCrawler(address, _httpClient);
+            var manager = new UrlManager(address, _httpClient);
 
             try
             {
-                if (!htmlCrawler.CheckUrl(address))
+                if (!manager.CheckUrl(address))
                 {
                     throw new Exception();
                 }
@@ -51,16 +58,16 @@ namespace ConsoleManager
             return await htmlCrawler.ParseUrl(address);
         }
 
-        private async Task<HashSet<string>> StartXmlCrawler(string address)
+        private async Task<ICollection<string>> StartXmlCrawler(string address)
         {
             address += "/sitemap.xml";
 
-            var xmlCrawler = new XmlCrawler();
+            var xmlCrawler = new XmlCrawler(_httpClient, address);
 
             return await xmlCrawler.ParseUrl(address);
         }
 
-        private void CompareCrawlResults(HashSet<string> urlsFromHtmlCrawling, HashSet<string> urlsFromXmlCrawling)
+        private void CompareCrawlResults(ICollection<string> urlsFromHtmlCrawling, ICollection<string> urlsFromXmlCrawling)
         {
             if (urlsFromXmlCrawling.Count == 0 || urlsFromHtmlCrawling.Count == 0)
             {
@@ -72,12 +79,12 @@ namespace ConsoleManager
             }
         }
 
-        private void ShowDifferentUrls(HashSet<string> urlsFromHtmlCrawling, HashSet<string> urlsFromXmlCrawling)
+        private void ShowDifferentUrls(ICollection<string> urlsFromHtmlCrawling, ICollection<string> urlsFromXmlCrawling)
         {
             if (urlsFromHtmlCrawling.Equals(urlsFromXmlCrawling))
             {
                 Console.WriteLine("\nThere is no difference between the links obtained by the two methods");
-                
+
                 PrintList(urlsFromHtmlCrawling);
 
                 return;
@@ -105,25 +112,25 @@ namespace ConsoleManager
 
         private async Task GetResponseTime(IEnumerable<string> urlList)
         {
-            var timer = new Timer();
+            var tracker = new ResponseTimeTracker(_httpClient);
 
-            var responseTime = await timer.GetResponseTime(urlList);
+            var responseTime = await tracker.GetResponseTime(urlList);
 
             PrintTimeResponse(responseTime);
         }
 
-        private void PrintTimeResponse(Dictionary<string, long> sortedDict)
+        private void PrintTimeResponse(Dictionary<string, int> sortedDict)
         {
             Console.WriteLine("\n\nList with url and response time for each page: \n");
             Console.WriteLine("\nURL".PadRight(50) + "Timing (ms)");
-            
+
             foreach (var pair in sortedDict)
             {
                 Console.WriteLine(pair.Key.PadRight(50) + pair.Value + "ms"); //print the result
             }
         }
 
-        private void PrintNumberOfLinks(HashSet<string> urlsFromHtmlCrawling, HashSet<string> urlsFromXmlCrawling)
+        private void PrintNumberOfLinks(ICollection<string> urlsFromHtmlCrawling, ICollection<string> urlsFromXmlCrawling)
         {
             Console.WriteLine($"\nUrls(html documents) found after crawling a website: {urlsFromHtmlCrawling.Count}");
 
