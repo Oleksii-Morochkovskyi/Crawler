@@ -1,7 +1,4 @@
 ﻿using CrawlerLogic.Crawlers;
-using CrawlerLogic.Parsers;
-using System;
-using System.Text;
 
 namespace CrawlerLogic
 {

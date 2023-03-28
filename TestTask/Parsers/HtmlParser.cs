@@ -1,8 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Net;
-using System.Runtime.InteropServices.ComTypes;
-using CrawlerLogic.Crawlers;
-using HtmlAgilityPack;
+﻿using HtmlAgilityPack;
 
 namespace CrawlerLogic.Parsers
 {
@@ -17,7 +13,6 @@ namespace CrawlerLogic.Parsers
 
         public async Task<ICollection<string>> ParseUrlAsync(string address)
         {
-            
             var nodes = await GetNodesAsync(address);
 
             var urls = await ExtractLinksAsync(nodes, address);
@@ -45,12 +40,14 @@ namespace CrawlerLogic.Parsers
         private async Task<ICollection<string>> ExtractLinksAsync(HtmlNodeCollection nodes, string address)
         {
             ICollection<string> urls = new HashSet<string>();
+
             var validator = new UrlValidator(address,_httpClient);
             var urlManager = new UrlManager();
 
             foreach (var node in nodes)
             {
                 var href = node.Attributes["href"].Value;
+
                 var absoluteUrl = urlManager.GetAbsoluteUrlString(address, href);
 
                 if (validator.IsValidUrl(absoluteUrl) && await validator.IsHtmlDocAsync(absoluteUrl))

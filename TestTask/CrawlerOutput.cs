@@ -15,7 +15,7 @@ namespace CrawlerLogic
         public void PrintTimeResponse(IList<ResponseTime> urls)
         {
             Console.WriteLine("\n\nList with url and response time for each page: \n");
-            Console.WriteLine("\nURL".PadRight(50) + "Timing (ms)\n");
+            Console.WriteLine("URL".PadRight(50) + "Timing (ms)\n");
 
             foreach (var url in urls)
             {

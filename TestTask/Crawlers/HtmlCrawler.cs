@@ -1,5 +1,4 @@
 ﻿using CrawlerLogic.Parsers;
-using HtmlAgilityPack;
 
 namespace CrawlerLogic.Crawlers
 {
@@ -16,7 +15,6 @@ namespace CrawlerLogic.Crawlers
             _parser = new HtmlParser(_httpClient);
 
             _urls = new HashSet<string>();
-            
         }
 
         public async Task<HashSet<string>> CrawlUrlAsync(string address)
