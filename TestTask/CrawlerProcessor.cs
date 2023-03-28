@@ -1,4 +1,7 @@
 ﻿using CrawlerLogic.Crawlers;
+using CrawlerLogic.Parsers;
+using System;
+using System.Text;
 
 namespace CrawlerLogic
 {
@@ -31,21 +34,8 @@ namespace CrawlerLogic
         private async Task<ICollection<string>> StartHtmlCrawlerAsync(string address)
         {
             var htmlCrawler = new HtmlCrawler(address, _httpClient);
-            var validator = new UrlValidator(address, _httpClient);
 
-            try
-            {
-                if (!validator.IsValidUrl(address))
-                {
-                    throw new Exception();
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"\nOoooops, seems like you entered wrong url. {e.Message}. Please, try again.");
-            }
-
-            return await htmlCrawler.ParseUrlAsync(address);
+            return await htmlCrawler.CrawlUrlAsync(address);
         }
 
         private async Task<ICollection<string>> StartXmlCrawlerAsync(string address)
@@ -54,7 +44,7 @@ namespace CrawlerLogic
 
             var xmlCrawler = new XmlCrawler(_httpClient, address);
 
-            return await xmlCrawler.ParseUrlAsync(address);
+            return await xmlCrawler.CrawlUrlAsync(address);
         }
 
         private void CompareCrawlResults(ICollection<string> urlsFromHtmlCrawling, ICollection<string> urlsFromXmlCrawling)

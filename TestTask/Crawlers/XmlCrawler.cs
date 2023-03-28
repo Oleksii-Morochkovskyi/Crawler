@@ -16,7 +16,7 @@ namespace CrawlerLogic.Crawlers
             _validator = new UrlValidator(address, _httpClient);
         }
 
-        public async Task<ICollection<string>> ParseUrlAsync(string address) //retrieves all urls from sitemap.xml
+        public async Task<ICollection<string>> CrawlUrlAsync(string address)
         {
             ICollection<string> urlList = new HashSet<string>();
 

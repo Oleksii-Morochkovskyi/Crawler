@@ -6,7 +6,6 @@ namespace CrawlerLogic
     public class ResponseTimeTracker
     {
         private readonly HttpClient _httpClient;
-        private readonly ResponseTime _responseModel;
 
         public ResponseTimeTracker(HttpClient client)
         {
@@ -27,9 +26,9 @@ namespace CrawlerLogic
 
                     responseTimeList.Add(response);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
-                    Console.WriteLine($"\nCant access url: {url}\n" + e.Message);
+                    //Console.WriteLine($"\nCant access url: {url}\n" + e.Message);
                 }
             }
 

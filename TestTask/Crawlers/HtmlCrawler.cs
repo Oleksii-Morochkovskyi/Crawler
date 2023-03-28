@@ -1,4 +1,5 @@
-﻿using HtmlAgilityPack;
+﻿using CrawlerLogic.Parsers;
+using HtmlAgilityPack;
 
 namespace CrawlerLogic.Crawlers
 {
@@ -10,6 +11,7 @@ namespace CrawlerLogic.Crawlers
         private readonly UrlManager _urlManager;
         private readonly UrlValidator _validator;
         private readonly HttpClient _httpClient;
+        private readonly HtmlParser _parser;
 
         public HtmlCrawler(string address, HttpClient client)
         {
@@ -17,16 +19,17 @@ namespace CrawlerLogic.Crawlers
 
             _urlManager = new UrlManager();
             _validator = new UrlValidator(address, _httpClient);
+            _parser = new HtmlParser(_httpClient);
 
             _urlList = new HashSet<string>();
             _checkedUrlList = new HashSet<string>();
         }
 
-        public async Task<ICollection<string>> ParseUrlAsync(string address) //method for crawling page and finding urls on it
+        public async Task<ICollection<string>> CrawlUrlAsync(string address) 
         {
             _checkedUrlList.Add(address);
 
-            var nodes = await GetNodesAsync(address);
+            var nodes = await _parser.GetNodesAsync(address);
 
             await ExtractLinksAsync(nodes, address);
 
@@ -47,7 +50,7 @@ namespace CrawlerLogic.Crawlers
                 }
                 catch (Exception)
                 {
-                    Console.WriteLine($"Can't open url {_urlManager.GetAbsoluteUrlString(address, href)}");
+                   // Console.WriteLine($"Can't open url {_urlManager.GetAbsoluteUrlString(address, href)}");
                 }
             }
         }
@@ -64,25 +67,8 @@ namespace CrawlerLogic.Crawlers
 
             if (!_checkedUrlList.Contains(absoluteUrl))
             {
-                await ParseUrlAsync(absoluteUrl);
+                await CrawlUrlAsync(absoluteUrl);
             }
-        }
-
-        private async Task<HtmlNodeCollection> GetNodesAsync(string address)
-        {
-            var html = await GetHtmlAsync(address);
-
-            return html.DocumentNode.SelectNodes("//a[@href]");
-        }
-
-        public async Task<HtmlDocument> GetHtmlAsync(string address) //retrieves html document from url
-        {
-            var html = await _httpClient.GetStringAsync(address);
-
-            var htmlDoc = new HtmlDocument();
-            htmlDoc.LoadHtml(html);
-
-            return htmlDoc;
         }
     }
 }

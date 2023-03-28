@@ -11,6 +11,5 @@ namespace ConsoleManager
 
             return input.TrimEnd('/');
         }
-
     }
 }

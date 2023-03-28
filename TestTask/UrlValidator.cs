@@ -1,4 +1,6 @@
-﻿namespace CrawlerLogic
+﻿using System.Net;
+
+namespace CrawlerLogic
 {
     public class UrlValidator
     {
@@ -11,7 +13,17 @@
             _httpClient = httpClient;
         }
 
-        public bool IsValidUrl(string address)     //Checks if url corresponds criteria  - "contains html document"
+        public UrlValidator()
+        {
+
+        }
+
+        public bool IsCorrectInput(string address)
+        {
+            return Uri.TryCreate(address, UriKind.Absolute, out Uri uri);
+        }
+
+        public bool IsValidUrl(string address)
         {
             return address.Contains("http") && !address.Contains('#') && address.Contains(_host);
         }
