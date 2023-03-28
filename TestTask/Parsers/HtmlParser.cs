@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Net;
 using System.Runtime.InteropServices.ComTypes;
 using CrawlerLogic.Crawlers;
 using HtmlAgilityPack;
@@ -12,6 +13,16 @@ namespace CrawlerLogic.Parsers
         public HtmlParser(HttpClient httpClient)
         {
             _httpClient = httpClient;
+        }
+
+        public async Task<ICollection<string>> ParseUrlAsync(string address)
+        {
+            
+            var nodes = await GetNodesAsync(address);
+
+            var urls = await ExtractLinksAsync(nodes, address);
+
+            return urls;
         }
 
         public async Task<HtmlNodeCollection> GetNodesAsync(string address)
@@ -29,6 +40,26 @@ namespace CrawlerLogic.Parsers
             htmlDoc.LoadHtml(html);
 
             return htmlDoc;
+        }
+
+        private async Task<ICollection<string>> ExtractLinksAsync(HtmlNodeCollection nodes, string address)
+        {
+            ICollection<string> urls = new HashSet<string>();
+            var validator = new UrlValidator(address,_httpClient);
+            var urlManager = new UrlManager();
+
+            foreach (var node in nodes)
+            {
+                var href = node.Attributes["href"].Value;
+                var absoluteUrl = urlManager.GetAbsoluteUrlString(address, href);
+
+                if (validator.IsValidUrl(absoluteUrl) && await validator.IsHtmlDocAsync(absoluteUrl))
+                {
+                   urls.Add(absoluteUrl);
+                }
+            }
+
+            return urls;
         }
     }
 }

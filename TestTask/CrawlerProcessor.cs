@@ -29,6 +29,7 @@ namespace CrawlerLogic
             await GetResponseTimeAsync(allUrls);
 
             _crawlerOutput.PrintNumberOfLinks(urlListFromHtmlCrawler, urlListFromXmlCrawler);
+
         }
 
         private async Task<ICollection<string>> StartHtmlCrawlerAsync(string address)
