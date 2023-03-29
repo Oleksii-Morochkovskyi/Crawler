@@ -4,12 +4,12 @@ namespace Crawler.Logic
 {
     public class CrawlerConfiguration
     {
-        public async Task<ResultSet> ConfigureCrawlerAsync(string address)
+        public async Task<IList<UrlResponse>> ConfigureCrawlerAsync(string address)
         {
             using var client = new HttpClient();
             var logger = new Logger();
             var helper = new UrlHelper();
-            var validator = new UrlValidator(address);
+            var validator = new UrlValidator();
 
             var console = new Crawler(client, logger, helper, validator);
             

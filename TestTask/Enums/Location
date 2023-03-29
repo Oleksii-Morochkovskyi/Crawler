@@ -1,0 +1,10 @@
+﻿
+namespace Crawler.Logic.Enums
+{
+    public enum Location
+    {
+        Html,
+        Xml,
+        HtmlAndXml
+    }
+}

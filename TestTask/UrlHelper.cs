@@ -3,7 +3,7 @@ namespace Crawler.Logic
 {
     public class UrlHelper
     {
-        public string GetAbsoluteUrl(string baseUrl, string path) //gets absolute url if it is relative
+        public string GetAbsoluteUrl(string baseUrl, string path) 
         {
             var baseUri = new Uri(baseUrl);
 

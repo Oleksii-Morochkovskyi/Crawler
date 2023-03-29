@@ -1,5 +1,6 @@
 ﻿
 using Crawler.Logic;
+using Crawler.Logic.Enums;
 using Crawler.Logic.Interfaces;
 using Crawler.Logic.Models;
 
@@ -12,6 +13,7 @@ namespace ConsoleManager
         {
             _logger = new Logger();
         }
+
         public string GetAddress()
         {
             _logger.Write("Enter URL: ");
@@ -21,18 +23,23 @@ namespace ConsoleManager
             return input.TrimEnd('/');
         }
 
-        public void PrintResult(ResultSet resultSet)
+        public void PrintResult(IList<UrlResponse> resultSet)
         {
-            PrintDifference(resultSet.htmlExceptXml, resultSet.xmlExceptHtml);
+            PrintDifference(resultSet);
 
-            PrintTimeResponse(resultSet.urlResponses);
+            PrintTimeResponse(resultSet);
 
-            PrintNumberOfLinks(resultSet.urlsFromHtml, resultSet.urlsFromXml);
+            PrintNumberOfLinks(resultSet);
         }
 
-        private void PrintDifference(ICollection<string> htmlExceptXml, ICollection<string> xmlExceptHtml)
+        private void PrintDifference(IList<UrlResponse> resultSet)
         {
-            if (htmlExceptXml.Count == 0 || xmlExceptHtml.Count == 0)
+            var htmlExceptXml = resultSet.Where(x => x.location == Location.Html)
+                                                            .Select(x=>x.Url);
+            var xmlExceptHtml = resultSet.Where(x => x.location == Location.Xml)
+                                                            .Select(x => x.Url);
+            
+            if (!htmlExceptXml.Any() || !xmlExceptHtml.Any())
             {
                 _logger.Write("\nOne of the ways to search for links did not bring any result or two ways of crawling brought same results.\n");
                 return;
@@ -60,15 +67,18 @@ namespace ConsoleManager
 
             foreach (var url in urls)
             {
-                _logger.Write(url.Url + (url.ResponseTime + "ms").PadLeft(70)); //print the result
+                _logger.Write(url.Url.PadRight(70) + url.ResponseTime + "ms"); 
             }
         }
 
-        private void PrintNumberOfLinks(ICollection<string> urlsFromHtmlCrawling, ICollection<string> urlsFromXmlCrawling)
+        private void PrintNumberOfLinks(IList<UrlResponse> urls)
         {
-            _logger.Write($"\nUrls(html documents) found after crawling a website: {urlsFromHtmlCrawling.Count}");
+            var urlsFromHtml = urls.Where(x => x.location == Location.Html);
+            var urlsFromXml = urls.Where(x => x.location == Location.Xml);
 
-            _logger.Write($"\nUrls found in sitemap: {urlsFromXmlCrawling.Count}");
+            _logger.Write($"\nUrls(html documents) found after crawling a website: {urls.Count - urlsFromXml.Count()}");
+
+            _logger.Write($"\nUrls found in sitemap: {urls.Count - urlsFromHtml.Count()}");
         }
 
     }

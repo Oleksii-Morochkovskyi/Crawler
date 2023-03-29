@@ -2,7 +2,9 @@
 using Crawler.Logic.Interfaces;
 using Crawler.Logic.Models;
 using Crawler.Logic.Parsers;
+using System.Linq;
 using System.Xml;
+using Crawler.Logic.Enums;
 
 namespace Crawler.Logic
 {
@@ -21,7 +23,7 @@ namespace Crawler.Logic
             _validator = validator;
         }
 
-        public async Task<ResultSet> StartCrawlerAsync(string address)
+        public async Task<IList<UrlResponse>> StartCrawlerAsync(string address)
         {
             var urlsFromHtmlCrawler = await StartHtmlCrawlerAsync(address);
 
@@ -29,24 +31,9 @@ namespace Crawler.Logic
 
             var allUrls = urlsFromHtmlCrawler.Union(urlsFromXmlCrawler);
 
-            var urlsInHtmlExceptXml = urlsFromHtmlCrawler.Except(urlsFromXmlCrawler)
-                                                                        .ToHashSet();
-            var urlsInXmlExceptHtml = urlsFromXmlCrawler.Except(urlsFromHtmlCrawler)
-                                                                        .ToHashSet();
-
             var responseTime = await GetResponseTimeAsync(allUrls);
 
-            var resultSet = new ResultSet
-            {
-                urlsFromHtml = urlsFromHtmlCrawler,
-                urlsFromXml = urlsFromXmlCrawler,
-                htmlExceptXml = urlsInHtmlExceptXml,
-                xmlExceptHtml = urlsInXmlExceptHtml,
-                urlResponses = responseTime
-
-            };
-
-            return resultSet;
+            return FillResultSet(responseTime,urlsFromHtmlCrawler,urlsFromXmlCrawler);
         }
 
         private async Task<ICollection<string>> StartHtmlCrawlerAsync(string address)
@@ -83,6 +70,23 @@ namespace Crawler.Logic
             var tracker = new ResponseTimeTracker(_httpClient, _logger);
 
             return await tracker.GetResponseTimeAsync(urls);
+        }
+
+        private IList<UrlResponse> FillResultSet(IList<UrlResponse> urls, ICollection<string> urlsFromHtml, ICollection<string> urlsFromXml)
+        {
+            foreach (var url in urls)
+            {
+                if (urlsFromHtml.Contains(url.Url))
+                {
+                    url.location = urlsFromXml.Contains(url.Url) ? Location.HtmlAndXml : Location.Html;
+                }
+                else
+                {
+                    url.location = Location.Xml;
+                }
+            }
+
+            return urls;
         }
     }
 }

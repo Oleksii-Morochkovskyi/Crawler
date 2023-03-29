@@ -15,11 +15,11 @@ namespace Crawler.Logic.Parsers
             _urlHelper = helper;
         }
 
-        public async Task<ICollection<string>> ParseAsync(string url, ICollection<string> checkedUrls, ICollection<string> urlsToCheck)
+        public async Task<ICollection<string>> ParseAsync(string baseUrl, string url, ICollection<string> checkedUrls, ICollection<string> urlsToCheck)
         {
             var nodes = await GetNodesAsync(url);
 
-            var urls = ExtractLinksAsync(nodes, url, checkedUrls, urlsToCheck);
+            var urls = ExtractLinksAsync(nodes, baseUrl, checkedUrls, urlsToCheck);
 
             return urls;
         }
@@ -31,7 +31,7 @@ namespace Crawler.Logic.Parsers
             return html.DocumentNode.SelectNodes("//a[@href]");
         }
 
-        private async Task<HtmlDocument> GetHtmlAsync(string url) //retrieves html document from url
+        private async Task<HtmlDocument> GetHtmlAsync(string url)
         {
             var html = await _httpClient.GetStringAsync(url);
 
@@ -41,15 +41,15 @@ namespace Crawler.Logic.Parsers
             return htmlDoc;
         }
 
-        private ICollection<string> ExtractLinksAsync(HtmlNodeCollection nodes, string address, ICollection<string> checkedUrls, ICollection<string> urlsToCheck)
+        private ICollection<string> ExtractLinksAsync(HtmlNodeCollection nodes, string baseUrl, ICollection<string> checkedUrls, ICollection<string> urlsToCheck)
         {
             foreach (var node in nodes)
             {
                 var href = node.Attributes["href"].Value;
 
-                var absoluteUrl = _urlHelper.GetAbsoluteUrl(address, href);
+                var absoluteUrl = _urlHelper.GetAbsoluteUrl(baseUrl, href);
 
-                if (!urlsToCheck.Contains(absoluteUrl) && !checkedUrls.Contains(absoluteUrl) && _urlValidator.IsValidUrl(absoluteUrl) && _urlValidator.IsHtmlDocAsync(absoluteUrl))
+                if (!urlsToCheck.Contains(absoluteUrl) && !checkedUrls.Contains(absoluteUrl) && _urlValidator.IsValidUrl(absoluteUrl,baseUrl) && _urlValidator.IsHtmlDocAsync(absoluteUrl))
                 {
                     urlsToCheck.Add(absoluteUrl);
                 }

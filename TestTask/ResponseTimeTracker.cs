@@ -15,7 +15,7 @@ namespace Crawler.Logic
             _logger = logger;
         }
 
-        public async Task<IList<UrlResponse>> GetResponseTimeAsync(IEnumerable<string> urls) //method gets response time of each url and sorts it ascending
+        public async Task<IList<UrlResponse>> GetResponseTimeAsync(IEnumerable<string> urls) 
         {
             IList<UrlResponse> responseTimeList = new List<UrlResponse>();
 

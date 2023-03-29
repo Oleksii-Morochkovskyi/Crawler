@@ -14,18 +14,18 @@ namespace Crawler.Logic.Crawlers
             _parser = parser;
         }
 
-        public async Task<ICollection<string>> CrawlAsync(string address)
+        public async Task<ICollection<string>> CrawlAsync(string baseUrl)
         {
             ICollection<string> urls = new HashSet<string>();
             ICollection<string> urlsToCheck = new HashSet<string>();
 
             try
             {
-                urlsToCheck.Add(address);
+                urlsToCheck.Add(baseUrl);
 
                 while (urlsToCheck.Count > 0)
                 {
-                    urlsToCheck = await _parser.ParseAsync(urlsToCheck.First(), urls, urlsToCheck);
+                    urlsToCheck = await _parser.ParseAsync(baseUrl, urlsToCheck.First(), urls, urlsToCheck);
 
                     urls.Add(urlsToCheck.First());
 
