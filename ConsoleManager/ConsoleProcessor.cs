@@ -56,11 +56,11 @@ namespace ConsoleManager
         private void PrintTimeResponse(IList<UrlResponse> urls)
         {
             _logger.Write("\n\nList with url and response time for each page: \n");
-            _logger.Write("URL".PadRight(50) + "Timing (ms)\n");
+            _logger.Write("URL".PadRight(70) + "Timing (ms)\n");
 
             foreach (var url in urls)
             {
-                _logger.Write(url.Url.PadRight(50) + url.ResponseTime + "ms"); //print the result
+                _logger.Write(url.Url + (url.ResponseTime + "ms").PadLeft(70)); //print the result
             }
         }
 

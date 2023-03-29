@@ -17,26 +17,19 @@ namespace Crawler.Logic.Crawlers
         public async Task<ICollection<string>> CrawlAsync(string address)
         {
             ICollection<string> urls = new HashSet<string>();
-            
-            return await CrawlAsync(address, urls);
-        }
+            ICollection<string> urlsToCheck = new HashSet<string>();
 
-        private async Task<ICollection<string>> CrawlAsync(string address, ICollection<string> checkedUrls)
-        {
             try
             {
-                var urls = await _parser.ParseAsync(address);
+                urlsToCheck.Add(address);
 
-                foreach (var url in urls)
+                while (urlsToCheck.Count > 0)
                 {
-                    if (checkedUrls.Contains(url))
-                    {
-                        continue;
-                    }
+                    urlsToCheck = await _parser.ParseAsync(urlsToCheck.First(), urls, urlsToCheck);
 
-                    checkedUrls.Add(url);
+                    urls.Add(urlsToCheck.First());
 
-                    checkedUrls = await CrawlAsync(url, checkedUrls);
+                    urlsToCheck.Remove(urlsToCheck.First());
                 }
             }
             catch (Exception e)
@@ -44,7 +37,7 @@ namespace Crawler.Logic.Crawlers
                 _logger.Write(e.Message);
             }
 
-            return checkedUrls;
+            return urls;
         }
     }
 }

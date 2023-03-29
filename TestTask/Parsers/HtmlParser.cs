@@ -1,5 +1,4 @@
-﻿using Crawler.Logic.Interfaces;
-using HtmlAgilityPack;
+﻿using HtmlAgilityPack;
 
 namespace Crawler.Logic.Parsers
 {
@@ -16,11 +15,11 @@ namespace Crawler.Logic.Parsers
             _urlHelper = helper;
         }
 
-        public async Task<ICollection<string>> ParseAsync(string url)
+        public async Task<ICollection<string>> ParseAsync(string url, ICollection<string> checkedUrls, ICollection<string> urlsToCheck)
         {
             var nodes = await GetNodesAsync(url);
 
-            var urls = ExtractLinksAsync(nodes, url);
+            var urls = ExtractLinksAsync(nodes, url, checkedUrls, urlsToCheck);
 
             return urls;
         }
@@ -42,23 +41,21 @@ namespace Crawler.Logic.Parsers
             return htmlDoc;
         }
 
-        private ICollection<string> ExtractLinksAsync(HtmlNodeCollection nodes, string address)
+        private ICollection<string> ExtractLinksAsync(HtmlNodeCollection nodes, string address, ICollection<string> checkedUrls, ICollection<string> urlsToCheck)
         {
-            ICollection<string> urls = new HashSet<string>();
-
             foreach (var node in nodes)
             {
                 var href = node.Attributes["href"].Value;
 
                 var absoluteUrl = _urlHelper.GetAbsoluteUrl(address, href);
 
-                if (_urlValidator.IsValidUrl(absoluteUrl) && _urlValidator.IsHtmlDocAsync(absoluteUrl))
+                if (!urlsToCheck.Contains(absoluteUrl) && !checkedUrls.Contains(absoluteUrl) && _urlValidator.IsValidUrl(absoluteUrl) && _urlValidator.IsHtmlDocAsync(absoluteUrl))
                 {
-                   urls.Add(absoluteUrl);
+                    urlsToCheck.Add(absoluteUrl);
                 }
             }
 
-            return urls;
+            return urlsToCheck;
         }
     }
 }

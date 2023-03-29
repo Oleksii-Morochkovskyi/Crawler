@@ -24,11 +24,9 @@ namespace Crawler.Logic
 
         public bool IsHtmlDocAsync(string address)
         {
-            var possibleExtensions = new List<string> { ".html", ".htm", ".php", ".asp", ".aspx", "" };
+            var forbiddenExtensions = new List<string> { ".txt", ".md", ".pdf", ".doc", ".docx", ".ppt", ".pptx", ".xls", ".xlsx", ".xml", ".json", ".svg", ".mp3", ".mp4" };
 
-            var extension = Path.GetExtension(address).ToLower();
-            
-            return possibleExtensions.Contains(extension);
+            return !forbiddenExtensions.Any(address.Contains);
         }
     }
 }
