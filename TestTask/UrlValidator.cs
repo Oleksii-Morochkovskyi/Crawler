@@ -1,22 +1,16 @@
-﻿using System.Net;
-
-namespace CrawlerLogic
+﻿
+namespace Crawler.Logic
 {
     public class UrlValidator
     {
         private readonly string _host;
-        private readonly HttpClient _httpClient;
 
-        public UrlValidator(string address, HttpClient httpClient)
+        public UrlValidator(string address)
         {
             _host = new Uri(address).Host;
-            _httpClient = httpClient;
         }
 
-        public UrlValidator()
-        {
-
-        }
+        public UrlValidator() { }
 
         public bool IsCorrectInput(string address)
         {
@@ -28,11 +22,13 @@ namespace CrawlerLogic
             return address.Contains("http") && !address.Contains('#') && address.Contains(_host);
         }
 
-        public async Task<bool> IsHtmlDocAsync(string address)
+        public bool IsHtmlDocAsync(string address)
         {
-            using var response = await _httpClient.GetAsync(address, HttpCompletionOption.ResponseHeadersRead);
+            var possibleExtensions = new List<string> { ".html", ".htm", ".php", ".asp", ".aspx", "" };
 
-            return response.Content.Headers.ContentType?.MediaType == "text/html";
+            var extension = Path.GetExtension(address).ToLower();
+            
+            return possibleExtensions.Contains(extension);
         }
     }
 }

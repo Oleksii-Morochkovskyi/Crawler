@@ -1,16 +1,16 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Crawler.Logic.Models;
 
-namespace CrawlerLogic
+namespace Crawler.Logic
 {
     public class CrawlerConfiguration
     {
-        public async Task ConfigureCrawlerAsync(string address)
+        public async Task<ResultSet> ConfigureCrawlerAsync(string address)
         {
             using var client = new HttpClient();
 
             var console = new CrawlerProcessor(client);
-
-            await console.StartCrawlerAsync(address);
+            
+            return await console.StartCrawlerAsync(address);
         }
 
         /*private HttpClient ConfigureIHttpClientFactory()

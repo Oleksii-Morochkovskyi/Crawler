@@ -1,43 +1,52 @@
-﻿using CrawlerLogic.Parsers;
+﻿using Crawler.Logic.Parsers;
+using IOManager;
 
-namespace CrawlerLogic.Crawlers
+namespace Crawler.Logic.Crawlers
 {
     public class HtmlCrawler
     {
-        private HashSet<string> _urls;
         private readonly HttpClient _httpClient;
         private readonly HtmlParser _parser;
+        private readonly ILogger _logger;
 
         public HtmlCrawler(string address, HttpClient client)
         {
             _httpClient = client;
-
-            _parser = new HtmlParser(_httpClient);
-
-            _urls = new HashSet<string>();
+            _logger = new Logger();
+            _parser = new HtmlParser(_httpClient, address);
         }
 
-        public async Task<HashSet<string>> CrawlUrlAsync(string address)
+        public async Task<ICollection<string>> CrawlAsync(string address)
+        {
+            ICollection<string> urls = new HashSet<string>();
+            
+            return await CrawlAsync(address, urls);
+        }
+
+        private async Task<ICollection<string>> CrawlAsync(string address, ICollection<string> checkedUrls)
         {
             try
             {
-                var urls = await _parser.ParseUrlAsync(address);
+                var urls = await _parser.ParseAsync(address);
 
                 foreach (var url in urls)
                 {
-                    if (_urls.Contains(url))
+                    if (checkedUrls.Contains(url))
                     {
                         continue;
                     }
 
-                    _urls.Add(url);
+                    checkedUrls.Add(url);
 
-                    await CrawlUrlAsync(url);
+                    checkedUrls = await CrawlAsync(url, checkedUrls);
                 }
             }
-            catch (Exception) { }
+            catch (Exception e)
+            {
+                _logger.Write(e.Message);
+            }
 
-            return _urls;
+            return checkedUrls;
         }
     }
 }

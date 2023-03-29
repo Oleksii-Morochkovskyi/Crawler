@@ -1,35 +1,39 @@
 ﻿using HtmlAgilityPack;
 
-namespace CrawlerLogic.Parsers
+namespace Crawler.Logic.Parsers
 {
     public class HtmlParser
     {
         private readonly HttpClient _httpClient;
+        private readonly UrlValidator _urlValidator;
+        private readonly UrlManager _urlManager;
 
-        public HtmlParser(HttpClient httpClient)
+        public HtmlParser(HttpClient httpClient, string address)
         {
             _httpClient = httpClient;
+            _urlValidator = new UrlValidator(address);
+            _urlManager = new UrlManager();
         }
 
-        public async Task<ICollection<string>> ParseUrlAsync(string address)
+        public async Task<ICollection<string>> ParseAsync(string url)
         {
-            var nodes = await GetNodesAsync(address);
+            var nodes = await GetNodesAsync(url);
 
-            var urls = await ExtractLinksAsync(nodes, address);
+            var urls = ExtractLinksAsync(nodes, url);
 
             return urls;
         }
 
-        public async Task<HtmlNodeCollection> GetNodesAsync(string address)
+        public async Task<HtmlNodeCollection> GetNodesAsync(string url)
         {
-            var html = await GetHtmlAsync(address);
+            var html = await GetHtmlAsync(url);
 
             return html.DocumentNode.SelectNodes("//a[@href]");
         }
 
-        private async Task<HtmlDocument> GetHtmlAsync(string address) //retrieves html document from url
+        private async Task<HtmlDocument> GetHtmlAsync(string url) //retrieves html document from url
         {
-            var html = await _httpClient.GetStringAsync(address);
+            var html = await _httpClient.GetStringAsync(url);
 
             var htmlDoc = new HtmlDocument();
             htmlDoc.LoadHtml(html);
@@ -37,20 +41,17 @@ namespace CrawlerLogic.Parsers
             return htmlDoc;
         }
 
-        private async Task<ICollection<string>> ExtractLinksAsync(HtmlNodeCollection nodes, string address)
+        private ICollection<string> ExtractLinksAsync(HtmlNodeCollection nodes, string address)
         {
             ICollection<string> urls = new HashSet<string>();
-
-            var validator = new UrlValidator(address,_httpClient);
-            var urlManager = new UrlManager();
 
             foreach (var node in nodes)
             {
                 var href = node.Attributes["href"].Value;
 
-                var absoluteUrl = urlManager.GetAbsoluteUrlString(address, href);
+                var absoluteUrl = _urlManager.GetAbsoluteUrl(address, href);
 
-                if (validator.IsValidUrl(absoluteUrl) && await validator.IsHtmlDocAsync(absoluteUrl))
+                if (_urlValidator.IsValidUrl(absoluteUrl) && _urlValidator.IsHtmlDocAsync(absoluteUrl))
                 {
                    urls.Add(absoluteUrl);
                 }

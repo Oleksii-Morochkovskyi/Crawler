@@ -1,92 +1,64 @@
-﻿using CrawlerLogic.Crawlers;
+﻿using Crawler.Logic.Crawlers;
+using Crawler.Logic.Models;
 
-namespace CrawlerLogic
+namespace Crawler.Logic
 {
     public class CrawlerProcessor
     {
         private readonly HttpClient _httpClient;
-        private readonly CrawlerOutput _crawlerOutput;
 
         public CrawlerProcessor(HttpClient client)
         {
-            _crawlerOutput = new CrawlerOutput();
             _httpClient = client;
         }
 
-        public async Task StartCrawlerAsync(string address)
+        public async Task<ResultSet> StartCrawlerAsync(string address)
         {
-            var urlListFromHtmlCrawler = await StartHtmlCrawlerAsync(address);
+            var urlsFromHtmlCrawler = await StartHtmlCrawlerAsync(address);
 
-            var urlListFromXmlCrawler = await StartXmlCrawlerAsync(address);
+            var urlsFromXmlCrawler = await StartXmlCrawlerAsync(address);
 
-            var allUrls = urlListFromHtmlCrawler.Union(urlListFromXmlCrawler);
+            var allUrls = urlsFromHtmlCrawler.Union(urlsFromXmlCrawler);
 
-            CompareCrawlResults(urlListFromHtmlCrawler, urlListFromXmlCrawler);
+            var urlsInHtmlExceptXml = urlsFromHtmlCrawler.Except(urlsFromXmlCrawler)
+                                                                        .ToHashSet();
+            var urlsInXmlExceptHtml = urlsFromXmlCrawler.Except(urlsFromHtmlCrawler)
+                                                                        .ToHashSet();
 
-            await GetResponseTimeAsync(allUrls);
+            var responseTime = await GetResponseTimeAsync(allUrls);
 
-            _crawlerOutput.PrintNumberOfLinks(urlListFromHtmlCrawler, urlListFromXmlCrawler);
+            var resultSet = new ResultSet
+            {
+                urlsFromHtml = urlsFromHtmlCrawler,
+                urlsFromXml = urlsFromXmlCrawler,
+                htmlExceptXml = urlsInHtmlExceptXml,
+                xmlExceptHtml = urlsInXmlExceptHtml,
+                urlResponses = responseTime
 
+            }; 
+
+            return resultSet;
         }
 
         private async Task<ICollection<string>> StartHtmlCrawlerAsync(string address)
         {
             var htmlCrawler = new HtmlCrawler(address, _httpClient);
 
-            return await htmlCrawler.CrawlUrlAsync(address);
+            return await htmlCrawler.CrawlAsync(address);
         }
 
         private async Task<ICollection<string>> StartXmlCrawlerAsync(string address)
         {
-            address += "/sitemap.xml";
+            var xmlCrawler = new XmlCrawler(address);
 
-            var xmlCrawler = new XmlCrawler(_httpClient, address);
-
-            return await xmlCrawler.CrawlUrlAsync(address);
+            return await xmlCrawler.CrawlAsync(address);
         }
 
-        private void CompareCrawlResults(ICollection<string> urlsFromHtmlCrawling, ICollection<string> urlsFromXmlCrawling)
-        {
-            if (urlsFromXmlCrawling.Count == 0 || urlsFromHtmlCrawling.Count == 0)
-            {
-                Console.WriteLine("\nOne of the ways to search for links did not bring any result.\n");
-            }
-            else
-            {
-                ShowDifferentUrls(urlsFromHtmlCrawling, urlsFromXmlCrawling);
-            }
-        }
-
-        private void ShowDifferentUrls(ICollection<string> urlsFromHtmlCrawling, ICollection<string> urlsFromXmlCrawling)
-        {
-            if (urlsFromHtmlCrawling.Equals(urlsFromXmlCrawling))
-            {
-                Console.WriteLine("\nThere is no difference between the links obtained by the two methods");
-
-                _crawlerOutput.PrintList(urlsFromHtmlCrawling);
-
-                return;
-            }
-
-            var differenceList = urlsFromHtmlCrawling.Except(urlsFromXmlCrawling);
-
-            Console.WriteLine("\nUrls FOUND BY CRAWLING THE WEBSITE but not in sitemap.xml: \n");
-            _crawlerOutput.PrintList(differenceList);
-
-            differenceList = urlsFromXmlCrawling.Except(urlsFromHtmlCrawling);
-
-            Console.WriteLine("\nUrls FOUND IN SITEMAP.XML but not founded after crawling a website: \n");
-            _crawlerOutput.PrintList(differenceList);
-
-        }
-
-        private async Task GetResponseTimeAsync(IEnumerable<string> urls)
+        private async Task<IList<UrlResponse>> GetResponseTimeAsync(IEnumerable<string> urls)
         {
             var tracker = new ResponseTimeTracker(_httpClient);
 
-            var responseTime = await tracker.GetResponseTimeAsync(urls);
-
-            _crawlerOutput.PrintTimeResponse(responseTime);
+            return await tracker.GetResponseTimeAsync(urls);
         }
     }
 }

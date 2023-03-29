@@ -1,10 +1,9 @@
-﻿using HtmlAgilityPack;
-
-namespace CrawlerLogic
+﻿
+namespace Crawler.Logic
 {
     public class UrlManager
     {
-        public string GetAbsoluteUrlString(string baseUrl, string path) //gets absolute url if it is relative
+        public string GetAbsoluteUrl(string baseUrl, string path) //gets absolute url if it is relative
         {
             var baseUri = new Uri(baseUrl);
 

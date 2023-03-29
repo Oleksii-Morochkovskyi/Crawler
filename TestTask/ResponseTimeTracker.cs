@@ -1,20 +1,23 @@
 ﻿using System.Diagnostics;
-using CrawlerLogic.Models;
+using Crawler.Logic.Models;
+using IOManager;
 
-namespace CrawlerLogic
+namespace Crawler.Logic
 {
     public class ResponseTimeTracker
     {
         private readonly HttpClient _httpClient;
+        private readonly ILogger _logger;
 
         public ResponseTimeTracker(HttpClient client)
         {
             _httpClient = client;
+            _logger = new Logger();
         }
 
-        public async Task<IList<ResponseTime>> GetResponseTimeAsync(IEnumerable<string> urls) //method gets response time of each url and sorts it ascending
+        public async Task<IList<UrlResponse>> GetResponseTimeAsync(IEnumerable<string> urls) //method gets response time of each url and sorts it ascending
         {
-            IList<ResponseTime> responseTimeList = new List<ResponseTime>();
+            IList<UrlResponse> responseTimeList = new List<UrlResponse>();
 
             foreach (var url in urls)
             {
@@ -22,17 +25,21 @@ namespace CrawlerLogic
                 {
                     var time = await CalculateTimeAsync(url);
 
-                    var response = new ResponseTime(url, time);
+                    var response = new UrlResponse
+                    {
+                        Url = url,
+                        ResponseTime = time
+                    };
 
                     responseTimeList.Add(response);
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-                    //Console.WriteLine($"\nCant access url: {url}\n" + e.Message);
+                    _logger.Write(e.Message);
                 }
             }
 
-            return responseTimeList.OrderBy(x => x._responseTime).ToList();
+            return responseTimeList.OrderBy(x => x.ResponseTime).ToList();
         }
 
         private async Task<int> CalculateTimeAsync(string url)

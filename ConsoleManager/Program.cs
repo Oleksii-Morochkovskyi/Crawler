@@ -1,4 +1,4 @@
-﻿using CrawlerLogic;
+﻿using Crawler.Logic;
 
 namespace ConsoleManager
 {
@@ -15,7 +15,9 @@ namespace ConsoleManager
 
             var crawler = new CrawlerConfiguration();
 
-            await crawler.ConfigureCrawlerAsync(input);
+            var  resultSet = await crawler.ConfigureCrawlerAsync(input);
+
+            console.PrintResult(resultSet);
         }
     }
 }

@@ -1,34 +1,37 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Xml;
+﻿using System.Xml;
+using IOManager;
 
-namespace CrawlerLogic.Crawlers
+namespace Crawler.Logic.Crawlers
 {
     public class XmlCrawler
     {
-        private readonly HttpClient _httpClient;
         private readonly UrlManager _urlManager;
         private readonly UrlValidator _validator;
+        private readonly XmlReader _reader;
+        private readonly ILogger _logger;
 
-        public XmlCrawler(HttpClient client, string address)
+        public XmlCrawler(string address)
         {
-            _httpClient = client;
             _urlManager = new UrlManager();
-            _validator = new UrlValidator(address, _httpClient);
+            _validator = new UrlValidator(address);
+            _logger = new Logger();
+            
+            address += "/sitemap.xml";
+            _reader = CreateXmlReader(address);
         }
 
-        public async Task<ICollection<string>> CrawlUrlAsync(string address)
+        public async Task<ICollection<string>> CrawlAsync(string address)
         {
+
             ICollection<string> urlList = new HashSet<string>();
 
             try
             {
-                using var reader = CreateXmlReader(address);
-
-                urlList = await ExtractLinksAsync(reader, address);
+                urlList = await ExtractLinksAsync(address);
             }
-            catch (Exception exception)
+            catch (Exception e)
             {
-                Console.WriteLine(exception.Message);
+                _logger.Write(e.Message);
             }
 
             return urlList;
@@ -44,33 +47,33 @@ namespace CrawlerLogic.Crawlers
             return XmlReader.Create(address, settings);
         }
 
-        private async Task<ICollection<string>> ExtractLinksAsync(XmlReader reader, string address)
+        private async Task<ICollection<string>> ExtractLinksAsync(string address)
         {
-            ICollection<string> urlList = new HashSet<string>();
+            ICollection<string> urls = new HashSet<string>();
 
-            while (await reader.ReadAsync())
+            while (await _reader.ReadAsync())
             {
-                if (reader.Name == "loc")
+                if (_reader.Name == "loc")
                 {
-                    urlList = await AddUrlAsync(reader, urlList, address);
+                    urls = await AddUrlAsync(urls, address);
                 }
             }
 
-            return urlList;
+            return urls;
         }
 
-        private async Task<ICollection<string>> AddUrlAsync(XmlReader reader, ICollection<string> urlList, string address)
+        private async Task<ICollection<string>> AddUrlAsync(ICollection<string> urls, string address)
         {
-            var innerXml = await reader.ReadInnerXmlAsync();
+            var innerXml = await _reader.ReadInnerXmlAsync();
 
-            var absoluteUrl = _urlManager.GetAbsoluteUrlString(address, innerXml);
+            var absoluteUrl = _urlManager.GetAbsoluteUrl(address, innerXml);
 
-            if (await _validator.IsHtmlDocAsync(absoluteUrl))
+            if (_validator.IsHtmlDocAsync(absoluteUrl))
             {
-                urlList.Add(absoluteUrl);
+                urls.Add(absoluteUrl);
             }
 
-            return urlList;
+            return urls;
         }
 
     }
