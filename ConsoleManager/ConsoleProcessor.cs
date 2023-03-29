@@ -1,6 +1,7 @@
 ﻿
+using Crawler.Logic;
+using Crawler.Logic.Interfaces;
 using Crawler.Logic.Models;
-using IOManager;
 
 namespace ConsoleManager
 {

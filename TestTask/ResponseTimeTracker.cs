@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
+using Crawler.Logic.Interfaces;
 using Crawler.Logic.Models;
-using IOManager;
 
 namespace Crawler.Logic
 {
@@ -9,10 +9,10 @@ namespace Crawler.Logic
         private readonly HttpClient _httpClient;
         private readonly ILogger _logger;
 
-        public ResponseTimeTracker(HttpClient client)
+        public ResponseTimeTracker(HttpClient client, ILogger logger)
         {
             _httpClient = client;
-            _logger = new Logger();
+            _logger = logger;
         }
 
         public async Task<IList<UrlResponse>> GetResponseTimeAsync(IEnumerable<string> urls) //method gets response time of each url and sorts it ascending

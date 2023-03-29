@@ -1,19 +1,17 @@
-﻿using Crawler.Logic.Parsers;
-using IOManager;
+﻿using Crawler.Logic.Interfaces;
+using Crawler.Logic.Parsers;
 
 namespace Crawler.Logic.Crawlers
 {
     public class HtmlCrawler
     {
-        private readonly HttpClient _httpClient;
         private readonly HtmlParser _parser;
         private readonly ILogger _logger;
 
-        public HtmlCrawler(string address, HttpClient client)
+        public HtmlCrawler(ILogger logger, HtmlParser parser)
         {
-            _httpClient = client;
-            _logger = new Logger();
-            _parser = new HtmlParser(_httpClient, address);
+            _logger = logger;
+            _parser = parser;
         }
 
         public async Task<ICollection<string>> CrawlAsync(string address)

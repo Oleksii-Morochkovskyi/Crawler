@@ -1,23 +1,21 @@
 ﻿using System.Xml;
-using IOManager;
+using Crawler.Logic.Interfaces;
 
 namespace Crawler.Logic.Crawlers
 {
     public class XmlCrawler
     {
-        private readonly UrlManager _urlManager;
+        private readonly UrlHelper _urlHelper;
         private readonly UrlValidator _validator;
         private readonly XmlReader _reader;
         private readonly ILogger _logger;
 
-        public XmlCrawler(string address)
+        public XmlCrawler(XmlReader reader, ILogger logger, UrlHelper helper, UrlValidator validator)
         {
-            _urlManager = new UrlManager();
-            _validator = new UrlValidator(address);
-            _logger = new Logger();
-            
-            address += "/sitemap.xml";
-            _reader = CreateXmlReader(address);
+            _urlHelper = helper;
+            _validator = validator;
+            _logger = logger;
+            _reader = reader;
         }
 
         public async Task<ICollection<string>> CrawlAsync(string address)
@@ -35,16 +33,6 @@ namespace Crawler.Logic.Crawlers
             }
 
             return urlList;
-        }
-
-        private XmlReader CreateXmlReader(string address)
-        {
-            var settings = new XmlReaderSettings
-            {
-                Async = true
-            };
-
-            return XmlReader.Create(address, settings);
         }
 
         private async Task<ICollection<string>> ExtractLinksAsync(string address)
@@ -66,7 +54,7 @@ namespace Crawler.Logic.Crawlers
         {
             var innerXml = await _reader.ReadInnerXmlAsync();
 
-            var absoluteUrl = _urlManager.GetAbsoluteUrl(address, innerXml);
+            var absoluteUrl = _urlHelper.GetAbsoluteUrl(address, innerXml);
 
             if (_validator.IsHtmlDocAsync(absoluteUrl))
             {

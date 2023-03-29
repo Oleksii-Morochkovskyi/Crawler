@@ -1,4 +1,5 @@
-﻿using HtmlAgilityPack;
+﻿using Crawler.Logic.Interfaces;
+using HtmlAgilityPack;
 
 namespace Crawler.Logic.Parsers
 {
@@ -6,13 +7,13 @@ namespace Crawler.Logic.Parsers
     {
         private readonly HttpClient _httpClient;
         private readonly UrlValidator _urlValidator;
-        private readonly UrlManager _urlManager;
+        private readonly UrlHelper _urlHelper;
 
-        public HtmlParser(HttpClient httpClient, string address)
+        public HtmlParser(HttpClient httpClient, UrlHelper helper, UrlValidator validator)
         {
             _httpClient = httpClient;
-            _urlValidator = new UrlValidator(address);
-            _urlManager = new UrlManager();
+            _urlValidator = validator;
+            _urlHelper = helper;
         }
 
         public async Task<ICollection<string>> ParseAsync(string url)
@@ -49,7 +50,7 @@ namespace Crawler.Logic.Parsers
             {
                 var href = node.Attributes["href"].Value;
 
-                var absoluteUrl = _urlManager.GetAbsoluteUrl(address, href);
+                var absoluteUrl = _urlHelper.GetAbsoluteUrl(address, href);
 
                 if (_urlValidator.IsValidUrl(absoluteUrl) && _urlValidator.IsHtmlDocAsync(absoluteUrl))
                 {

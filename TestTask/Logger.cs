@@ -1,4 +1,6 @@
-﻿namespace IOManager
+﻿using Crawler.Logic.Interfaces;
+
+namespace Crawler.Logic
 {
     public class Logger:ILogger
     {

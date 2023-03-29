@@ -1,5 +1,4 @@
-﻿
-namespace IOManager
+﻿namespace Crawler.Logic.Interfaces
 {
     public interface ILogger
     {

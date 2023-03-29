@@ -7,8 +7,11 @@ namespace Crawler.Logic
         public async Task<ResultSet> ConfigureCrawlerAsync(string address)
         {
             using var client = new HttpClient();
+            var logger = new Logger();
+            var helper = new UrlHelper();
+            var validator = new UrlValidator(address);
 
-            var console = new CrawlerProcessor(client);
+            var console = new Crawler(client, logger, helper, validator);
             
             return await console.StartCrawlerAsync(address);
         }
