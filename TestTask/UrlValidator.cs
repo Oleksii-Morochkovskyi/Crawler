@@ -3,7 +3,7 @@ namespace Crawler.Logic
 {
     public class UrlValidator
     {
-        public bool IsCorrectInput(string address)
+        public bool IsInputUrlCorrect(string address)
         {
             return Uri.TryCreate(address, UriKind.Absolute, out Uri uri);
         }

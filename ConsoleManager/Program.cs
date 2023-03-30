@@ -7,16 +7,16 @@ namespace ConsoleManager
         static async Task Main(string[] args)
         {
             var logger = new Logger();
-            var console = new ConsoleProcessor(logger);
             var validator = new UrlValidator();
+            var console = new ConsoleProcessor(logger);
 
-            var input = console.GetAddress();
+            var inputUrl = console.GetAddress();
 
-            if (!validator.IsCorrectInput(input)) return;
+            if (!validator.IsInputUrlCorrect(inputUrl)) return;
 
             var crawler = new CrawlerConfiguration();
 
-            var  resultSet = await crawler.ConfigureCrawlerAsync(input);
+            var  resultSet = await crawler.ConfigureCrawlerAsync(inputUrl);
 
             console.PrintResult(resultSet);
         }
