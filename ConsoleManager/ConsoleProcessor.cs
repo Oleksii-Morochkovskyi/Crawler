@@ -1,5 +1,4 @@
-﻿using Crawler.Logic;
-using Crawler.Logic.Enums;
+﻿using Crawler.Logic.Enums;
 using Crawler.Logic.Interfaces;
 using Crawler.Logic.Models;
 
