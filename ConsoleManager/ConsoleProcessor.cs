@@ -1,5 +1,4 @@
-﻿
-using Crawler.Logic;
+﻿using Crawler.Logic;
 using Crawler.Logic.Enums;
 using Crawler.Logic.Interfaces;
 using Crawler.Logic.Models;
@@ -10,9 +9,9 @@ namespace ConsoleManager
     {
         private readonly ILogger _logger;
 
-        public ConsoleProcessor()
+        public ConsoleProcessor(ILogger logger)
         {
-            _logger = new Logger();
+            _logger = logger;
         }
 
         public string GetAddress()

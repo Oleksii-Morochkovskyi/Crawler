@@ -1,4 +1,5 @@
-﻿namespace Crawler.Logic
+﻿
+namespace Crawler.Logic
 {
     public class UrlValidator
     {

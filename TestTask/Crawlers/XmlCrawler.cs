@@ -20,7 +20,6 @@ namespace Crawler.Logic.Crawlers
 
         public async Task<ICollection<string>> CrawlAsync(string address)
         {
-
             ICollection<string> urlList = new HashSet<string>();
 
             try
