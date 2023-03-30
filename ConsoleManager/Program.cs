@@ -6,7 +6,8 @@ namespace ConsoleManager
     {
         static async Task Main(string[] args)
         {
-            var console = new ConsoleProcessor();
+            var logger = new Logger();
+            var console = new ConsoleProcessor(logger);
             var validator = new UrlValidator();
 
             var input = console.GetAddress();

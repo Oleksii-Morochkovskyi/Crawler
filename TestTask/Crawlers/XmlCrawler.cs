@@ -63,6 +63,5 @@ namespace Crawler.Logic.Crawlers
 
             return urls;
         }
-
     }
 }

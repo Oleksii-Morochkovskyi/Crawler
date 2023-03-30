@@ -1,8 +1,6 @@
 ﻿using Crawler.Logic.Crawlers;
-using Crawler.Logic.Interfaces;
 using Crawler.Logic.Models;
 using Crawler.Logic.Parsers;
-using System.Linq;
 using System.Xml;
 using Crawler.Logic.Enums;
 

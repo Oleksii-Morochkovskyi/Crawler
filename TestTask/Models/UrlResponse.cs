@@ -1,5 +1,4 @@
-﻿
-using Crawler.Logic.Enums;
+﻿using Crawler.Logic.Enums;
 
 namespace Crawler.Logic.Models
 {
@@ -8,7 +7,5 @@ namespace Crawler.Logic.Models
         public string Url;
         public int ResponseTime;
         public Location location;
-
-        
     }
 }

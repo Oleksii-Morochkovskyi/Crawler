@@ -9,6 +9,7 @@ namespace ConsoleManager
     public class ConsoleProcessor
     {
         private readonly ILogger _logger;
+
         public ConsoleProcessor()
         {
             _logger = new Logger();
