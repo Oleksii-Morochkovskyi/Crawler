@@ -5,7 +5,7 @@ using Crawler.Logic.Parsers;
 using Crawler.Logic.TimeTracker;
 using Crawler.Logic.UrlTools;
 
-namespace ConsoleManager
+namespace ConsoleOutput
 {
     public class Program
     {

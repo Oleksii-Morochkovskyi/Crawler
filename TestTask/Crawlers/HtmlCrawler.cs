@@ -31,17 +31,12 @@ namespace Crawler.Logic.Crawlers
                     urls.Add(url);
 
                     urlsToCheck.Remove(url);
-                    /*urlsToCheck = await _parser.ParseAsync(baseUrl, urlsToCheck.First(), urls, urlsToCheck);
-
-                    urls.Add(urlsToCheck.First());
-
-                    urlsToCheck.Remove(urlsToCheck.First());*/
-
                 }
                 catch (Exception e)
                 {
                     urls.Add(urlsToCheck.First());
                     urlsToCheck.Remove(urlsToCheck.First());
+
                     _logger.Write(e.Message);
                 }
             }

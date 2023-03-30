@@ -2,7 +2,7 @@
 using Crawler.Logic.Interfaces;
 using Crawler.Logic.Models;
 
-namespace ConsoleManager
+namespace ConsoleOutput
 {
     public class ConsoleProcessor
     {

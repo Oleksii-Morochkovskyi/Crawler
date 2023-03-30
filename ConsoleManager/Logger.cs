@@ -1,6 +1,6 @@
 ﻿using Crawler.Logic.Interfaces;
 
-namespace ConsoleManager
+namespace ConsoleOutput
 {
     public class Logger:ILogger
     {
