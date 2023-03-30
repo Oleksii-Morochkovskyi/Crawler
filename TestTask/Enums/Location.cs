@@ -5,6 +5,6 @@ namespace Crawler.Logic.Enums
     {
         Html,
         Xml,
-        HtmlAndXml
+        Both
     }
 }

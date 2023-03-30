@@ -4,8 +4,8 @@ namespace Crawler.Logic.Models
 {
     public class UrlResponse
     {
-        public string Url;
-        public int ResponseTime;
-        public Location location;
+        public string Url { get; set; }
+        public int ResponseTime { get; set; }
+        public Location Location { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Xml;
 using Crawler.Logic.Interfaces;
+using Crawler.Logic.UrlTools;
 
 namespace Crawler.Logic.Crawlers
 {
@@ -55,7 +56,7 @@ namespace Crawler.Logic.Crawlers
 
             var absoluteUrl = _urlHelper.GetAbsoluteUrl(address, innerXml);
 
-            if (_validator.IsHtmlDocAsync(absoluteUrl))
+            if (_validator.IsHtmlDoc(absoluteUrl, address))
             {
                 urls.Add(absoluteUrl);
             }

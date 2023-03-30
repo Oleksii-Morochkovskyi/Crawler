@@ -1,24 +1,29 @@
 ﻿using Crawler.Logic.Crawlers;
 using Crawler.Logic.Models;
-using Crawler.Logic.Parsers;
 using System.Xml;
 using Crawler.Logic.Enums;
+using Crawler.Logic.Interfaces;
+using Crawler.Logic.TimeTracker;
+using Crawler.Logic.UrlTools;
 
 namespace Crawler.Logic
 {
     public class Crawler
     {
-        private readonly HttpClient _httpClient;
-        private readonly Logger _logger;
+        private readonly ILogger _logger;
         private readonly UrlHelper _helper;
         private readonly UrlValidator _validator;
+        private readonly ResponseTimeTracker _tracker;
+        private readonly HtmlCrawler _htmlCrawler;
 
-        public Crawler(HttpClient client, Logger logger, UrlHelper helper, UrlValidator validator)
+        public Crawler(ILogger logger, UrlHelper helper,
+                        UrlValidator validator, ResponseTimeTracker tracker, HtmlCrawler crawler)
         {
-            _httpClient = client;
             _logger = logger;
             _helper = helper;
             _validator = validator;
+            _tracker = tracker;
+            _htmlCrawler = crawler;
         }
 
         public async Task<IList<UrlResponse>> StartCrawlerAsync(string address)
@@ -29,24 +34,21 @@ namespace Crawler.Logic
 
             var allUrls = urlsFromHtmlCrawler.Union(urlsFromXmlCrawler);
 
-            var responseTime = await GetResponseTimeAsync(allUrls);
+            var urlWithResponseTime = await GetResponseTimeAsync(allUrls);
 
-            return FillResultSet(responseTime,urlsFromHtmlCrawler,urlsFromXmlCrawler);
+            return SetUrlLocation(urlWithResponseTime, urlsFromHtmlCrawler, urlsFromXmlCrawler);
         }
 
         private async Task<ICollection<string>> StartHtmlCrawlerAsync(string address)
         {
-            var htmlParser = new HtmlParser(_httpClient, _helper, _validator);
-            var htmlCrawler = new HtmlCrawler(_logger, htmlParser);
-
-            return await htmlCrawler.CrawlAsync(address);
+            return await _htmlCrawler.CrawlAsync(address);
         }
 
         private async Task<ICollection<string>> StartXmlCrawlerAsync(string address)
         {
             var reader = CreateXmlReader(address);
 
-            var xmlCrawler = new XmlCrawler(reader, _logger, _helper,_validator);
+            var xmlCrawler = new XmlCrawler(reader, _logger, _helper, _validator);
 
             return await xmlCrawler.CrawlAsync(address);
         }
@@ -65,23 +67,15 @@ namespace Crawler.Logic
 
         private async Task<IList<UrlResponse>> GetResponseTimeAsync(IEnumerable<string> urls)
         {
-            var tracker = new ResponseTimeTracker(_httpClient, _logger);
-
-            return await tracker.GetResponseTimeAsync(urls);
+            return await _tracker.GetResponseTimeAsync(urls);
         }
 
-        private IList<UrlResponse> FillResultSet(IList<UrlResponse> urls, ICollection<string> urlsFromHtml, ICollection<string> urlsFromXml)
+        private IList<UrlResponse> SetUrlLocation(IList<UrlResponse> urls, ICollection<string> urlsFromHtml, ICollection<string> urlsFromXml)
         {
             foreach (var url in urls)
             {
-                if (urlsFromHtml.Contains(url.Url))
-                {
-                    url.location = urlsFromXml.Contains(url.Url) ? Location.HtmlAndXml : Location.Html;
-                }
-                else
-                {
-                    url.location = Location.Xml;
-                }
+                url.Location = urlsFromHtml.Contains(url.Url) ? 
+                    (urlsFromXml.Contains(url.Url) ? Location.Both : Location.Html) : Location.Xml;
             }
 
             return urls;

@@ -2,7 +2,7 @@
 using Crawler.Logic.Interfaces;
 using Crawler.Logic.Models;
 
-namespace Crawler.Logic
+namespace Crawler.Logic.TimeTracker
 {
     public class ResponseTimeTracker
     {
@@ -15,7 +15,7 @@ namespace Crawler.Logic
             _logger = logger;
         }
 
-        public async Task<IList<UrlResponse>> GetResponseTimeAsync(IEnumerable<string> urls) 
+        public async Task<IList<UrlResponse>> GetResponseTimeAsync(IEnumerable<string> urls)
         {
             IList<UrlResponse> responseTimeList = new List<UrlResponse>();
 

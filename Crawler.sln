@@ -5,7 +5,7 @@ VisualStudioVersion = 17.3.32901.215
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Crawler.Logic", "TestTask\Crawler.Logic.csproj", "{B0D0F561-84E8-4C68-85C5-FEE3E34CE970}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleManager", "ConsoleManager\ConsoleManager.csproj", "{913B9167-012C-432C-9E95-FF1B9D280E1C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleOutput", "ConsoleManager\ConsoleOutput.csproj", "{913B9167-012C-432C-9E95-FF1B9D280E1C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

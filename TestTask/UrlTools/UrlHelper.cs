@@ -1,9 +1,8 @@
-﻿
-namespace Crawler.Logic
+﻿namespace Crawler.Logic.UrlTools
 {
     public class UrlHelper
     {
-        public string GetAbsoluteUrl(string baseUrl, string path) 
+        public string GetAbsoluteUrl(string baseUrl, string path)
         {
             var baseUri = new Uri(baseUrl);
 

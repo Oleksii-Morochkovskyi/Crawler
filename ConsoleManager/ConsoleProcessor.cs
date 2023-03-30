@@ -33,9 +33,9 @@ namespace ConsoleManager
 
         private void PrintDifference(IList<UrlResponse> resultSet)
         {
-            var htmlExceptXml = resultSet.Where(x => x.location == Location.Html)
+            var htmlExceptXml = resultSet.Where(x => x.Location == Location.Html)
                                                             .Select(x=>x.Url);
-            var xmlExceptHtml = resultSet.Where(x => x.location == Location.Xml)
+            var xmlExceptHtml = resultSet.Where(x => x.Location == Location.Xml)
                                                             .Select(x => x.Url);
             
             if (!htmlExceptXml.Any() || !xmlExceptHtml.Any())
@@ -72,8 +72,8 @@ namespace ConsoleManager
 
         private void PrintNumberOfLinks(IList<UrlResponse> urls)
         {
-            var urlsFromHtml = urls.Where(x => x.location == Location.Html);
-            var urlsFromXml = urls.Where(x => x.location == Location.Xml);
+            var urlsFromHtml = urls.Where(x => x.Location == Location.Html);
+            var urlsFromXml = urls.Where(x => x.Location == Location.Xml);
 
             _logger.Write($"\nUrls(html documents) found after crawling a website: {urls.Count - urlsFromXml.Count()}");
 

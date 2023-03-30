@@ -1,5 +1,6 @@
 ﻿using Crawler.Logic.Interfaces;
 using Crawler.Logic.Parsers;
+using System;
 
 namespace Crawler.Logic.Crawlers
 {
@@ -17,24 +18,32 @@ namespace Crawler.Logic.Crawlers
         public async Task<ICollection<string>> CrawlAsync(string baseUrl)
         {
             ICollection<string> urls = new HashSet<string>();
-            ICollection<string> urlsToCheck = new HashSet<string>();
+            ICollection<string> urlsToCheck = new HashSet<string>{ baseUrl };
 
-            try
+            while (urlsToCheck.Count > 0)
             {
-                urlsToCheck.Add(baseUrl);
-
-                while (urlsToCheck.Count > 0)
+                try
                 {
-                    urlsToCheck = await _parser.ParseAsync(baseUrl, urlsToCheck.First(), urls, urlsToCheck);
+                    var url = urlsToCheck.First();
+
+                    urlsToCheck = await _parser.ParseAsync(baseUrl, url, urls, urlsToCheck);
+
+                    urls.Add(url);
+
+                    urlsToCheck.Remove(url);
+                    /*urlsToCheck = await _parser.ParseAsync(baseUrl, urlsToCheck.First(), urls, urlsToCheck);
 
                     urls.Add(urlsToCheck.First());
 
-                    urlsToCheck.Remove(urlsToCheck.First());
+                    urlsToCheck.Remove(urlsToCheck.First());*/
+
                 }
-            }
-            catch (Exception e)
-            {
-                _logger.Write(e.Message);
+                catch (Exception e)
+                {
+                    urls.Add(urlsToCheck.First());
+                    urlsToCheck.Remove(urlsToCheck.First());
+                    _logger.Write(e.Message);
+                }
             }
 
             return urls;
