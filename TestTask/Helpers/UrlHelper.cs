@@ -1,4 +1,4 @@
-﻿namespace Crawler.Logic.UrlTools
+﻿namespace Crawler.Logic.Helpers
 {
     public class UrlHelper
     {

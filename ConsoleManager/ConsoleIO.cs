@@ -2,7 +2,7 @@
 
 namespace ConsoleOutput
 {
-    public class Logger:ILogger
+    public class ConsoleIO:ILogger
     {
         public void Write(string text)
         {

@@ -2,7 +2,7 @@
 using Crawler.Logic.Interfaces;
 using Crawler.Logic.Models;
 
-namespace Crawler.Logic.TimeTracker
+namespace Crawler.Logic.Services
 {
     public class ResponseTimeTracker
     {
@@ -40,7 +40,7 @@ namespace Crawler.Logic.TimeTracker
             }
 
             return responseTimeList.OrderBy(x => x.ResponseTime)
-                                    .ToList();
+                .ToList();
         }
 
         private async Task<int> CalculateTimeAsync(string url)

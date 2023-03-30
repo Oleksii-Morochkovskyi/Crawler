@@ -22,21 +22,21 @@ namespace ConsoleOutput
             return input.TrimEnd('/');
         }
 
-        public void PrintResult(IList<UrlResponse> resultSet)
+        public void PrintResult(IList<UrlResponse> results)
         {
-            PrintDifference(resultSet);
+            PrintDifference(results);
 
-            PrintTimeResponse(resultSet);
+            PrintTimeResponse(results);
 
-            PrintNumberOfLinks(resultSet);
+            PrintNumberOfLinks(results);
         }
 
-        private void PrintDifference(IList<UrlResponse> resultSet)
+        private void PrintDifference(IList<UrlResponse> results)
         {
-            var htmlExceptXml = resultSet.Where(x => x.Location == Location.Html)
-                                                            .Select(x=>x.Url);
-            var xmlExceptHtml = resultSet.Where(x => x.Location == Location.Xml)
-                                                            .Select(x => x.Url);
+            var htmlExceptXml = results.Where(x => x.Location == Location.Html)
+                .Select(x=>x.Url);
+            var xmlExceptHtml = results.Where(x => x.Location == Location.Xml)
+                .Select(x => x.Url);
             
             if (!htmlExceptXml.Any() || !xmlExceptHtml.Any())
             {
@@ -72,12 +72,12 @@ namespace ConsoleOutput
 
         private void PrintNumberOfLinks(IList<UrlResponse> urls)
         {
-            var urlsFromHtml = urls.Where(x => x.Location == Location.Html);
-            var urlsFromXml = urls.Where(x => x.Location == Location.Xml);
+            var countOfUrlsFromHtml = urls.Count(x => x.Location == Location.Html);
+            var countOfUrlsFromXml = urls.Count(x => x.Location == Location.Xml);
 
-            _logger.Write($"\nUrls(html documents) found after crawling a website: {urls.Count - urlsFromXml.Count()}");
+            _logger.Write($"\nUrls(html documents) found after crawling a website: {urls.Count - countOfUrlsFromXml}");
 
-            _logger.Write($"\nUrls found in sitemap: {urls.Count - urlsFromHtml.Count()}");
+            _logger.Write($"\nUrls found in sitemap: {urls.Count - countOfUrlsFromHtml}");
         }
 
     }

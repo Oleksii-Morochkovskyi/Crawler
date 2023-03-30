@@ -1,6 +1,7 @@
 ﻿using System.Xml;
+using Crawler.Logic.Helpers;
 using Crawler.Logic.Interfaces;
-using Crawler.Logic.UrlTools;
+using Crawler.Logic.Validators;
 
 namespace Crawler.Logic.Crawlers
 {

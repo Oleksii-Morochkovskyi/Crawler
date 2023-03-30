@@ -1,9 +1,10 @@
 ﻿using Crawler.Logic;
 using System.Net;
 using Crawler.Logic.Crawlers;
+using Crawler.Logic.Helpers;
 using Crawler.Logic.Parsers;
-using Crawler.Logic.TimeTracker;
-using Crawler.Logic.UrlTools;
+using Crawler.Logic.Services;
+using Crawler.Logic.Validators;
 
 namespace ConsoleOutput
 {
@@ -11,7 +12,7 @@ namespace ConsoleOutput
     {
         static async Task Main(string[] args)
         {
-            var logger = new Logger();
+            var logger = new ConsoleIO();
             var validator = new UrlValidator();
             using var client = new HttpClient();
             var helper = new UrlHelper();
@@ -23,13 +24,13 @@ namespace ConsoleOutput
 
             var inputUrl = console.GetAddress();
 
-            if (!validator.IsInputUrlCorrect(inputUrl)) return;
+            if (!validator.IsValidUrl(inputUrl)) return;
 
-            var crawler = new Crawler.Logic.Crawler(logger, helper, validator, tracker, htmlCrawler);
+            var crawler = new CrawlerProcessor(logger, helper, validator, tracker, htmlCrawler);
 
-            var  resultSet = await crawler.StartCrawlerAsync(inputUrl);
+            var  results = await crawler.StartCrawlerAsync(inputUrl);
 
-            console.PrintResult(resultSet);
+            console.PrintResult(results);
         }
     }
 }

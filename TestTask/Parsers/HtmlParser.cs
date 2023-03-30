@@ -1,5 +1,7 @@
-﻿using Crawler.Logic.UrlTools;
+﻿using Crawler.Logic.Helpers;
+using Crawler.Logic.Validators;
 using HtmlAgilityPack;
+using System;
 
 namespace Crawler.Logic.Parsers
 {
@@ -18,16 +20,11 @@ namespace Crawler.Logic.Parsers
 
         public async Task<ICollection<string>> ParseAsync(string baseUrl, string url, ICollection<string> checkedUrls, ICollection<string> urlsToCheck)
         {
-            var nodes = await GetNodesAsync(url);
-
-            return ExtractLinks(nodes, baseUrl, checkedUrls, urlsToCheck);
-        }
-
-        public async Task<HtmlNodeCollection> GetNodesAsync(string url)
-        {
             var html = await GetHtmlAsync(url);
 
-            return html.DocumentNode.SelectNodes("//a[@href]");
+            var nodes = html.DocumentNode.SelectNodes("//a[@href]");
+
+            return ExtractLinks(nodes, baseUrl, checkedUrls, urlsToCheck);
         }
 
         private async Task<HtmlDocument> GetHtmlAsync(string url)
@@ -48,7 +45,9 @@ namespace Crawler.Logic.Parsers
 
                 var absoluteUrl = _urlHelper.GetAbsoluteUrl(baseUrl, href);
 
-                if (_urlValidator.IsUrlUncheckedValidAndHtmlDoc(checkedUrls, urlsToCheck, absoluteUrl, baseUrl))
+                var isChecked = !urlsToCheck.Contains(absoluteUrl) && !checkedUrls.Contains(absoluteUrl);
+
+                if (isChecked && _urlValidator.IsCorrectFormat(absoluteUrl, baseUrl) && _urlValidator.IsHtmlDoc(absoluteUrl, baseUrl))
                 {
                     urlsToCheck.Add(absoluteUrl);
                 }

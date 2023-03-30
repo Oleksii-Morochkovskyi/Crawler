@@ -1,14 +1,14 @@
-﻿using Crawler.Logic.Crawlers;
-using Crawler.Logic.Models;
+﻿using Crawler.Logic.Models;
 using System.Xml;
 using Crawler.Logic.Enums;
 using Crawler.Logic.Interfaces;
-using Crawler.Logic.TimeTracker;
-using Crawler.Logic.UrlTools;
+using Crawler.Logic.Services;
+using Crawler.Logic.Validators;
+using Crawler.Logic.Helpers;
 
-namespace Crawler.Logic
+namespace Crawler.Logic.Crawlers
 {
-    public class Crawler
+    public class CrawlerProcessor
     {
         private readonly ILogger _logger;
         private readonly UrlHelper _helper;
@@ -16,7 +16,7 @@ namespace Crawler.Logic
         private readonly ResponseTimeTracker _tracker;
         private readonly HtmlCrawler _htmlCrawler;
 
-        public Crawler(ILogger logger, UrlHelper helper,
+        public CrawlerProcessor(ILogger logger, UrlHelper helper,
                         UrlValidator validator, ResponseTimeTracker tracker, HtmlCrawler crawler)
         {
             _logger = logger;
@@ -28,20 +28,15 @@ namespace Crawler.Logic
 
         public async Task<IList<UrlResponse>> StartCrawlerAsync(string address)
         {
-            var urlsFromHtmlCrawler = await StartHtmlCrawlerAsync(address);
+            var urlsFromHtmlCrawler = await _htmlCrawler.CrawlAsync(address);
 
             var urlsFromXmlCrawler = await StartXmlCrawlerAsync(address);
 
             var allUrls = urlsFromHtmlCrawler.Union(urlsFromXmlCrawler);
 
-            var urlWithResponseTime = await GetResponseTimeAsync(allUrls);
+            var urlWithResponseTime = await _tracker.GetResponseTimeAsync(allUrls);
 
             return SetUrlLocation(urlWithResponseTime, urlsFromHtmlCrawler, urlsFromXmlCrawler);
-        }
-
-        private async Task<ICollection<string>> StartHtmlCrawlerAsync(string address)
-        {
-            return await _htmlCrawler.CrawlAsync(address);
         }
 
         private async Task<ICollection<string>> StartXmlCrawlerAsync(string address)
@@ -65,17 +60,18 @@ namespace Crawler.Logic
             return XmlReader.Create(address, settings);
         }
 
-        private async Task<IList<UrlResponse>> GetResponseTimeAsync(IEnumerable<string> urls)
-        {
-            return await _tracker.GetResponseTimeAsync(urls);
-        }
-
         private IList<UrlResponse> SetUrlLocation(IList<UrlResponse> urls, ICollection<string> urlsFromHtml, ICollection<string> urlsFromXml)
         {
             foreach (var url in urls)
             {
-                url.Location = urlsFromHtml.Contains(url.Url) ? 
-                    (urlsFromXml.Contains(url.Url) ? Location.Both : Location.Html) : Location.Xml;
+                if (urlsFromHtml.Contains(url.Url))
+                {
+                    url.Location = urlsFromXml.Contains(url.Url) ? Location.Both : Location.Html;
+                }
+                else
+                {
+                    url.Location = Location.Xml;
+                }
             }
 
             return urls;
