@@ -67,11 +67,11 @@ namespace Crawler.Logic.Crawlers
                 if (urlsFromHtml.Contains(url.Url))
                 {
                     url.Location = urlsFromXml.Contains(url.Url) ? Location.Both : Location.Html;
+                    continue;
                 }
-                else
-                {
-                    url.Location = Location.Xml;
-                }
+
+                url.Location = Location.Xml;
+
             }
 
             return urls;
