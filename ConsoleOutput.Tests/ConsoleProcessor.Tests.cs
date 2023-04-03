@@ -2,6 +2,7 @@ using Azure;
 using Crawler.Logic.Enums;
 using Crawler.Logic.Interfaces;
 using Crawler.Logic.Models;
+using Crawler.Logic.Validators;
 using Microsoft.Kiota.Abstractions;
 using Moq;
 using static Microsoft.Graph.Constants;
@@ -12,12 +13,14 @@ namespace ConsoleOutput.Tests
     {
         private ConsoleProcessor _console;
         private Mock<IOutputWriter> _writerMock;
+        private UrlValidator _validator;
 
         [SetUp]
         public void Setup()
         {
+            _validator = new UrlValidator();
             _writerMock = new Mock<IOutputWriter>();
-            _console = new ConsoleProcessor(_writerMock.Object);
+            _console = new ConsoleProcessor(_writerMock.Object, _validator);
         }
 
         [Test]
