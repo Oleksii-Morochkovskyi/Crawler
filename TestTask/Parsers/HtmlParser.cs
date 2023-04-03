@@ -1,7 +1,5 @@
 ﻿using Crawler.Logic.Helpers;
-using Crawler.Logic.Validators;
 using HtmlAgilityPack;
-using System;
 using Crawler.Logic.Interfaces;
 
 namespace Crawler.Logic.Parsers

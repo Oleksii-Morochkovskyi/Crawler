@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using Crawler.Logic.Interfaces;
 using Crawler.Logic.Models;
-using System.Collections.Generic;
 
 namespace Crawler.Logic.Services
 {

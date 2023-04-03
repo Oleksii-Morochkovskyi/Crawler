@@ -1,10 +1,6 @@
 ﻿using Crawler.Logic.Helpers;
 using Crawler.Logic.Parsers;
-using Crawler.Logic.Validators;
-using System.Net.Http;
 using Moq;
-using System;
-using System.Linq;
 using Crawler.Logic.Interfaces;
 
 namespace Crawler.Logic.Tests
@@ -20,10 +16,8 @@ namespace Crawler.Logic.Tests
         {
             _urlHelper = new UrlHelper();
             _httpClientMock = new Mock<IHttpClient>();
-
             _parser = new HtmlParser(_httpClientMock.Object, _urlHelper);
         }
-
 
         [Test]
         public async Task ParseAsync_Should_Return_Correct_Urls()
@@ -43,6 +37,5 @@ namespace Crawler.Logic.Tests
             Assert.That( result.Contains("https://example.com/page2"));
             Assert.That(result.Contains("https://example.com/page3"));
         }
-
     }
 }
