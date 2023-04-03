@@ -24,5 +24,7 @@
             
             return !isNotHtmlDoc;
         }
+
+        
     }
 }

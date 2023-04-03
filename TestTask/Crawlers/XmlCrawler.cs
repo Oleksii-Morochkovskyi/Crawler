@@ -9,15 +9,13 @@ namespace Crawler.Logic.Crawlers
     {
         private readonly UrlHelper _urlHelper;
         private readonly UrlValidator _validator;
-        private readonly XmlReader _reader;
-        private readonly ILogger _logger;
+        private readonly IOutputWriter _logger;
 
-        public XmlCrawler(XmlReader reader, ILogger logger, UrlHelper helper, UrlValidator validator)
+        public XmlCrawler(IOutputWriter logger, UrlHelper helper, UrlValidator validator)
         {
             _urlHelper = helper;
             _validator = validator;
             _logger = logger;
-            _reader = reader;
         }
 
         public async Task<ICollection<string>> CrawlAsync(string address)
@@ -38,22 +36,24 @@ namespace Crawler.Logic.Crawlers
 
         private async Task<ICollection<string>> ExtractLinksAsync(string address)
         {
+            var reader = CreateXmlReader(address);
+
             ICollection<string> urls = new HashSet<string>();
 
-            while (await _reader.ReadAsync())
+            while (await reader.ReadAsync())
             {
-                if (_reader.Name == "loc")
+                if (reader.Name == "loc")
                 {
-                    urls = await AddUrlAsync(urls, address);
+                    urls = await AddUrlAsync(urls, address, reader);
                 }
             }
 
             return urls;
         }
 
-        private async Task<ICollection<string>> AddUrlAsync(ICollection<string> urls, string address)
+        private async Task<ICollection<string>> AddUrlAsync(ICollection<string> urls, string address, XmlReader reader)
         {
-            var innerXml = await _reader.ReadInnerXmlAsync();
+            var innerXml = await reader.ReadInnerXmlAsync();
 
             var absoluteUrl = _urlHelper.GetAbsoluteUrl(address, innerXml);
 
@@ -63,6 +63,18 @@ namespace Crawler.Logic.Crawlers
             }
 
             return urls;
+        }
+
+        private XmlReader CreateXmlReader(string address)
+        {
+            var settings = new XmlReaderSettings
+            {
+                Async = true
+            };
+
+            address += "/sitemap.xml";
+
+            return XmlReader.Create(address, settings);
         }
     }
 }

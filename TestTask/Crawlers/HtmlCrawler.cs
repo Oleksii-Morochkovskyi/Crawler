@@ -1,5 +1,6 @@
 ﻿using Crawler.Logic.Interfaces;
 using Crawler.Logic.Parsers;
+using Crawler.Logic.Validators;
 using System;
 
 namespace Crawler.Logic.Crawlers
@@ -7,18 +8,20 @@ namespace Crawler.Logic.Crawlers
     public class HtmlCrawler
     {
         private readonly HtmlParser _parser;
-        private readonly ILogger _logger;
+        private readonly IOutputWriter _logger;
+        private readonly UrlValidator _urlValidator;
 
-        public HtmlCrawler(ILogger logger, HtmlParser parser)
+        public HtmlCrawler(IOutputWriter logger, HtmlParser parser, UrlValidator validator)
         {
             _logger = logger;
             _parser = parser;
+            _urlValidator = validator;
         }
 
         public async Task<ICollection<string>> CrawlAsync(string baseUrl)
         {
             ICollection<string> checkedUrls = new HashSet<string>();
-            ICollection<string> urlsToCheck = new HashSet<string>{ baseUrl };
+            ICollection<string> urlsToCheck = new HashSet<string> { baseUrl };
 
             while (urlsToCheck.Count > 0)
             {
@@ -26,11 +29,13 @@ namespace Crawler.Logic.Crawlers
                 {
                     var url = urlsToCheck.First();
 
-                    urlsToCheck = await _parser.ParseAsync(baseUrl, url, checkedUrls, urlsToCheck);
+                    var parsedUrls = await _parser.ParseAsync(baseUrl, url);
 
                     checkedUrls.Add(url);
 
                     urlsToCheck.Remove(url);
+
+                    urlsToCheck = FilterLinks(baseUrl, checkedUrls, urlsToCheck, parsedUrls);
                 }
                 catch (Exception e)
                 {
@@ -42,6 +47,21 @@ namespace Crawler.Logic.Crawlers
             }
 
             return checkedUrls;
+        }
+
+        private ICollection<string> FilterLinks(string baseUrl, ICollection<string> checkedUrls, ICollection<string> urlsToCheck, ICollection<string> parsedUrls)
+        {
+            foreach (var url in parsedUrls)
+            {
+                var isChecked = !urlsToCheck.Contains(url) && !checkedUrls.Contains(url);
+
+                if (isChecked && _urlValidator.IsCorrectFormat(url, baseUrl) && _urlValidator.IsHtmlDoc(url, baseUrl))
+                {
+                    urlsToCheck.Add(url);
+                }
+            }
+
+            return urlsToCheck;
         }
     }
 }

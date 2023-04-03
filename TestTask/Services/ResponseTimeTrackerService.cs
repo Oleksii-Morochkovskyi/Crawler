@@ -1,21 +1,22 @@
 ﻿using System.Diagnostics;
 using Crawler.Logic.Interfaces;
 using Crawler.Logic.Models;
+using System.Collections.Generic;
 
 namespace Crawler.Logic.Services
 {
     public class ResponseTimeTracker
     {
-        private readonly HttpClient _httpClient;
-        private readonly ILogger _logger;
+        private readonly IHttpClient _httpClient;
+        private readonly IOutputWriter _logger;
 
-        public ResponseTimeTracker(HttpClient client, ILogger logger)
+        public ResponseTimeTracker(IHttpClient client, IOutputWriter logger)
         {
             _httpClient = client;
             _logger = logger;
         }
 
-        public async Task<IList<UrlResponse>> GetResponseTimeAsync(IEnumerable<string> urls)
+        public async Task<IEnumerable<UrlResponse>> GetResponseTimeAsync(IEnumerable<string> urls)
         {
             IList<UrlResponse> responseTimeList = new List<UrlResponse>();
 
@@ -28,7 +29,7 @@ namespace Crawler.Logic.Services
                     var response = new UrlResponse
                     {
                         Url = url,
-                        ResponseTime = time
+                        ResponseTimeMs = time
                     };
 
                     responseTimeList.Add(response);
@@ -39,15 +40,14 @@ namespace Crawler.Logic.Services
                 }
             }
 
-            return responseTimeList.OrderBy(x => x.ResponseTime)
-                .ToList();
+            return responseTimeList.OrderBy(x => x.ResponseTimeMs);
         }
 
         private async Task<int> CalculateTimeAsync(string url)
         {
             var timer = Stopwatch.StartNew();
 
-            using var response = await _httpClient.GetAsync(url);
+            using var response = await _httpClient.GetAsync(url); //httpResponseMessage
 
             timer.Stop();
 

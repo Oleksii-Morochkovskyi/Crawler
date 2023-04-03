@@ -10,13 +10,13 @@ namespace Crawler.Logic.Crawlers
 {
     public class CrawlerProcessor
     {
-        private readonly ILogger _logger;
+        private readonly IOutputWriter _logger;
         private readonly UrlHelper _helper;
         private readonly UrlValidator _validator;
         private readonly ResponseTimeTracker _tracker;
         private readonly HtmlCrawler _htmlCrawler;
 
-        public CrawlerProcessor(ILogger logger, UrlHelper helper,
+        public CrawlerProcessor(IOutputWriter logger, UrlHelper helper,
                         UrlValidator validator, ResponseTimeTracker tracker, HtmlCrawler crawler)
         {
             _logger = logger;
@@ -26,7 +26,7 @@ namespace Crawler.Logic.Crawlers
             _htmlCrawler = crawler;
         }
 
-        public async Task<IList<UrlResponse>> StartCrawlerAsync(string address)
+        public async Task<IEnumerable<UrlResponse>> StartCrawlerAsync(string address)
         {
             var urlsFromHtmlCrawler = await _htmlCrawler.CrawlAsync(address);
 
@@ -41,26 +41,12 @@ namespace Crawler.Logic.Crawlers
 
         private async Task<ICollection<string>> StartXmlCrawlerAsync(string address)
         {
-            var reader = CreateXmlReader(address);
-
-            var xmlCrawler = new XmlCrawler(reader, _logger, _helper, _validator);
+            var xmlCrawler = new XmlCrawler(_logger, _helper, _validator);
 
             return await xmlCrawler.CrawlAsync(address);
         }
 
-        private XmlReader CreateXmlReader(string address)
-        {
-            var settings = new XmlReaderSettings
-            {
-                Async = true
-            };
-
-            address += "/sitemap.xml";
-
-            return XmlReader.Create(address, settings);
-        }
-
-        private IList<UrlResponse> SetUrlLocation(IList<UrlResponse> urls, ICollection<string> urlsFromHtml, ICollection<string> urlsFromXml)
+        private IEnumerable<UrlResponse> SetUrlLocation(IEnumerable<UrlResponse> urls, ICollection<string> urlsFromHtml, ICollection<string> urlsFromXml)
         {
             foreach (var url in urls)
             {

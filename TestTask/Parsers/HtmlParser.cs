@@ -2,29 +2,28 @@
 using Crawler.Logic.Validators;
 using HtmlAgilityPack;
 using System;
+using Crawler.Logic.Interfaces;
 
 namespace Crawler.Logic.Parsers
 {
     public class HtmlParser
     {
-        private readonly HttpClient _httpClient;
-        private readonly UrlValidator _urlValidator;
+        private readonly IHttpClient _httpClient;
         private readonly UrlHelper _urlHelper;
 
-        public HtmlParser(HttpClient httpClient, UrlHelper helper, UrlValidator validator)
+        public HtmlParser(IHttpClient httpClient, UrlHelper helper)
         {
             _httpClient = httpClient;
-            _urlValidator = validator;
             _urlHelper = helper;
         }
 
-        public async Task<ICollection<string>> ParseAsync(string baseUrl, string url, ICollection<string> checkedUrls, ICollection<string> urlsToCheck)
+        public async Task<ICollection<string>> ParseAsync(string baseUrl, string url)
         {
             var html = await GetHtmlAsync(url);
 
             var nodes = html.DocumentNode.SelectNodes("//a[@href]");
 
-            return ExtractLinks(nodes, baseUrl, checkedUrls, urlsToCheck);
+            return ExtractLinks(nodes, baseUrl);
         }
 
         private async Task<HtmlDocument> GetHtmlAsync(string url)
@@ -37,23 +36,20 @@ namespace Crawler.Logic.Parsers
             return htmlDoc;
         }
 
-        private ICollection<string> ExtractLinks(HtmlNodeCollection nodes, string baseUrl, ICollection<string> checkedUrls, ICollection<string> urlsToCheck)
+        private ICollection<string> ExtractLinks(HtmlNodeCollection nodes, string baseUrl)
         {
+            ICollection<string> parsedUrls = new HashSet<string>();
+            
             foreach (var node in nodes)
             {
                 var href = node.Attributes["href"].Value;
 
                 var absoluteUrl = _urlHelper.GetAbsoluteUrl(baseUrl, href);
 
-                var isChecked = !urlsToCheck.Contains(absoluteUrl) && !checkedUrls.Contains(absoluteUrl);
-
-                if (isChecked && _urlValidator.IsCorrectFormat(absoluteUrl, baseUrl) && _urlValidator.IsHtmlDoc(absoluteUrl, baseUrl))
-                {
-                    urlsToCheck.Add(absoluteUrl);
-                }
+                parsedUrls.Add(absoluteUrl);
             }
 
-            return urlsToCheck;
+            return parsedUrls;
         }
     }
 }
