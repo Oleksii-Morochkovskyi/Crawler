@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ConsoleManager\ConsoleOutput.csproj" />
+    <ProjectReference Include="..\ConsoleManager\Crawler.ConsoleOutput.csproj" />
   </ItemGroup>
 
 </Project>

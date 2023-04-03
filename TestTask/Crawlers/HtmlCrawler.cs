@@ -1,19 +1,18 @@
 ﻿using Crawler.Logic.Interfaces;
 using Crawler.Logic.Parsers;
 using Crawler.Logic.Validators;
-using System;
 
 namespace Crawler.Logic.Crawlers
 {
     public class HtmlCrawler
     {
         private readonly HtmlParser _parser;
-        private readonly IOutputWriter _logger;
+        private readonly IOHandler _consoleHandler;
         private readonly UrlValidator _urlValidator;
 
-        public HtmlCrawler(IOutputWriter logger, HtmlParser parser, UrlValidator validator)
+        public HtmlCrawler(IOHandler consoleHandler, HtmlParser parser, UrlValidator validator)
         {
-            _logger = logger;
+            _consoleHandler = consoleHandler;
             _parser = parser;
             _urlValidator = validator;
         }
@@ -42,7 +41,7 @@ namespace Crawler.Logic.Crawlers
                     checkedUrls.Add(urlsToCheck.First());
                     urlsToCheck.Remove(urlsToCheck.First());
 
-                    _logger.Write(e.Message);
+                    _consoleHandler.Write(e.Message);
                 }
             }
 

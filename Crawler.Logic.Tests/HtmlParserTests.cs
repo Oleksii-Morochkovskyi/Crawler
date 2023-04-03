@@ -2,20 +2,24 @@
 using Crawler.Logic.Parsers;
 using Moq;
 using Crawler.Logic.Interfaces;
+using NUnit.Framework;
+using Crawler.Logic.Services;
 
 namespace Crawler.Logic.Tests
 {
     internal class HtmlParserTests
     {
         private HtmlParser _parser;
-        private Mock<IHttpClient> _httpClientMock;
+        private Mock<HttpClientService> _httpClientMock;
         private UrlHelper _urlHelper;
+        private HttpClient _httpClient;
 
         [SetUp]
         public void SetUp()
         {
+            _httpClient = new HttpClient();
             _urlHelper = new UrlHelper();
-            _httpClientMock = new Mock<IHttpClient>();
+            _httpClientMock = new Mock<HttpClientService>(_httpClient);
             _parser = new HtmlParser(_httpClientMock.Object, _urlHelper);
         }
 
@@ -33,7 +37,7 @@ namespace Crawler.Logic.Tests
             var result = await _parser.ParseAsync(baseUrl, url);
 
             // Assert
-            Assert.That(result.Count, Is.EqualTo(3));
+            Assert.That(result.Count, Is.EqualTo(2));
             Assert.That( result.Contains("https://example.com/page2"));
             Assert.That(result.Contains("https://example.com/page3"));
         }

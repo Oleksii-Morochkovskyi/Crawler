@@ -4,15 +4,15 @@ using Crawler.Logic.Models;
 
 namespace Crawler.Logic.Services
 {
-    public class ResponseTimeTracker
+    public class ResponseTimeService
     {
-        private readonly IHttpClient _httpClient;
-        private readonly IOutputWriter _logger;
+        private readonly HttpClientService _httpClient;
+        private readonly IOHandler _consoleHandler;
 
-        public ResponseTimeTracker(IHttpClient client, IOutputWriter logger)
+        public ResponseTimeService(HttpClientService client, IOHandler consoleHandler)
         {
             _httpClient = client;
-            _logger = logger;
+            _consoleHandler = consoleHandler;
         }
 
         public async Task<IEnumerable<UrlResponse>> GetResponseTimeAsync(IEnumerable<string> urls)
@@ -35,7 +35,7 @@ namespace Crawler.Logic.Services
                 }
                 catch (Exception e)
                 {
-                    _logger.Write(e.Message);
+                    _consoleHandler.Write(e.Message);
                 }
             }
 
@@ -46,7 +46,7 @@ namespace Crawler.Logic.Services
         {
             var timer = Stopwatch.StartNew();
 
-            using var response = await _httpClient.GetAsync(url); //httpResponseMessage
+            using var response = await _httpClient.GetAsync(url);
 
             timer.Stop();
 

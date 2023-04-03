@@ -1,15 +1,15 @@
 ﻿using Crawler.Logic.Helpers;
 using HtmlAgilityPack;
-using Crawler.Logic.Interfaces;
+using Crawler.Logic.Services;
 
 namespace Crawler.Logic.Parsers
 {
     public class HtmlParser
     {
-        private readonly IHttpClient _httpClient;
+        private readonly HttpClientService _httpClient;
         private readonly UrlHelper _urlHelper;
 
-        public HtmlParser(IHttpClient httpClient, UrlHelper helper)
+        public HtmlParser(HttpClientService httpClient, UrlHelper helper)
         {
             _httpClient = httpClient;
             _urlHelper = helper;

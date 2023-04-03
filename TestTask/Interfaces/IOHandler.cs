@@ -1,6 +1,6 @@
 ﻿namespace Crawler.Logic.Interfaces
 {
-    public interface IOutputWriter
+    public interface IOHandler
     {
         void Write(string text);
         string Read();

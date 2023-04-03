@@ -1,8 +1,8 @@
 ﻿using Crawler.Logic.Interfaces;
 
-namespace ConsoleOutput.Wrappers
+namespace Crawler.ConsoleOutput
 {
-    public class ConsoleWrapper : IOutputWriter
+    public class ConsoleWrapper : IOHandler
     {
         public void Write(string text)
         {

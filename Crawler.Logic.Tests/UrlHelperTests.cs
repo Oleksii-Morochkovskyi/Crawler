@@ -1,4 +1,4 @@
-﻿
+﻿using NUnit.Framework;
 using Crawler.Logic.Helpers;
 
 namespace Crawler.Logic.Tests

@@ -9,13 +9,13 @@ namespace Crawler.Logic.Crawlers
     {
         private readonly UrlHelper _urlHelper;
         private readonly UrlValidator _validator;
-        private readonly IOutputWriter _logger;
+        private readonly IOHandler _consoleHandler;
 
-        public XmlCrawler(IOutputWriter logger, UrlHelper helper, UrlValidator validator)
+        public XmlCrawler(IOHandler consoleHandler, UrlHelper helper, UrlValidator validator)
         {
             _urlHelper = helper;
             _validator = validator;
-            _logger = logger;
+            _consoleHandler = consoleHandler;
         }
 
         public async Task<ICollection<string>> CrawlAsync(string address)
@@ -28,7 +28,7 @@ namespace Crawler.Logic.Crawlers
             }
             catch (Exception e)
             {
-                _logger.Write(e.Message);
+                _consoleHandler.Write(e.Message);
             }
 
             return urlList;

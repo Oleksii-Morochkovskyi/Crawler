@@ -1,4 +1,5 @@
 using Crawler.Logic.Validators;
+using NUnit.Framework;
 
 namespace Crawler.Logic.Tests
 {
