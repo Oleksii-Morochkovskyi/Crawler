@@ -39,6 +39,7 @@ namespace Crawler.Logic.Crawlers
                 catch (Exception e)
                 {
                     checkedUrls.Add(urlsToCheck.First());
+
                     urlsToCheck.Remove(urlsToCheck.First());
 
                     _consoleHandler.Write(e.Message);
