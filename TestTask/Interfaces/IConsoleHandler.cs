@@ -1,6 +1,6 @@
 ﻿namespace Crawler.Logic.Interfaces
 {
-    public interface IOHandler
+    public interface IConsoleHandler
     {
         void Write(string text);
         string Read();

@@ -6,16 +6,16 @@ namespace Crawler.Logic.Services
 {
     public class ResponseTimeService
     {
-        private readonly HttpClientService _httpClient;
-        private readonly IOHandler _consoleHandler;
+        private readonly HttpClientService _httpClientService;
+        private readonly IConsoleHandler _consoleHandler;
 
-        public ResponseTimeService(HttpClientService client, IOHandler consoleHandler)
+        public ResponseTimeService(HttpClientService clientService, IConsoleHandler consoleHandler)
         {
-            _httpClient = client;
+            _httpClientService = clientService;
             _consoleHandler = consoleHandler;
         }
 
-        public async Task<IEnumerable<UrlResponse>> GetResponseTimeAsync(IEnumerable<string> urls)
+        public virtual async Task<IEnumerable<UrlResponse>> GetResponseTimeAsync(IEnumerable<string> urls)
         {
             IList<UrlResponse> responseTimeList = new List<UrlResponse>();
 
@@ -46,7 +46,7 @@ namespace Crawler.Logic.Services
         {
             var timer = Stopwatch.StartNew();
 
-            using var response = await _httpClient.GetAsync(url);
+            using var response = await _httpClientService.GetAsync(url);
 
             timer.Stop();
 

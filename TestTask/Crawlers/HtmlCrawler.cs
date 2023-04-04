@@ -7,17 +7,17 @@ namespace Crawler.Logic.Crawlers
     public class HtmlCrawler
     {
         private readonly HtmlParser _parser;
-        private readonly IOHandler _consoleHandler;
+        private readonly IConsoleHandler _consoleHandler;
         private readonly UrlValidator _urlValidator;
 
-        public HtmlCrawler(IOHandler consoleHandler, HtmlParser parser, UrlValidator validator)
+        public HtmlCrawler(IConsoleHandler consoleHandler, HtmlParser parser, UrlValidator validator)
         {
             _consoleHandler = consoleHandler;
             _parser = parser;
             _urlValidator = validator;
         }
 
-        public async Task<ICollection<string>> CrawlAsync(string baseUrl)
+        public virtual async Task<ICollection<string>> CrawlAsync(string baseUrl)
         {
             ICollection<string> checkedUrls = new HashSet<string>();
             ICollection<string> urlsToCheck = new HashSet<string> { baseUrl };

@@ -6,12 +6,12 @@ namespace Crawler.Logic.Parsers
 {
     public class HtmlParser
     {
-        private readonly HttpClientService _httpClient;
+        private readonly HttpClientService _httpClientService;
         private readonly UrlHelper _urlHelper;
 
-        public HtmlParser(HttpClientService httpClient, UrlHelper helper)
+        public HtmlParser(HttpClientService httpClientService, UrlHelper helper)
         {
-            _httpClient = httpClient;
+            _httpClientService = httpClientService;
             _urlHelper = helper;
         }
 
@@ -26,7 +26,7 @@ namespace Crawler.Logic.Parsers
 
         private async Task<HtmlDocument> GetHtmlAsync(string url)
         {
-            var html = await _httpClient.GetStringAsync(url);
+            var html = await _httpClientService.GetStringAsync(url);
 
             var htmlDoc = new HtmlDocument();
             htmlDoc.LoadHtml(html);

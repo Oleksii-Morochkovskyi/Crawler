@@ -2,7 +2,7 @@
 
 namespace Crawler.ConsoleOutput
 {
-    public class ConsoleWrapper : IOHandler
+    public class ConsoleWrapper : IConsoleHandler
     {
         public void Write(string text)
         {

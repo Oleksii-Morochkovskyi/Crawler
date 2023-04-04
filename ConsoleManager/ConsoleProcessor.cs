@@ -1,27 +1,24 @@
-﻿using Crawler.Logic.Crawlers;
-using Crawler.Logic.Enums;
+﻿using Crawler.Logic.Enums;
 using Crawler.Logic.Interfaces;
 using Crawler.Logic.Models;
 using Crawler.Logic.Validators;
-using System;
-using System.ComponentModel.DataAnnotations;
 
 namespace Crawler.ConsoleOutput
 {
     public class ConsoleProcessor
     {
-        private readonly IOHandler _iOHandler;
+        private readonly IConsoleHandler _consoleHandler;
         private readonly UrlValidator _validator;
         private readonly Logic.Crawlers.Crawler _crawler;
 
-        public ConsoleProcessor(IOHandler iOHandler, UrlValidator validator, Logic.Crawlers.Crawler crawler)
+        public ConsoleProcessor(IConsoleHandler consoleHandler, UrlValidator validator, Logic.Crawlers.Crawler crawler)
         {
-            _iOHandler = iOHandler;
+            _consoleHandler = consoleHandler;
             _validator = validator;
             _crawler = crawler;
         }
 
-        public async Task PrintResult()
+        public async Task ExecuteAsync()
         {
             var inputUrl = GetAddress();
             
@@ -38,16 +35,16 @@ namespace Crawler.ConsoleOutput
         {
             while (true)
             {
-                _iOHandler.Write("Enter URL: ");
+                _consoleHandler.Write("Enter URL: ");
 
-                var input = _iOHandler.Read();
+                var input = _consoleHandler.Read();
 
                 if (_validator.IsValidUrl(input))
                 {
                     return input.TrimEnd('/');
                 }
 
-                _iOHandler.Write("You have entered wrong url. Please try again...\n");
+                _consoleHandler.Write("You have entered wrong url. Please try again...\n");
             }
         }
 
@@ -60,14 +57,14 @@ namespace Crawler.ConsoleOutput
 
             if (!htmlExceptXml.Any() || !xmlExceptHtml.Any())
             {
-                _iOHandler.Write("\nOne of the ways to search for links did not bring any result or two ways of crawling brought same results.\n");
+                _consoleHandler.Write("\nOne of the ways to search for links did not bring any result or two ways of crawling brought same results.\n");
                 return;
             }
 
-            _iOHandler.Write("\nUrls FOUND BY CRAWLING THE WEBSITE but not in sitemap.xml: \n");
+            _consoleHandler.Write("\nUrls FOUND BY CRAWLING THE WEBSITE but not in sitemap.xml: \n");
             PrintList(htmlExceptXml);
 
-            _iOHandler.Write("\nUrls FOUND IN SITEMAP.XML but not founded after crawling a website: \n");
+            _consoleHandler.Write("\nUrls FOUND IN SITEMAP.XML but not founded after crawling a website: \n");
             PrintList(xmlExceptHtml);
         }
 
@@ -75,18 +72,18 @@ namespace Crawler.ConsoleOutput
         {
             foreach (var url in urls)
             {
-                _iOHandler.Write(url);
+                _consoleHandler.Write(url);
             }
         }
 
         private void PrintTimeResponse(IEnumerable<UrlResponse> urls)
         {
-            _iOHandler.Write("\n\nList with url and response time for each page: \n");
-            _iOHandler.Write("URL".PadRight(70) + "Timing (ms)\n");
+            _consoleHandler.Write("\n\nList with url and response time for each page: \n");
+            _consoleHandler.Write("URL".PadRight(70) + "Timing (ms)\n");
 
             foreach (var url in urls)
             {
-                _iOHandler.Write(url.Url.PadRight(70) + url.ResponseTimeMs + "ms");
+                _consoleHandler.Write(url.Url.PadRight(70) + url.ResponseTimeMs + "ms");
             }
         }
 
@@ -95,9 +92,9 @@ namespace Crawler.ConsoleOutput
             var countOfUrlsFromHtml = urls.Count(x => x.Location == Location.Html);
             var countOfUrlsFromXml = urls.Count(x => x.Location == Location.Xml);
 
-            _iOHandler.Write($"\nUrls(html documents) found after crawling a website: {urls.Count() - countOfUrlsFromXml}");
+            _consoleHandler.Write($"\nUrls(html documents) found after crawling a website: {urls.Count() - countOfUrlsFromXml}");
 
-            _iOHandler.Write($"\nUrls found in sitemap: {urls.Count() - countOfUrlsFromHtml}");
+            _consoleHandler.Write($"\nUrls found in sitemap: {urls.Count() - countOfUrlsFromHtml}");
         }
     }
 }

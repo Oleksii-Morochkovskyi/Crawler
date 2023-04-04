@@ -1,7 +1,7 @@
 using Crawler.Logic.Validators;
 using NUnit.Framework;
 
-namespace Crawler.Logic.Tests
+namespace Crawler.Logic.Tests.Validators.Test
 {
     public class UrlValidatorTests
     {
@@ -20,7 +20,7 @@ namespace Crawler.Logic.Tests
 
             var result = _validator.IsValidUrl(url);
 
-            Assert.That(result, Is.True);
+            Assert.True(result);
         }
 
         [Test]
@@ -30,29 +30,29 @@ namespace Crawler.Logic.Tests
 
             var result = _validator.IsValidUrl(url);
 
-            Assert.That(result, Is.False);
+            Assert.False(result);
         }
 
         [Test]
-        public void IsCorrectFormat_CorrectUrl_ReturnsTrue()
+        public void IsCorrectFormat_UrlWithProperHost_ReturnsTrue()
         {
             var url = "https://www.litedb.org/docs";
             var baseUrl = "https://www.litedb.org";
 
             var result = _validator.IsCorrectFormat(url, baseUrl);
 
-            Assert.That(result, Is.True);
+            Assert.True(result);
         }
 
         [Test]
-        public void IsCorrectFormat_IncorrectUrl_ReturnsFalse()
+        public void IsCorrectFormat_UrlWithHostOfAnotherSite_ReturnsFalse()
         {
             var url = "https://www.google.com/";
             var baseUrl = "https://www.litedb.org";
 
             var result = _validator.IsCorrectFormat(url, baseUrl);
 
-            Assert.That(result, Is.False);
+            Assert.False(result);
         }
 
         [Test]
@@ -63,18 +63,18 @@ namespace Crawler.Logic.Tests
 
             var result = _validator.IsHtmlDoc(url, baseUrl);
 
-            Assert.That(result, Is.True);
+            Assert.True(result);
         }
 
         [Test]
-        public void IsHtmlDoc_UrlWhichNotRefersToHtmlDoc_ReturnsFalse()
+        public void IsHtmlDoc_UrlWhichRefersToSvgFile_ReturnsFalse()
         {
             var url = "https://upload.wikimedia.org/wikipedia/commons/0/02/SVG_logo.svg";
             var baseUrl = "https://upload.wikimedia.org";
 
             var result = _validator.IsHtmlDoc(url, baseUrl);
 
-            Assert.That(result, Is.False);
+            Assert.False(result);
         }
     }
 }

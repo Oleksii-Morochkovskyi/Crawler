@@ -6,13 +6,13 @@ namespace Crawler.Logic.Crawlers
 {
     public class Crawler
     {
-        private readonly ResponseTimeService _service;
+        private readonly ResponseTimeService _responseTimeService;
         private readonly HtmlCrawler _htmlCrawler;
         private readonly XmlCrawler _xmlCrawler;
 
-        public Crawler(ResponseTimeService service, HtmlCrawler htmlCrawler, XmlCrawler xmlCrawler)
+        public Crawler(ResponseTimeService responseTimeService, HtmlCrawler htmlCrawler, XmlCrawler xmlCrawler)
         {
-            _service = service;
+            _responseTimeService = responseTimeService;
             _htmlCrawler = htmlCrawler;
             _xmlCrawler = xmlCrawler;
         }
@@ -25,7 +25,7 @@ namespace Crawler.Logic.Crawlers
 
             var allUrls = urlsFromHtmlCrawler.Union(urlsFromXmlCrawler);
 
-            var urlWithResponseTime = await _service.GetResponseTimeAsync(allUrls);
+            var urlWithResponseTime = await _responseTimeService.GetResponseTimeAsync(allUrls);
 
             return SetUrlLocation(urlWithResponseTime, urlsFromHtmlCrawler, urlsFromXmlCrawler);
         }

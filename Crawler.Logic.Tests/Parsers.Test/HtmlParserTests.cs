@@ -1,11 +1,10 @@
 ﻿using Crawler.Logic.Helpers;
 using Crawler.Logic.Parsers;
 using Moq;
-using Crawler.Logic.Interfaces;
 using NUnit.Framework;
 using Crawler.Logic.Services;
 
-namespace Crawler.Logic.Tests
+namespace Crawler.Logic.Tests.Parsers.Test
 {
     internal class HtmlParserTests
     {
@@ -38,7 +37,7 @@ namespace Crawler.Logic.Tests
 
             // Assert
             Assert.That(result.Count, Is.EqualTo(2));
-            Assert.That( result.Contains("https://example.com/page2"));
+            Assert.That(result.Contains("https://example.com/page2"));
             Assert.That(result.Contains("https://example.com/page3"));
         }
     }
