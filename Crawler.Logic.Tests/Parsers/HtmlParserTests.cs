@@ -6,7 +6,7 @@ using Crawler.Logic.Services;
 
 namespace Crawler.Logic.Tests.Parsers
 {
-    internal class HtmlParserTests
+    public class HtmlParserTests
     {
         private HtmlParser _parser;
         private Mock<HttpClientService> _httpClientMock;

@@ -8,7 +8,7 @@ using NUnit.Framework;
 
 namespace Crawler.Logic.Tests.Crawlers.Test
 {
-    internal class XmlCrawlerTests
+    public class XmlCrawlerTests
     {
         private Mock<UrlHelper> _urlHelperMock;
         private Mock<UrlValidator> _validatorMock;

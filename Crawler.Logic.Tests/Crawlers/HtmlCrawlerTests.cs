@@ -9,7 +9,7 @@ using NUnit.Framework;
 
 namespace Crawler.Logic.Tests.Crawlers.Test
 {
-    internal class HtmlCrawlerTests
+    public class HtmlCrawlerTests
     {
         private Mock<IConsoleHandler> _consoleMock;
         private Mock<HttpClientService> _httpClientMock;

@@ -12,7 +12,7 @@ using UrlHelper = Crawler.Logic.Helpers.UrlHelper;
 
 namespace Crawler.Logic.Tests.Crawlers.Test
 {
-    internal class CrawlerTests
+    public class CrawlerTests
     {
         private UrlValidator _validator;
         private UrlHelper _helper;
