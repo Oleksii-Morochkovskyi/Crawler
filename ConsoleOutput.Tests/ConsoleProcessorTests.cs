@@ -16,7 +16,7 @@ namespace Crawler.ConsoleOutput.Tests
         private ConsoleProcessor _console;
         private Mock<IConsoleHandler> _writerMock;
         private Mock<Logic.Crawlers.Crawler> _crawlerMock;
-        private UrlValidator _validator;
+        private Mock<UrlValidator> _validatorMock;
         private ResponseTimeService _responseTimeService;
         private HtmlCrawler _htmlCrawler;
         private XmlCrawler _xmlCrawler;
@@ -30,39 +30,45 @@ namespace Crawler.ConsoleOutput.Tests
         {
             _httpClient = new HttpClient();
             _httpClientService = new HttpClientService(_httpClient);
-            _validator = new UrlValidator();
+            _validatorMock = new Mock<UrlValidator>();
             _writerMock = new Mock<IConsoleHandler>();
             _helper = new UrlHelper();
             _responseTimeService = new ResponseTimeService(_httpClientService, _writerMock.Object);
-            _xmlCrawler = new XmlCrawler(_writerMock.Object, _helper, _validator,_httpClientService);
+            _xmlCrawler = new XmlCrawler(_writerMock.Object, _helper, _validatorMock.Object, _httpClientService);
             _parser = new HtmlParser(_httpClientService, _helper);
-            _htmlCrawler = new HtmlCrawler(_writerMock.Object, _parser, _validator);
+            _htmlCrawler = new HtmlCrawler(_writerMock.Object, _parser, _validatorMock.Object);
             _crawlerMock = new Mock<Logic.Crawlers.Crawler>(_responseTimeService, _htmlCrawler, _xmlCrawler);
-            _console = new ConsoleProcessor(_writerMock.Object, _validator, _crawlerMock.Object);
+            _console = new ConsoleProcessor(_writerMock.Object, _validatorMock.Object, _crawlerMock.Object);
         }
 
         [Test]
         public void GetAddress_ValidUrl_ReturnUrl()
         {
-            _writerMock.Setup(x => x.Read()).Returns("https://www.litedb.org/");
+            var url = "https://www.litedb.org";
+            _writerMock.Setup(x => x.Read()).Returns(url);
+            _validatorMock.Setup(x=>x.IsValidUrl(url)).Returns(true);
+            
+            var input = _console.GetAddress();
 
-            var url = _console.GetAddress();
-
-            Assert.That(url, Is.EqualTo("https://www.litedb.org"));
+            Assert.That(input, Is.EqualTo("https://www.litedb.org"));
         }
 
         [Test]
         public void GetAddress_InvalidUrlThenValidUrl_PrintsErrorMessageThenAsksToEnterUrlAgainAndReturnsUrl()
         {
+            var url = "https://www.litedb.org";
+
             _writerMock.SetupSequence(x => x.Read())
                 .Returns("123")
-                .Returns("https://www.litedb.org/");
-            
-            var url = _console.GetAddress();
-           
-            _writerMock.Verify(x => x.Write("Enter URL: "),Times.AtLeastOnce);
-            _writerMock.Verify(x=>x.Write("You have entered wrong url. Please try again...\n"));
-            Assert.That(url, Is.EqualTo("https://www.litedb.org"));
+                .Returns(url);
+            _validatorMock.SetupSequence(x => x.IsValidUrl("123")).Returns(false);
+            _validatorMock.SetupSequence(x => x.IsValidUrl(url)).Returns(true);
+
+            var input = _console.GetAddress();
+
+            _writerMock.Verify(x => x.Write("Enter URL: "), Times.AtLeastOnce);
+            _writerMock.Verify(x => x.Write("You have entered wrong url. Please try again...\n"));
+            Assert.That(input, Is.EqualTo(url));
         }
 
         [Test]
@@ -78,6 +84,7 @@ namespace Crawler.ConsoleOutput.Tests
             };
 
             _writerMock.Setup(x => x.Read()).Returns(url);
+            _validatorMock.SetupSequence(x => x.IsValidUrl(url)).Returns(true);
             _crawlerMock.Setup(x => x.StartCrawlerAsync(url)).ReturnsAsync(results);
 
             await _console.ExecuteAsync();
@@ -100,6 +107,7 @@ namespace Crawler.ConsoleOutput.Tests
             };
 
             _writerMock.Setup(x => x.Read()).Returns(url);
+            _validatorMock.SetupSequence(x => x.IsValidUrl(url)).Returns(true);
             _crawlerMock.Setup(x => x.StartCrawlerAsync(url)).ReturnsAsync(results);
 
             await _console.ExecuteAsync();
@@ -120,6 +128,7 @@ namespace Crawler.ConsoleOutput.Tests
             };
 
             _writerMock.Setup(x => x.Read()).Returns(url);
+            _validatorMock.SetupSequence(x => x.IsValidUrl(url)).Returns(true);
             _crawlerMock.Setup(x => x.StartCrawlerAsync(url)).ReturnsAsync(results);
 
             await _console.ExecuteAsync();
@@ -145,6 +154,7 @@ namespace Crawler.ConsoleOutput.Tests
             };
 
             _writerMock.Setup(x => x.Read()).Returns(url);
+            _validatorMock.SetupSequence(x => x.IsValidUrl(url)).Returns(true);
             _crawlerMock.Setup(x => x.StartCrawlerAsync(url)).ReturnsAsync(results);
 
             await _console.ExecuteAsync();

@@ -4,26 +4,26 @@ using Moq;
 using NUnit.Framework;
 using Crawler.Logic.Services;
 
-namespace Crawler.Logic.Tests.Parsers.Test
+namespace Crawler.Logic.Tests.Parsers
 {
     internal class HtmlParserTests
     {
         private HtmlParser _parser;
         private Mock<HttpClientService> _httpClientMock;
-        private UrlHelper _urlHelper;
+        private Mock<UrlHelper> _urlHelperMock;
         private HttpClient _httpClient;
 
         [SetUp]
         public void SetUp()
         {
             _httpClient = new HttpClient();
-            _urlHelper = new UrlHelper();
+            _urlHelperMock = new Mock<UrlHelper>();
             _httpClientMock = new Mock<HttpClientService>(_httpClient);
-            _parser = new HtmlParser(_httpClientMock.Object, _urlHelper);
+            _parser = new HtmlParser(_httpClientMock.Object, _urlHelperMock.Object);
         }
 
         [Test]
-        public async Task ParseAsync_Should_Return_Correct_Urls()
+        public async Task ParseAsync_BaseUrl_ShouldReturnCorrectUrls()
         {
             // Arrange
             var baseUrl = "https://example.com";
@@ -31,6 +31,8 @@ namespace Crawler.Logic.Tests.Parsers.Test
 
             var html = "<html><body><a href=\"/page2\">Link 1</a><a href=\"/page3\">Link 2</a></body></html>";
             _httpClientMock.Setup(c => c.GetStringAsync(url)).ReturnsAsync(html);
+            _urlHelperMock.Setup(x=>x.GetAbsoluteUrl(baseUrl, "/page2")).Returns("https://example.com/page2");
+            _urlHelperMock.Setup(x => x.GetAbsoluteUrl(baseUrl, "/page3")).Returns("https://example.com/page3");
 
             // Act
             var result = await _parser.ParseAsync(baseUrl, url);

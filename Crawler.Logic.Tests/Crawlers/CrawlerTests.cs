@@ -68,5 +68,31 @@ namespace Crawler.Logic.Tests.Crawlers.Test
             Assert.That(result.Count(x => x.Location == Location.Xml), Is.EqualTo(1));
             Assert.That(result.Count(x => x.Location == Location.Both), Is.EqualTo(1));
         }
+
+        [Test]
+        public async Task StartCrawlerAsync_Url_ReturnsFoundUrlsSortedByTimeResponseAsc()
+        {
+            var url = "https://example.com";
+
+            ICollection<string> htmlCrawlResults = new List<string> { "Url1", "Url2" };
+            ICollection<string> xmlCrawlResults = new List<string> { "Url3", "Url2" };
+            IEnumerable<UrlResponse> urlResponseServiceResults = new List<UrlResponse>
+            {
+                new UrlResponse {Url = "Url1", ResponseTimeMs = 20},
+                new UrlResponse {Url = "Url2", ResponseTimeMs = 10},
+                new UrlResponse {Url = "Url3", ResponseTimeMs = 15}
+            };
+
+            var allUrls = htmlCrawlResults.Union(xmlCrawlResults);
+
+            _htmlCrawlerMock.Setup(x => x.CrawlAsync(url)).ReturnsAsync(htmlCrawlResults);
+            _xmlCrawlerMock.Setup(x => x.CrawlAsync(url)).ReturnsAsync(xmlCrawlResults);
+            _responseTimeServiceMock.Setup(x => x.GetResponseTimeAsync(allUrls)).ReturnsAsync(urlResponseServiceResults);
+
+            var result = await _crawler.StartCrawlerAsync(url);
+
+            Assert.True(result.First().ResponseTimeMs == 10);
+            Assert.True(result.Last().ResponseTimeMs == 20);
+        }
     }
 }

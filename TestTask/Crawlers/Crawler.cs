@@ -26,8 +26,10 @@ namespace Crawler.Logic.Crawlers
             var allUrls = urlsFromHtmlCrawler.Union(urlsFromXmlCrawler);
 
             var urlWithResponseTime = await _responseTimeService.GetResponseTimeAsync(allUrls);
+            
+            var sortedResponseTimeList = urlWithResponseTime.OrderBy(x => x.ResponseTimeMs);
 
-            return SetUrlLocation(urlWithResponseTime, urlsFromHtmlCrawler, urlsFromXmlCrawler);
+            return SetUrlLocation(sortedResponseTimeList, urlsFromHtmlCrawler, urlsFromXmlCrawler);
         }
 
         private IEnumerable<UrlResponse> SetUrlLocation(IEnumerable<UrlResponse> urls, ICollection<string> urlsFromHtml, ICollection<string> urlsFromXml)

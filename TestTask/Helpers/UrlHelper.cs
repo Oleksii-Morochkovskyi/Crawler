@@ -2,7 +2,7 @@
 {
     public class UrlHelper
     {
-        public string GetAbsoluteUrl(string baseUrl, string path)
+        public virtual string GetAbsoluteUrl(string baseUrl, string path)
         {
             var baseUri = new Uri(baseUrl);
 

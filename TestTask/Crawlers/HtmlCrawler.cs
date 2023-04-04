@@ -53,9 +53,9 @@ namespace Crawler.Logic.Crawlers
         {
             foreach (var url in parsedUrls)
             {
-                var isChecked = !urlsToCheck.Contains(url) && !checkedUrls.Contains(url);
+                var isChecked = urlsToCheck.Contains(url) || checkedUrls.Contains(url);
 
-                if (isChecked && _urlValidator.IsCorrectFormat(url, baseUrl) && _urlValidator.IsHtmlDoc(url, baseUrl))
+                if (!isChecked && _urlValidator.IsCorrectFormat(url, baseUrl) && _urlValidator.IsHtmlDoc(url, baseUrl))
                 {
                     urlsToCheck.Add(url);
                 }

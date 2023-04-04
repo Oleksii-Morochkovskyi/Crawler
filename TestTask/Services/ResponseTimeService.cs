@@ -39,7 +39,7 @@ namespace Crawler.Logic.Services
                 }
             }
 
-            return responseTimeList.OrderBy(x => x.ResponseTimeMs);
+            return responseTimeList;
         }
 
         private async Task<int> CalculateTimeAsync(string url)

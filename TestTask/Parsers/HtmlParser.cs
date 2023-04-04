@@ -15,7 +15,7 @@ namespace Crawler.Logic.Parsers
             _urlHelper = helper;
         }
 
-        public async Task<ICollection<string>> ParseAsync(string baseUrl, string url)
+        public virtual async Task<ICollection<string>> ParseAsync(string baseUrl, string url)
         {
             var html = await GetHtmlAsync(url);
 

@@ -2,19 +2,19 @@
 {
     public class UrlValidator
     {
-        public bool IsValidUrl(string address)
+        public virtual bool IsValidUrl(string address)
         {
             return Uri.TryCreate(address, UriKind.Absolute, out Uri uri);
         }
 
-        public bool IsCorrectFormat(string address, string baseUrl)
+        public virtual bool IsCorrectFormat(string address, string baseUrl)
         {
             var host = new Uri(baseUrl).Host;
 
             return address.Contains("http") && !address.Contains('#') && address.Contains(host);
         }
 
-        public bool IsHtmlDoc(string address, string baseUrl)
+        public virtual bool IsHtmlDoc(string address, string baseUrl)
         {
             var possibleExtensions = new List<string> { ".html", ".htm", ".php", ".asp", ".aspx" };
 

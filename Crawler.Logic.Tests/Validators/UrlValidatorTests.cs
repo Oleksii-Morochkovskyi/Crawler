@@ -1,7 +1,7 @@
 using Crawler.Logic.Validators;
 using NUnit.Framework;
 
-namespace Crawler.Logic.Tests.Validators.Test
+namespace Crawler.Logic.Tests.Validators
 {
     public class UrlValidatorTests
     {
@@ -67,7 +67,7 @@ namespace Crawler.Logic.Tests.Validators.Test
         }
 
         [Test]
-        public void IsHtmlDoc_UrlWhichRefersToSvgFile_ReturnsFalse()
+        public void IsHtmlDoc_UrlOfNonHtmlDoc_ReturnsFalse()
         {
             var url = "https://upload.wikimedia.org/wikipedia/commons/0/02/SVG_logo.svg";
             var baseUrl = "https://upload.wikimedia.org";
