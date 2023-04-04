@@ -34,17 +34,12 @@ namespace Crawler.Logic.Tests.Services.Test
             };
 
             _httpClientServiceMock.Setup(x => x.GetAsync(It.IsAny<string>()))
+                .Callback(() =>  Thread.Sleep(1000))
                 .ReturnsAsync(new HttpResponseMessage());
-
+           
             var result = await _responseTimeService.GetResponseTimeAsync(urls);
 
-            Assert.Multiple(() =>
-            {
-                Assert.That(result is IEnumerable<UrlResponse>);
-                Assert.That(result.Count(), Is.EqualTo(3));
-                // Assert.That(result.All(x => x.ResponseTimeMs > 0), Is.True);
-            });
-
+            Assert.That(result.All(x => x.ResponseTimeMs >= 1000));
         }
     }
 }
