@@ -1,13 +1,17 @@
 ﻿
+using System.Net.Http;
+
 namespace Crawler.Logic.Services
 {
-    public class HttpClientService
+    public class HttpClientService:IHttpClientFactory
     {
+        private readonly IHttpClientFactory _httpClientFactory;
         private readonly HttpClient _httpClient;
 
-        public HttpClientService(HttpClient client)
+        public HttpClientService(IHttpClientFactory httpClientFactory)
         {
-            _httpClient = client;
+            _httpClientFactory = httpClientFactory;
+            _httpClient = _httpClientFactory.CreateClient();
         }
 
         public virtual async Task<string> GetStringAsync(string url)
@@ -18,6 +22,12 @@ namespace Crawler.Logic.Services
         public virtual async Task<HttpResponseMessage> GetAsync(string url)
         {
             return await _httpClient.GetAsync(url);
+        }
+
+        public HttpClient CreateClient(string name)
+        {
+            return _httpClientFactory.CreateClient();
+
         }
     }
 }
