@@ -3,7 +3,7 @@ using Ninject;
 
 namespace Crawler.ConsoleOutput
 {
-    public class CrawlerConfiguration
+    public class DependencyConfigurator
     {
         private readonly IKernel _container = new StandardKernel();
 
