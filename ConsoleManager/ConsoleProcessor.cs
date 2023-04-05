@@ -55,12 +55,6 @@ namespace Crawler.ConsoleOutput
             var xmlExceptHtml = results.Where(x => x.Location == Location.Xml)
                 .Select(x => x.Url);
 
-            if (!htmlExceptXml.Any() || !xmlExceptHtml.Any())
-            {
-                _consoleHandler.Write("\nOne of the ways to search for links did not bring any result or two ways of crawling brought same results.\n");
-                return;
-            }
-
             _consoleHandler.Write("\nUrls FOUND BY CRAWLING THE WEBSITE but not in sitemap.xml: \n");
             PrintList(htmlExceptXml);
 

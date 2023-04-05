@@ -7,7 +7,7 @@ using Crawler.Logic.Validators;
 using Moq;
 using NUnit.Framework;
 
-namespace Crawler.Logic.Tests.Crawlers.Test
+namespace Crawler.Logic.Tests.Crawlers
 {
     public class HtmlCrawlerTests
     {
@@ -39,7 +39,8 @@ namespace Crawler.Logic.Tests.Crawlers.Test
             ICollection<string> parsedUrls = new HashSet<string>
             {
                 "https://example.com/page2",
-                "https://example.com/123.svg"
+                "https://example.com/123.svg",
+                "https://windows.com"
             };
 
             ICollection<string> expectedResult = new HashSet<string>
@@ -52,9 +53,11 @@ namespace Crawler.Logic.Tests.Crawlers.Test
             _parserMock.Setup(x => x.ParseAsync(url, parsedUrls.First())).ThrowsAsync(new Exception("Test exception"));
             
             _urlValidator.SetupSequence(x=>x.IsCorrectFormat(parsedUrls.First(),url)).Returns(true)
+                .Returns(false)
                 .Returns(false);
             _urlValidator.SetupSequence(x => x.IsHtmlDoc(parsedUrls.First(), url)).Returns(true)
-                .Returns(false);
+                .Returns(false)
+                .Returns(true);
             
             var result = await _crawler.CrawlAsync(url);
 
@@ -62,13 +65,13 @@ namespace Crawler.Logic.Tests.Crawlers.Test
         }
 
         [Test]
-        public async Task CrawlAsync_ThrowsException_CatchesExceptionPrintsExceptionMessage()
+        public async Task CrawlAsync_CatchesException_PrintsExceptionMessage()
         {
             var url = "https://example.com";
 
             _parserMock.SetupSequence(x => x.ParseAsync(url, url)).ThrowsAsync(new Exception("Test exception"));
-
-            var result = await _crawler.CrawlAsync(url);
+            
+            await _crawler.CrawlAsync(url);
 
             _consoleMock.Verify(x => x.Write("Test exception"));
         }

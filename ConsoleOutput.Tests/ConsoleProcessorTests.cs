@@ -20,7 +20,7 @@ namespace Crawler.ConsoleOutput.Tests
         private ResponseTimeService _responseTimeService;
         private HtmlCrawler _htmlCrawler;
         private XmlCrawler _xmlCrawler;
-        private UrlHelper _helper;
+        private Mock<UrlHelper> _helperMock;
         private HtmlParser _parser;
         private HttpClientService _httpClientService;
         private HttpClient _httpClient;
@@ -32,10 +32,10 @@ namespace Crawler.ConsoleOutput.Tests
             _httpClientService = new HttpClientService(_httpClient);
             _validatorMock = new Mock<UrlValidator>();
             _writerMock = new Mock<IConsoleHandler>();
-            _helper = new UrlHelper();
+            _helperMock = new Mock<UrlHelper>();
             _responseTimeService = new ResponseTimeService(_httpClientService, _writerMock.Object);
-            _xmlCrawler = new XmlCrawler(_writerMock.Object, _helper, _validatorMock.Object, _httpClientService);
-            _parser = new HtmlParser(_httpClientService, _helper);
+            _xmlCrawler = new XmlCrawler(_writerMock.Object, _helperMock.Object, _validatorMock.Object, _httpClientService);
+            _parser = new HtmlParser(_httpClientService, _helperMock.Object);
             _htmlCrawler = new HtmlCrawler(_writerMock.Object, _parser, _validatorMock.Object);
             _crawlerMock = new Mock<Logic.Crawlers.Crawler>(_responseTimeService, _htmlCrawler, _xmlCrawler);
             _console = new ConsoleProcessor(_writerMock.Object, _validatorMock.Object, _crawlerMock.Object);
@@ -46,15 +46,15 @@ namespace Crawler.ConsoleOutput.Tests
         {
             var url = "https://www.litedb.org";
             _writerMock.Setup(x => x.Read()).Returns(url);
-            _validatorMock.Setup(x=>x.IsValidUrl(url)).Returns(true);
-            
+            _validatorMock.Setup(x => x.IsValidUrl(url)).Returns(true);
+
             var input = _console.GetAddress();
 
             Assert.That(input, Is.EqualTo("https://www.litedb.org"));
         }
 
         [Test]
-        public void GetAddress_InvalidUrlThenValidUrl_PrintsErrorMessageThenAsksToEnterUrlAgainAndReturnsUrl()
+        public void GetAddress_InvalidUrlThenValidUrl_PrintsErrorMessageAndStaysInLoop()
         {
             var url = "https://www.litedb.org";
 
@@ -66,21 +66,21 @@ namespace Crawler.ConsoleOutput.Tests
 
             var input = _console.GetAddress();
 
-            _writerMock.Verify(x => x.Write("Enter URL: "), Times.AtLeastOnce);
+            _writerMock.Verify(x => x.Write("Enter URL: "), Times.Exactly(2));
             _writerMock.Verify(x => x.Write("You have entered wrong url. Please try again...\n"));
             Assert.That(input, Is.EqualTo(url));
         }
 
         [Test]
-        public async Task PrintResult_ListOfUrlResponsesWithDifferentUrlsFromHtmlAndXml_PrintsInConsoleTwoListsWithDifferences()
+        public async Task PrintResult_UrlsWithSetLocation_PrintsUrlFoundInHtml()
         {
             var url = "https://example.com";
 
             IEnumerable<UrlResponse> results = new List<UrlResponse>
             {
-                new UrlResponse{Url = "url1", Location = Location.Html},
-                new UrlResponse{Url = "url3", Location = Location.Xml},
-                new UrlResponse{Url = "url5", Location = Location.Both}
+                new UrlResponse{Url = "https://home.com", Location = Location.Html},
+                new UrlResponse{Url = "https://windows.com", Location = Location.Xml},
+                new UrlResponse{Url = "https://apple.com", Location = Location.Both}
             };
 
             _writerMock.Setup(x => x.Read()).Returns(url);
@@ -90,20 +90,19 @@ namespace Crawler.ConsoleOutput.Tests
             await _console.ExecuteAsync();
 
             _writerMock.Verify(x => x.Write("\nUrls FOUND BY CRAWLING THE WEBSITE but not in sitemap.xml: \n"));
-            _writerMock.Verify(x => x.Write("url1"));
-
-            _writerMock.Verify(x => x.Write("\nUrls FOUND IN SITEMAP.XML but not founded after crawling a website: \n"));
-            _writerMock.Verify(x => x.Write("url3"));
+            _writerMock.Verify(x => x.Write("https://home.com"));
         }
 
         [Test]
-        public async Task PrintResult_ListOfUrlResponsesWithSameUrlsInHtmlAndXml_PrintsTwoListsWithDifferences()
+        public async Task PrintResult_UrlsWithSetLocation_PrintsUrlFoundInXml()
         {
             var url = "https://example.com";
 
-            var results = new List<UrlResponse>
+            IEnumerable<UrlResponse> results = new List<UrlResponse>
             {
-                new UrlResponse{Url = "url1", ResponseTimeMs = 10, Location = Location.Both}
+                new UrlResponse{Url = "https://home.com", Location = Location.Html},
+                new UrlResponse{Url = "https://windows.com", Location = Location.Xml},
+                new UrlResponse{Url = "https://apple.com", Location = Location.Both}
             };
 
             _writerMock.Setup(x => x.Read()).Returns(url);
@@ -112,19 +111,20 @@ namespace Crawler.ConsoleOutput.Tests
 
             await _console.ExecuteAsync();
 
-            _writerMock.Verify(x => x.Write("\nOne of the ways to search for links did not bring any result or two ways of crawling brought same results.\n"));
+            _writerMock.Verify(x => x.Write("\nUrls FOUND IN SITEMAP.XML but not founded after crawling a website: \n"));
+            _writerMock.Verify(x => x.Write("https://windows.com"));
         }
 
         [Test]
-        public async Task PrintResult_ListOfUrlsWithResponseTime_PrintsListWithUrlsAndTimeResponses()
+        public async Task PrintResult_UrlsWithResponseTime_PrintsUrlsWithTimeResponse()
         {
             var url = "https://example.com";
 
             var results = new List<UrlResponse>
             {
-                new UrlResponse{Url = "url1", ResponseTimeMs = 10, Location = Location.Xml},
-                new UrlResponse{Url = "url2", ResponseTimeMs = 15, Location = Location.Html},
-                new UrlResponse{Url = "url3", ResponseTimeMs = 50, Location = Location.Both}
+                new UrlResponse{Url = "https://samsung.com", ResponseTimeMs = 10, Location = Location.Xml},
+                new UrlResponse{Url = "https://windows.com", ResponseTimeMs = 15, Location = Location.Html},
+                new UrlResponse{Url = "https://apple.com", ResponseTimeMs = 50, Location = Location.Both}
             };
 
             _writerMock.Setup(x => x.Read()).Returns(url);
@@ -136,21 +136,21 @@ namespace Crawler.ConsoleOutput.Tests
             _writerMock.Verify(x => x.Write("\n\nList with url and response time for each page: \n"));
             _writerMock.Verify(x => x.Write("URL".PadRight(70) + "Timing (ms)\n"));
 
-            _writerMock.Verify(x => x.Write("url1".PadRight(70) + "10ms"));
-            _writerMock.Verify(x => x.Write("url2".PadRight(70) + "15ms"));
-            _writerMock.Verify(x => x.Write("url3".PadRight(70) + "50ms"));
+            _writerMock.Verify(x => x.Write("https://samsung.com".PadRight(70) + "10ms"));
+            _writerMock.Verify(x => x.Write("https://windows.com".PadRight(70) + "15ms"));
+            _writerMock.Verify(x => x.Write("https://apple.com".PadRight(70) + "50ms"));
         }
 
         [Test]
-        public async Task PrintResult_ListOfUrlsWithResponseTimeAndLocation_PrintsCountOfUrlsFromHtmlAndFromXml()
+        public async Task PrintResult_UrlsWithResponseTimeAndLocation_PrintsCountOfUrlsFromHtmlAndFromXml()
         {
             var url = "https://example.com";
 
             var results = new List<UrlResponse>
             {
-                new UrlResponse{Url = "url1", ResponseTimeMs = 10, Location = Location.Xml},
-                new UrlResponse{Url = "url2", ResponseTimeMs = 15, Location = Location.Html},
-                new UrlResponse{Url = "url3", ResponseTimeMs = 10, Location = Location.Xml},
+                new UrlResponse{Url = "https://samsung.com", ResponseTimeMs = 10, Location = Location.Xml},
+                new UrlResponse{Url = "https://windows.com", ResponseTimeMs = 15, Location = Location.Html},
+                new UrlResponse{Url = "https://apple.com", ResponseTimeMs = 10, Location = Location.Xml},
             };
 
             _writerMock.Setup(x => x.Read()).Returns(url);
