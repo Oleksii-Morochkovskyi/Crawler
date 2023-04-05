@@ -10,11 +10,11 @@ namespace Crawler.ConsoleOutput
     {
         static async Task Main(string[] args)
         {
-            var configuredCrawler = new CrawlerConfiguration();
+            var configurator = new DependencyConfigurator();
 
-            var console = configuredCrawler.ComposeObjects();
+            var consoleProcessor = configurator.ComposeObjects();
 
-            await console.ExecuteAsync();
+            await consoleProcessor.ExecuteAsync();
         }
     }
 }
