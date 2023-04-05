@@ -8,15 +8,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Http;
-using Microsoft.Extensions.Http.Logging;
-using Microsoft.Graph.Models;
 
 namespace Crawler.ConsoleOutput
 {
     public class DependencyConfigurator
     {
-        // private readonly IKernel _container = new StandardKernel();
-
         public ConsoleProcessor ComposeObjects()
         {
             var builder = Host.CreateDefaultBuilder();
@@ -34,11 +30,12 @@ namespace Crawler.ConsoleOutput
                     services.AddSingleton<HtmlCrawler>();
                     services.AddSingleton<HtmlParser>();
                     services.AddSingleton<XmlCrawler>();
-                    services.AddHttpClient();
+                    services.AddHttpClient<HttpClientService>();
                     services.RemoveAll<IHttpMessageHandlerBuilderFilter>();
                 });
 
             using var host = builder.Build();
+
             return host.Services.GetService<ConsoleProcessor>();
         }
     }
