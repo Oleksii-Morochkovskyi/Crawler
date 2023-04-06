@@ -1,5 +1,4 @@
-﻿using Crawler.Db;
-using Crawler.Logic.Enums;
+﻿using Crawler.Logic.Enums;
 using Crawler.Logic.Interfaces;
 using Crawler.Logic.Models;
 using Crawler.Logic.Validators;
@@ -12,14 +11,14 @@ namespace Crawler.ConsoleOutput
         private readonly IConsoleHandler _consoleHandler;
         private readonly UrlValidator _validator;
         private readonly Logic.Crawlers.Crawler _crawler;
-        private readonly IRepository _dbHandler;
+        private readonly IRepository _repository;
 
-        public ConsoleProcessor(IConsoleHandler consoleHandler, UrlValidator validator, Logic.Crawlers.Crawler crawler, IRepository dbHandler)
+        public ConsoleProcessor(IConsoleHandler consoleHandler, UrlValidator validator, Logic.Crawlers.Crawler crawler, IRepository repository)
         {
             _consoleHandler = consoleHandler;
             _validator = validator;
             _crawler = crawler;
-            _dbHandler = dbHandler;
+            _repository = repository;
         }
 
         public async Task ExecuteAsync()
@@ -28,7 +27,7 @@ namespace Crawler.ConsoleOutput
             
             var results = await _crawler.StartCrawlerAsync(inputUrl);
 
-            _dbHandler.AddElements(results);
+            _repository.AddElements(results);
 
             PrintDifference(results);
 
@@ -36,7 +35,7 @@ namespace Crawler.ConsoleOutput
 
             PrintNumberOfLinks(results);
 
-            await _dbHandler.SaveChanges();
+            await _repository.SaveChanges();
         }
 
         public string GetAddress()
