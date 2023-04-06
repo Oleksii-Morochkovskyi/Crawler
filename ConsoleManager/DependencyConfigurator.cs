@@ -13,30 +13,17 @@ namespace Crawler.ConsoleOutput
 {
     public class DependencyConfigurator
     {
-        public ConsoleProcessor ComposeObjects()
+        public IHost ComposeObjects(IHostBuilder builder)
         {
-            var builder = Host.CreateDefaultBuilder();
-
             builder.ConfigureServices(
                 services =>
                 {
-                    services.AddSingleton<ConsoleProcessor>();
                     services.AddScoped<IConsoleHandler, ConsoleWrapper>();
-                    services.AddSingleton<UrlHelper>();
-                    services.AddSingleton<UrlValidator>();
-                    services.AddSingleton<Logic.Crawlers.Crawler>();
-                    services.AddScoped<HttpClientService>();
-                    services.AddSingleton<ResponseTimeService>();
-                    services.AddSingleton<HtmlCrawler>();
-                    services.AddSingleton<HtmlParser>();
-                    services.AddSingleton<XmlCrawler>();
-                    services.AddHttpClient<HttpClientService>();
-                    services.RemoveAll<IHttpMessageHandlerBuilderFilter>();
                 });
 
-            using var host = builder.Build();
+            var host = builder.Build();
 
-            return host.Services.GetService<ConsoleProcessor>();
+            return host;
         }
     }
 }
