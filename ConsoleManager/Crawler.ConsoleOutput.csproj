@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Crawler.Db\Crawler.Db.csproj" />
+    <ProjectReference Include="..\Crawler.Repository\Crawler.Repository.csproj" />
     <ProjectReference Include="..\TestTask\Crawler.Logic.csproj" />
   </ItemGroup>
 
