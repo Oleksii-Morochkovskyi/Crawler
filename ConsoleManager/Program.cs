@@ -1,4 +1,5 @@
-﻿using Crawler.Logic.Crawlers;
+﻿using Crawler.Db;
+using Crawler.Logic.Crawlers;
 using Crawler.Logic.Helpers;
 using Crawler.Logic.Interfaces;
 using Crawler.Logic.Parsers;
@@ -31,6 +32,7 @@ namespace Crawler.ConsoleOutput
                     services.AddSingleton<XmlCrawler>();
                     services.AddHttpClient<HttpClientService>();
                     services.RemoveAll<IHttpMessageHandlerBuilderFilter>();
+                    services.AddSingleton<CrawlerDbContext>();
                 });
 
             var configurator = new DependencyConfigurator();
