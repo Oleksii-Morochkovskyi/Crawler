@@ -1,20 +1,28 @@
-﻿using Crawler.Logic.Models;
+﻿using Crawler.Db.Enteties;
 using Microsoft.EntityFrameworkCore;
 
 namespace Crawler.Db
 {
     public class CrawlerDbContext : DbContext
     {
-        public DbSet<UrlResponse> UrlResponse => Set<UrlResponse>();
+        public DbSet<FoundUrl> FoundUrls { get; set; }
+        public DbSet<DomainUrl> DomainUrls { get; set; }
 
-        public CrawlerDbContext()
+        public CrawlerDbContext(DbContextOptions<CrawlerDbContext> options):base(options)
         {
             Database.EnsureCreated();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=localhost;Database=master;Trusted_Connection=True;TrustServerCertificate=true");
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<FoundUrl>()
+                .HasOne(u => u.DomainUrl)
+                .WithMany()
+                .HasForeignKey(u => u.DomainUrlId);
         }
     }
 }

@@ -7,8 +7,8 @@ using Crawler.Logic.Models;
 using Crawler.Logic.Parsers;
 using Crawler.Logic.Services;
 using Crawler.Logic.Validators;
-using Crawler.Repository;
 using Moq;
+using Crawler.Db.Repository;
 
 namespace Crawler.ConsoleOutput.Tests
 {
