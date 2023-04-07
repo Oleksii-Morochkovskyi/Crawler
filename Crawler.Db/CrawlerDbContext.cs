@@ -1,4 +1,4 @@
-﻿using Crawler.Db.Enteties;
+﻿using Crawler.Db.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Crawler.Db

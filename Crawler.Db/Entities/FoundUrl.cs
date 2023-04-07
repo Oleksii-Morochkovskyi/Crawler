@@ -1,7 +1,6 @@
 ﻿using Crawler.Logic.Enums;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Crawler.Db.Enteties
+namespace Crawler.Db.Entities
 {
     public class FoundUrl
     {

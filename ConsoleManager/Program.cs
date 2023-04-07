@@ -1,4 +1,5 @@
-﻿using Crawler.Logic.Crawlers;
+﻿using Crawler.ConsoleOutput.DependencyInjection;
+using Crawler.Logic.Crawlers;
 using Crawler.Logic.Helpers;
 using Crawler.Logic.Parsers;
 using Crawler.Logic.Services;
@@ -14,28 +15,12 @@ namespace Crawler.ConsoleOutput
     {
         static async Task Main(string[] args)
         {
-            var builder = Host.CreateDefaultBuilder();
-
-            builder.ConfigureServices(
-                services =>
-                {
-                    services.AddSingleton<ConsoleProcessor>();
-                    services.AddSingleton<UrlHelper>();
-                    services.AddSingleton<UrlValidator>();
-                    services.AddSingleton<Logic.Crawlers.Crawler>();
-                    services.AddSingleton<HttpClientService>();
-                    services.AddSingleton<ResponseTimeService>();
-                    services.AddSingleton<HtmlCrawler>();
-                    services.AddSingleton<HtmlParser>();
-                    services.AddSingleton<XmlCrawler>();
-                    services.AddHttpClient<HttpClientService>();
-                    services.RemoveAll<IHttpMessageHandlerBuilderFilter>();
-                });
-
             var configurator = new DependencyConfigurator();
 
-            using var host = configurator.ComposeObjects(builder);
-            
+            var builder = configurator.ComposeObjects();
+
+            using var host = builder.Build();
+
             var consoleProcessor = host.Services.GetRequiredService<ConsoleProcessor>();
 
             await consoleProcessor.ExecuteAsync();

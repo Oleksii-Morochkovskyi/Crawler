@@ -1,4 +1,4 @@
-﻿using Crawler.Db.Enteties;
+﻿using Crawler.Db.Entities;
 using Crawler.Logic.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -11,7 +11,7 @@ namespace Crawler.Db.Repository
 
         public Repository()
         {
-            var options = ConfigureRepository(_dbContext);
+            var options = ConfigureRepository();
             _dbContext = new CrawlerDbContext(options);
         }
 
@@ -25,11 +25,6 @@ namespace Crawler.Db.Repository
         public async Task SaveChanges()
         {
             await _dbContext.SaveChangesAsync();
-            /*var list = _dbContext.DomainUrls.ToList();
-            foreach (var url in list)
-            {
-                Console.WriteLine(url.BaseUrl);
-            }*/
         }
 
         private IEnumerable<FoundUrl> FillFoundUrls(IEnumerable<UrlResponse> urls, string baseUrl)
@@ -39,7 +34,7 @@ namespace Crawler.Db.Repository
             return urls.Select(url => new FoundUrl { Url = url.Url, Location = url.Location, ResponseTimeMs = url.ResponseTimeMs, DomainUrl = domainUrl });
         }
 
-        public DbContextOptions<CrawlerDbContext> ConfigureRepository(CrawlerDbContext dbContext)
+        public DbContextOptions<CrawlerDbContext> ConfigureRepository()
         {
             var builder = new ConfigurationBuilder();
 

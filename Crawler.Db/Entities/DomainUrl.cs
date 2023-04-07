@@ -1,4 +1,4 @@
-﻿namespace Crawler.Db.Enteties
+﻿namespace Crawler.Db.Entities
 {
     public class DomainUrl
     {

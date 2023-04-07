@@ -8,6 +8,6 @@ namespace Crawler.Db.Repository
     {
         void AddFoundUrls(IEnumerable<UrlResponse> urls, string baseUrl);
         Task SaveChanges();
-        DbContextOptions<CrawlerDbContext> ConfigureRepository(CrawlerDbContext dbContext);
+        DbContextOptions<CrawlerDbContext> ConfigureRepository();
     }
 }
