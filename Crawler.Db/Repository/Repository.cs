@@ -9,10 +9,10 @@ namespace Crawler.Db.Repository
     {
         private readonly CrawlerDbContext _dbContext;
 
-        public Repository()
+        public Repository(/*IConfiguration configuration*/CrawlerDbContext dbContext)
         {
-            var options = ConfigureRepository();
-            _dbContext = new CrawlerDbContext(options);
+           // var options = ConfigureRepository(configuration);
+           _dbContext = dbContext;
         }
 
         public void AddFoundUrls(IEnumerable<UrlResponse> urls, string baseUrl)
@@ -34,21 +34,13 @@ namespace Crawler.Db.Repository
             return urls.Select(url => new FoundUrl { Url = url.Url, Location = url.Location, ResponseTimeMs = url.ResponseTimeMs, DomainUrl = domainUrl });
         }
 
-        public DbContextOptions<CrawlerDbContext> ConfigureRepository()
+        /*public DbContextOptions<CrawlerDbContext> ConfigureRepository(IConfiguration configuration)
         {
-            var builder = new ConfigurationBuilder();
-
-            builder.SetBasePath(Directory.GetCurrentDirectory());
-
-            builder.AddJsonFile("appsettings.json");
-
-            var config = builder.Build();
-
-            var connectionString = config.GetConnectionString("DefaultConnection");
+            var connectionString = configuration.GetConnectionString("DefaultConnection");
 
             var optionsBuilder = new DbContextOptionsBuilder<CrawlerDbContext>();
 
             return optionsBuilder.UseSqlServer(connectionString).Options;
-        }
+        }*/
     }
 }

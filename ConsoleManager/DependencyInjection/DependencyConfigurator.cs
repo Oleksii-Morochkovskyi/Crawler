@@ -1,16 +1,7 @@
 ﻿using Crawler.Db.DependencyInjection;
-using Crawler.Db.Repository;
-using Crawler.Logic.Crawlers;
 using Crawler.Logic.DependencyInjection;
-using Crawler.Logic.Helpers;
-using Crawler.Logic.Interfaces;
-using Crawler.Logic.Parsers;
-using Crawler.Logic.Services;
-using Crawler.Logic.Validators;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Http;
+using Microsoft.Extensions.Logging;
 
 namespace Crawler.ConsoleOutput.DependencyInjection
 {
@@ -27,6 +18,8 @@ namespace Crawler.ConsoleOutput.DependencyInjection
             builder = consoleOutputDI.InjectDependencies(builder);
             builder = crawlerLogicDI.InjectDependencies(builder);
             builder = databaseDI.InjectDependencies(builder);
+
+            builder.ConfigureLogging(logging => logging.ClearProviders());
 
             return builder;
         }

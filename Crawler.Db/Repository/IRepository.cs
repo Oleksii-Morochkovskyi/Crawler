@@ -1,6 +1,5 @@
 ﻿
 using Crawler.Logic.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace Crawler.Db.Repository
 {
@@ -8,6 +7,5 @@ namespace Crawler.Db.Repository
     {
         void AddFoundUrls(IEnumerable<UrlResponse> urls, string baseUrl);
         Task SaveChanges();
-        DbContextOptions<CrawlerDbContext> ConfigureRepository();
     }
 }
