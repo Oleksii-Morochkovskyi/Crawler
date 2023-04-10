@@ -3,6 +3,7 @@ using Crawler.UrlDatabase;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Crawler.UrlDatabase.Migrations
 {
     [DbContext(typeof(UrlDatabaseContext))]
-    partial class CrawlerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230410153750_DeleteData")]
+    partial class DeleteData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -1,11 +1,11 @@
 ﻿
 using Crawler.Logic.Models;
 
-namespace Crawler.Db.Repository
+namespace Crawler.UrlDatabase.Repository
 {
     public interface IRepository
     {
-        void AddFoundUrls(IEnumerable<UrlResponse> urls, string baseUrl);
-        Task SaveChanges();
+        Task AddFoundUrlsAsync(IEnumerable<UrlResponse> urls, string baseUrl);
+        Task AddInitialUrlAsync(string baseUrl);
     }
 }

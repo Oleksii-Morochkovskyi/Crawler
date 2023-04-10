@@ -1,14 +1,13 @@
 ﻿using Crawler.Logic.Enums;
 
-namespace Crawler.Db.Entities
+namespace Crawler.UrlDatabase.Entities
 {
-    public class FoundUrl
+    public class FoundUrl : BaseEntity
     {
-        public int Id { get; set; }
         public string Url { get; set; }
         public int ResponseTimeMs { get; set; }
         public Location Location { get; set; }
-        public int DomainUrlId { get; set; }
-        public DomainUrl DomainUrl { get; set; }
+        public int InitialUrlId { get; set; }
+        public InitialUrl InitialUrl { get; set; }
     }
 }

@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Crawler.Logic.Tests", "Craw
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Crawler.ConsoleOutput.Tests", "ConsoleOutput.Tests\Crawler.ConsoleOutput.Tests.csproj", "{17F0493C-1949-4008-BF91-694A719B3274}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crawler.Db", "Crawler.Db\Crawler.Db.csproj", "{52FFD70A-D5BE-4505-A68B-EC359E7435C0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Crawler.UrlDatabase", "Crawler.Db\Crawler.UrlDatabase.csproj", "{52FFD70A-D5BE-4505-A68B-EC359E7435C0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

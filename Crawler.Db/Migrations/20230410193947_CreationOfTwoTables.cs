@@ -5,7 +5,7 @@
 namespace Crawler.UrlDatabase.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class CreationOfTwoTables : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -20,7 +20,7 @@ namespace Crawler.UrlDatabase.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DomainUrls", x => x.Id);
+                    table.PrimaryKey("PK_InitialUrls", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -32,21 +32,21 @@ namespace Crawler.UrlDatabase.Migrations
                     Url = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ResponseTimeMs = table.Column<int>(type: "int", nullable: false),
                     Location = table.Column<int>(type: "int", nullable: false),
-                    DomainUrlId = table.Column<int>(type: "int", nullable: false)
+                    InitialUrlId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_FoundUrls", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_FoundUrls_DomainUrls_DomainUrlId",
-                        column: x => x.DomainUrlId,
+                        name: "FK_FoundUrls_InitialUrls_InitialUrlId",
+                        column: x => x.InitialUrlId,
                         principalTable: "InitialUrls",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_FoundUrls_DomainUrlId",
+                name: "IX_FoundUrls_InitialUrlId",
                 table: "FoundUrls",
                 column: "InitialUrlId");
         }

@@ -1,4 +1,4 @@
-﻿using Crawler.ConsoleOutput.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Crawler.ConsoleOutput
@@ -7,9 +7,14 @@ namespace Crawler.ConsoleOutput
     {
         static async Task Main(string[] args)
         {
+            IConfiguration connectionConfiguration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json")
+                .Build();
+
             var configurator = new DependencyConfigurator();
 
-            var builder = configurator.ComposeObjects();
+            var builder = configurator.ConfigureHost(connectionConfiguration);
 
             using var host = builder.Build();
 

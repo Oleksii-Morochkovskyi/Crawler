@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Crawler.Db\Crawler.Db.csproj" />
+    <ProjectReference Include="..\Crawler.Db\Crawler.UrlDatabase.csproj" />
     <ProjectReference Include="..\TestTask\Crawler.Logic.csproj" />
   </ItemGroup>
 

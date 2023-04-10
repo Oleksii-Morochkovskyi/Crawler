@@ -1,8 +1,8 @@
-﻿using Crawler.Db.Repository;
-using Crawler.Logic.Enums;
+﻿using Crawler.Logic.Enums;
 using Crawler.Logic.Interfaces;
 using Crawler.Logic.Models;
 using Crawler.Logic.Validators;
+using Crawler.UrlDatabase.Repository;
 
 namespace Crawler.ConsoleOutput
 {
@@ -33,10 +33,9 @@ namespace Crawler.ConsoleOutput
 
             PrintNumberOfLinks(results);
 
-            _repository.AddFoundUrls(results, inputUrl);
+            await _repository.AddInitialUrlAsync(inputUrl);
 
-            await _repository.SaveChanges();
-            
+            await _repository.AddFoundUrlsAsync(results, inputUrl);
         }
 
         public string GetAddress()
