@@ -1,9 +1,10 @@
 ﻿using Crawler.Logic.Models;
+using Crawler.Persistence.Entities;
 
-namespace Crawler.UrlRepository.Interfaces
+namespace Crawler.Persistence.Interfaces
 {
     public interface IFoundUrlRepository
     {
-        Task AddFoundUrlsAsync(IEnumerable<UrlResponse> urls);
+        Task AddFoundUrlsAsync(InitialUrl initialUrl, IEnumerable<UrlResponse> urls);
     }
 }

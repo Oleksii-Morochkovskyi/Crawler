@@ -1,5 +1,4 @@
 using Crawler.Logic.Crawlers;
-using NUnit.Framework;
 using Crawler.Logic.Enums;
 using Crawler.Logic.Helpers;
 using Crawler.Logic.Interfaces;
@@ -7,9 +6,9 @@ using Crawler.Logic.Models;
 using Crawler.Logic.Parsers;
 using Crawler.Logic.Services;
 using Crawler.Logic.Validators;
+using Crawler.Persistence.Interfaces;
 using Moq;
-using Crawler.UrlRepository;
-using Crawler.UrlRepository.Repositories;
+using NUnit.Framework;
 
 namespace Crawler.ConsoleOutput.Tests
 {
@@ -27,11 +26,15 @@ namespace Crawler.ConsoleOutput.Tests
         private HttpClientService _httpClientService;
         private HttpClient _httpClient;
         private Mock<DatabaseInteraction> _dbInteractionMock;
+        private Mock<IFoundUrlRepository> _foundUrlRepositoryMock;
+        private Mock<IInitialUrlRepository> _initialUrlRepositoryMock;
 
         [SetUp]
         public void Setup()
         {
-            _dbInteractionMock = new Mock<DatabaseInteraction>();
+            _foundUrlRepositoryMock = new Mock<IFoundUrlRepository>();
+            _initialUrlRepositoryMock = new Mock<IInitialUrlRepository>();
+            _dbInteractionMock = new Mock<DatabaseInteraction>(_foundUrlRepositoryMock.Object, _initialUrlRepositoryMock.Object);
             _httpClient = new HttpClient();
             _httpClientService = new HttpClientService(_httpClient);
             _validatorMock = new Mock<UrlValidator>();

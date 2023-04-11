@@ -1,10 +1,10 @@
-﻿using Crawler.UrlRepository.Interfaces;
-using Crawler.UrlRepository.Repositories;
+﻿using Crawler.Persistence.Interfaces;
+using Crawler.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Crawler.UrlRepository
+namespace Crawler.Persistence
 {
     public static class DependencyInjection
     {

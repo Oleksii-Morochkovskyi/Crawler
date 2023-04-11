@@ -1,8 +1,8 @@
-﻿using Crawler.UrlRepository.Entities;
+﻿using Crawler.Persistence.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Crawler.UrlRepository.EntityConfigurations
+namespace Crawler.Persistence.EntityConfigurations
 {
     public class FoundUrlConfiguration : IEntityTypeConfiguration<FoundUrl>
     {
@@ -10,7 +10,8 @@ namespace Crawler.UrlRepository.EntityConfigurations
         {
             builder.HasOne(u => u.InitialUrl)
                 .WithMany(x => x.FoundUrls)
-                .HasForeignKey(u => u.InitialUrlId);
+                .HasForeignKey(u => u.InitialUrlId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

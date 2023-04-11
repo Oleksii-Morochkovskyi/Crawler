@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
-namespace Crawler.UrlRepository
+namespace Crawler.Persistence
 {
     public class UrlDatabaseContextFactory : IDesignTimeDbContextFactory<UrlDatabaseContext>
     {

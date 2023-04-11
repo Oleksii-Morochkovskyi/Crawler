@@ -1,7 +1,9 @@
-﻿namespace Crawler.UrlRepository.Interfaces
+﻿using Crawler.Persistence.Entities;
+
+namespace Crawler.Persistence.Interfaces
 {
     public interface IInitialUrlRepository
     {
-        Task AddInitialUrlAsync(string baseUrl);
+        Task<InitialUrl> AddInitialUrlAsync(string baseUrl);
     }
 }

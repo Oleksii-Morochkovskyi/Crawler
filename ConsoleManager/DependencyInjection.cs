@@ -1,5 +1,4 @@
 ﻿using Crawler.Logic.Interfaces;
-using Crawler.UrlRepository.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Crawler.ConsoleOutput
@@ -11,8 +10,6 @@ namespace Crawler.ConsoleOutput
             services.AddSingleton<ConsoleProcessor>();
             services.AddSingleton<DatabaseInteraction>();
             services.AddScoped<IConsoleHandler, ConsoleWrapper>();
-            services.AddSingleton<InitialUrlRepository>();
-            services.AddSingleton<FoundUrlRepository>();
 
             return services;
         }

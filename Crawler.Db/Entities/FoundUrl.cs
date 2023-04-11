@@ -1,6 +1,6 @@
 ﻿using Crawler.Logic.Enums;
 
-namespace Crawler.UrlRepository.Entities
+namespace Crawler.Persistence.Entities
 {
     public class FoundUrl : BaseEntity
     {

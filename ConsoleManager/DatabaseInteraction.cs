@@ -1,24 +1,24 @@
 ﻿using Crawler.Logic.Models;
-using Crawler.UrlRepository.Repositories;
+using Crawler.Persistence.Interfaces;
 
 namespace Crawler.ConsoleOutput
 {
     public class DatabaseInteraction
     {
-        public DatabaseInteraction(FoundUrlRepository foundUrlRep, InitialUrlRepository initialUrlRep)
-        {
-            _foundUrlRep = foundUrlRep;
-            _initialUrlRep = initialUrlRep;
-        }
+        private readonly IFoundUrlRepository _foundUrlRepository;
+        private readonly IInitialUrlRepository _initialUrlRepository;
 
-        private readonly FoundUrlRepository _foundUrlRep;
-        private readonly InitialUrlRepository _initialUrlRep;
+        public DatabaseInteraction(IFoundUrlRepository foundUrlRepository, IInitialUrlRepository initialUrlRepository)
+        {
+            _foundUrlRepository = foundUrlRepository;
+            _initialUrlRepository = initialUrlRepository;
+        }
 
         public async Task AddUrlsAsync(IEnumerable<UrlResponse> urls, string baseUrl)
         {
-            await _foundUrlRep.AddFoundUrlsAsync(urls);
+            var initialUrl = await _initialUrlRepository.AddInitialUrlAsync(baseUrl);
 
-            await _initialUrlRep.AddInitialUrlAsync(baseUrl);
+            await _foundUrlRepository.AddFoundUrlsAsync(initialUrl, urls);
         }
     }
 }

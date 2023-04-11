@@ -1,8 +1,8 @@
 ﻿using Crawler.Logic.Models;
-using Crawler.UrlRepository.Entities;
-using Crawler.UrlRepository.Interfaces;
+using Crawler.Persistence.Entities;
+using Crawler.Persistence.Interfaces;
 
-namespace Crawler.UrlRepository.Repositories
+namespace Crawler.Persistence.Repositories
 {
     public class FoundUrlRepository : IFoundUrlRepository
     {
@@ -13,16 +13,15 @@ namespace Crawler.UrlRepository.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task AddFoundUrlsAsync(IEnumerable<UrlResponse> urls)
+        public async Task AddFoundUrlsAsync(InitialUrl initialUrl, IEnumerable<UrlResponse> urls)
         {
-            var baseUrlId = _dbContext.InitialUrls.Max(u => u.Id);
-            
             var foundUrls = urls.Select(url => new FoundUrl
             {
                 Url = url.Url, 
                 Location = url.Location, 
-                ResponseTimeMs = url.ResponseTimeMs, 
-                InitialUrlId = baseUrlId
+                ResponseTimeMs = url.ResponseTimeMs,
+                InitialUrl = initialUrl,
+                InitialUrlId = initialUrl.Id
             });
 
             _dbContext.FoundUrls.AddRange(foundUrls);

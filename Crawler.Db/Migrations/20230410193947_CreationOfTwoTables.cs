@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace Crawler.UrlRepository.Migrations
+namespace Crawler.Persistence.Migrations
 {
     /// <inheritdoc />
     public partial class CreationOfTwoTables : Migration

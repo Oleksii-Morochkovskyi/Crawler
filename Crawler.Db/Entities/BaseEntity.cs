@@ -1,4 +1,4 @@
-﻿namespace Crawler.UrlRepository.Entities
+﻿namespace Crawler.Persistence.Entities
 {
     public class BaseEntity
     {

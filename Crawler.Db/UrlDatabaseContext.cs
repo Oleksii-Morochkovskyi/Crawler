@@ -1,8 +1,7 @@
-﻿using Crawler.UrlRepository.Entities;
-using Crawler.UrlRepository.EntityConfigurations;
+﻿using Crawler.Persistence.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Crawler.UrlRepository
+namespace Crawler.Persistence
 {
     public class UrlDatabaseContext : DbContext
     {
@@ -16,7 +15,7 @@ namespace Crawler.UrlRepository
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new FoundUrlConfiguration());
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(UrlDatabaseContext).Assembly);
         }
     }
 }

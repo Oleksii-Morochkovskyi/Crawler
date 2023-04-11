@@ -1,4 +1,4 @@
-﻿using Crawler.UrlRepository;
+﻿using Crawler.Persistence;
 using Crawler.Logic;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
