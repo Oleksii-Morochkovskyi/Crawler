@@ -1,9 +1,9 @@
-﻿using Crawler.UrlDatabase.Repository;
+﻿using Crawler.UrlRepository.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Crawler.UrlDatabase
+namespace Crawler.UrlRepository
 {
     public static class DependencyInjection
     {
@@ -11,8 +11,8 @@ namespace Crawler.UrlDatabase
         {
             var connectionString = configuration.GetConnectionString("DefaultConnection");
 
-            services.AddDbContext<UrlDatabaseContext>(options => options.UseSqlServer(connectionString));
-            services.AddScoped<IRepository, UrlRepository>();
+            services.AddDbContext<UrlRepositoryContext>(options => options.UseSqlServer(connectionString));
+            services.AddScoped<IRepository, Repository.UrlRepository>();
             
             return services;
         }

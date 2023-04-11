@@ -1,7 +1,7 @@
 ﻿
 using Crawler.Logic.Models;
 
-namespace Crawler.UrlDatabase.Repository
+namespace Crawler.UrlRepository.Repository
 {
     public interface IRepository
     {

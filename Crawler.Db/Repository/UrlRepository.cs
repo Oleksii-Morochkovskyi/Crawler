@@ -1,13 +1,13 @@
 ﻿using Crawler.Logic.Models;
-using Crawler.UrlDatabase.Entities;
+using Crawler.UrlRepository.Entities;
 
-namespace Crawler.UrlDatabase.Repository
+namespace Crawler.UrlRepository.Repository
 {
     public class UrlRepository : IRepository
     {
-        private readonly UrlDatabaseContext _dbContext;
+        private readonly UrlRepositoryContext _dbContext;
 
-        public UrlRepository(UrlDatabaseContext dbContext)
+        public UrlRepository(UrlRepositoryContext dbContext)
         {
             _dbContext = dbContext;
         }

@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace Crawler.UrlDatabase.Migrations
+namespace Crawler.UrlRepository.Migrations
 {
     /// <inheritdoc />
     public partial class DeleteData : Migration

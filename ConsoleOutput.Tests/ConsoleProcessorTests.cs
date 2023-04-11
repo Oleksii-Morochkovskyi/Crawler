@@ -8,8 +8,8 @@ using Crawler.Logic.Parsers;
 using Crawler.Logic.Services;
 using Crawler.Logic.Validators;
 using Moq;
-using Crawler.UrlDatabase;
-using Crawler.UrlDatabase.Repository;
+using Crawler.UrlRepository;
+using Crawler.UrlRepository.Repository;
 
 namespace Crawler.ConsoleOutput.Tests
 {

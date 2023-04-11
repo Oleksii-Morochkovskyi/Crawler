@@ -1,14 +1,14 @@
-﻿using Crawler.UrlDatabase.Entities;
+﻿using Crawler.UrlRepository.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Crawler.UrlDatabase
+namespace Crawler.UrlRepository
 {
-    public class UrlDatabaseContext : DbContext
+    public class UrlRepositoryContext : DbContext
     {
         public DbSet<FoundUrl> FoundUrls { get; set; }
         public DbSet<InitialUrl> InitialUrls { get; set; }
 
-        public UrlDatabaseContext(DbContextOptions<UrlDatabaseContext> options):base(options)
+        public UrlRepositoryContext(DbContextOptions<UrlRepositoryContext> options):base(options)
         {
             Database.EnsureCreated();
         }
