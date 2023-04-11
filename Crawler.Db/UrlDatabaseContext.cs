@@ -4,12 +4,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Crawler.UrlRepository
 {
-    public class CrawlerDatabaseContext : DbContext
+    public class UrlDatabaseContext : DbContext
     {
         public DbSet<FoundUrl> FoundUrls { get; set; }
         public DbSet<InitialUrl> InitialUrls { get; set; }
 
-        public CrawlerDatabaseContext(DbContextOptions<CrawlerDatabaseContext> options):base(options)
+        public UrlDatabaseContext(DbContextOptions<UrlDatabaseContext> options):base(options)
         {
             Database.EnsureCreated();
         }

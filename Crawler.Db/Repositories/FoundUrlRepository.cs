@@ -6,9 +6,9 @@ namespace Crawler.UrlRepository.Repositories
 {
     public class FoundUrlRepository : IFoundUrlRepository
     {
-        private readonly CrawlerDatabaseContext _dbContext;
+        private readonly UrlDatabaseContext _dbContext;
 
-        public FoundUrlRepository(CrawlerDatabaseContext dbContext)
+        public FoundUrlRepository(UrlDatabaseContext dbContext)
         {
             _dbContext = dbContext;
         }

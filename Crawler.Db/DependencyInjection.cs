@@ -1,5 +1,4 @@
-﻿using Crawler.UrlRepository.EntityConfigurations;
-using Crawler.UrlRepository.Interfaces;
+﻿using Crawler.UrlRepository.Interfaces;
 using Crawler.UrlRepository.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -13,10 +12,9 @@ namespace Crawler.UrlRepository
         {
             var connectionString = configuration.GetConnectionString("DefaultConnection");
 
-            services.AddDbContext<CrawlerDatabaseContext>(options => options.UseSqlServer(connectionString));
+            services.AddDbContext<UrlDatabaseContext>(options => options.UseSqlServer(connectionString));
             services.AddScoped<IInitialUrlRepository, InitialUrlRepository>();
             services.AddScoped<IFoundUrlRepository, FoundUrlRepository>();
-            //services.AddSingleton<FoundUrlConfiguration>();
 
             return services;
         }
