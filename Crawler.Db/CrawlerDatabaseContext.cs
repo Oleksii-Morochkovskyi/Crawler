@@ -1,24 +1,22 @@
 ﻿using Crawler.UrlRepository.Entities;
+using Crawler.UrlRepository.EntityConfigurations;
 using Microsoft.EntityFrameworkCore;
 
 namespace Crawler.UrlRepository
 {
-    public class UrlRepositoryContext : DbContext
+    public class CrawlerDatabaseContext : DbContext
     {
         public DbSet<FoundUrl> FoundUrls { get; set; }
         public DbSet<InitialUrl> InitialUrls { get; set; }
 
-        public UrlRepositoryContext(DbContextOptions<UrlRepositoryContext> options):base(options)
+        public CrawlerDatabaseContext(DbContextOptions<CrawlerDatabaseContext> options):base(options)
         {
             Database.EnsureCreated();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<FoundUrl>()
-                .HasOne(u => u.InitialUrl)
-                .WithMany(x => x.FoundUrls)
-                .HasForeignKey(u => u.InitialUrlId);
+            modelBuilder.ApplyConfiguration(new FoundUrlConfiguration());
         }
     }
 }

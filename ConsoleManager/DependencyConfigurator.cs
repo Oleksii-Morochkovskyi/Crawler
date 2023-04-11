@@ -15,9 +15,9 @@ namespace Crawler.ConsoleOutput
             builder.ConfigureLogging(logging => logging.ClearProviders())
                 .ConfigureServices(services =>
             {
-                services.InjectConsoleDependencies();
-                services.InjectCrawlerDependencies();
-                services.InjectDatabaseDependencies(configurator);
+                services.AddDatabaseDependencies(configurator);
+                services.AddConsoleDependencies();
+                services.AddCrawlerDependencies();
             });
 
             return builder;

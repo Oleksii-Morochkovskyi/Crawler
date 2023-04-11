@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Crawler.UrlRepository.Migrations
 {
-    [DbContext(typeof(UrlRepositoryContext))]
+    [DbContext(typeof(CrawlerDatabaseContext))]
     partial class CrawlerDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

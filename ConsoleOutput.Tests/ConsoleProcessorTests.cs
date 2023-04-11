@@ -9,7 +9,7 @@ using Crawler.Logic.Services;
 using Crawler.Logic.Validators;
 using Moq;
 using Crawler.UrlRepository;
-using Crawler.UrlRepository.Repository;
+using Crawler.UrlRepository.Repositories;
 
 namespace Crawler.ConsoleOutput.Tests
 {
@@ -26,12 +26,12 @@ namespace Crawler.ConsoleOutput.Tests
         private HtmlParser _parser;
         private HttpClientService _httpClientService;
         private HttpClient _httpClient;
-        private Mock<IRepository> _repositoryMock;
+        private Mock<DatabaseInteraction> _dbInteractionMock;
 
         [SetUp]
         public void Setup()
         {
-            _repositoryMock = new Mock<IRepository>();
+            _dbInteractionMock = new Mock<DatabaseInteraction>();
             _httpClient = new HttpClient();
             _httpClientService = new HttpClientService(_httpClient);
             _validatorMock = new Mock<UrlValidator>();
@@ -42,7 +42,7 @@ namespace Crawler.ConsoleOutput.Tests
             _parser = new HtmlParser(_httpClientService, _helperMock.Object);
             _htmlCrawler = new HtmlCrawler(_writerMock.Object, _parser, _validatorMock.Object);
             _crawlerMock = new Mock<Logic.Crawlers.Crawler>(_responseTimeService, _htmlCrawler, _xmlCrawler);
-            _console = new ConsoleProcessor(_writerMock.Object, _validatorMock.Object, _crawlerMock.Object, _repositoryMock.Object);
+            _console = new ConsoleProcessor(_writerMock.Object, _validatorMock.Object, _crawlerMock.Object, _dbInteractionMock.Object);
             
         }
 

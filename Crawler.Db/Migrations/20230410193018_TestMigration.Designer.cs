@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Crawler.UrlRepository.Migrations
 {
-    [DbContext(typeof(UrlRepositoryContext))]
+    [DbContext(typeof(CrawlerDatabaseContext))]
     [Migration("20230410193018_TestMigration")]
     partial class TestMigration
     {

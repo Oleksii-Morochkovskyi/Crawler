@@ -11,7 +11,7 @@ namespace Crawler.Logic
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection InjectCrawlerDependencies(this IServiceCollection services)
+        public static IServiceCollection AddCrawlerDependencies(this IServiceCollection services)
         {
             services.AddSingleton<UrlHelper>();
             services.AddSingleton<UrlValidator>();
