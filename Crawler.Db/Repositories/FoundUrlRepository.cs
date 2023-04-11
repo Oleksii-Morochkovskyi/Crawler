@@ -1,5 +1,6 @@
 ﻿using Crawler.Logic.Models;
 using Crawler.UrlRepository.Entities;
+using Crawler.UrlRepository.Interfaces;
 
 namespace Crawler.UrlRepository.Repositories
 {

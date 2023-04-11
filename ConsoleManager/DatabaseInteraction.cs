@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Crawler.Logic.Models;
-using Crawler.UrlRepository.Entities;
+﻿using Crawler.Logic.Models;
 using Crawler.UrlRepository.Repositories;
 
 namespace Crawler.ConsoleOutput

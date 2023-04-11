@@ -1,4 +1,5 @@
 ﻿using Crawler.UrlRepository.EntityConfigurations;
+using Crawler.UrlRepository.Interfaces;
 using Crawler.UrlRepository.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;

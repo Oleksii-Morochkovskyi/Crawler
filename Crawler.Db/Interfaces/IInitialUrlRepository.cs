@@ -1,7 +1,4 @@
-﻿
-using Crawler.Logic.Models;
-
-namespace Crawler.UrlRepository.Repositories
+﻿namespace Crawler.UrlRepository.Interfaces
 {
     public interface IInitialUrlRepository
     {

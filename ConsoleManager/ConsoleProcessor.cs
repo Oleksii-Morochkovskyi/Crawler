@@ -2,7 +2,6 @@
 using Crawler.Logic.Interfaces;
 using Crawler.Logic.Models;
 using Crawler.Logic.Validators;
-using Crawler.UrlRepository.Repositories;
 
 namespace Crawler.ConsoleOutput
 {
