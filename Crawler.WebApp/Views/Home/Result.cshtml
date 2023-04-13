@@ -1,0 +1,74 @@
+﻿@{
+    ViewData["Title"] = "Result";
+}
+
+@using Crawler.Logic.Enums
+@model IEnumerable<Crawler.Persistence.Entities.FoundUrl>
+
+<h1>List of URLs with Response Time</h1>
+
+<table>
+    <thead>
+    <tr>
+        <th>Url</th>
+        <th>Response Time (ms)</th>
+    </tr>
+    </thead>
+    <tbody class="table">
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Url</td>
+            <td>@item.ResponseTimeMs</td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<table>
+    <thead>
+        <tr>
+            <th>Urls that not found at website</th>
+        </tr>
+    </thead>
+    <tbody class="table">
+        @{
+            var XmlExceptHtml = Model.Where(x => x.Location == Location.Xml)
+            .Select(x => x.Url);
+
+            foreach (var item in XmlExceptHtml)
+            {
+                <tr>
+                    <td>@item</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<table>
+    <thead>
+        <tr>
+            <th>Urls that not found at sitemap.xml</th>
+        </tr>
+    </thead>
+    <tbody class="table">
+        @{
+            var HtmlExceptXml = Model.Where(x => x.Location == Location.Html)
+            .Select(x => x.Url);
+
+            foreach (var item in HtmlExceptXml)
+            {
+                <tr>
+                    <td>@item</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<form method="get" asp-page="/">
+
+    @Html.ActionLink("Go Back", "Input", "Home", null, new { @class = "actionLink" })
+
+</form>

@@ -13,14 +13,14 @@ namespace Crawler.Logic
     {
         public static IServiceCollection AddCrawlerDependencies(this IServiceCollection services)
         {
-            services.AddSingleton<UrlHelper>();
-            services.AddSingleton<UrlValidator>();
-            services.AddSingleton<Crawlers.Crawler>();
-            services.AddSingleton<HttpClientService>();
-            services.AddSingleton<ResponseTimeService>();
-            services.AddSingleton<HtmlCrawler>();
-            services.AddSingleton<HtmlParser>();
-            services.AddSingleton<XmlCrawler>();
+            services.AddScoped<UrlHelper>();
+            services.AddScoped<UrlValidator>();
+            services.AddScoped<Crawlers.Crawler>();
+            services.AddScoped<HttpClientService>();
+            services.AddScoped<ResponseTimeService>();
+            services.AddScoped<HtmlCrawler>();
+            services.AddScoped<HtmlParser>();
+            services.AddScoped<XmlCrawler>();
             services.AddHttpClient<HttpClientService>();
             services.RemoveAll<IHttpMessageHandlerBuilderFilter>();
 

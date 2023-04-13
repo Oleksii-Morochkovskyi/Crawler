@@ -8,7 +8,7 @@
         }
 
         public string BaseUrl { get; set; }
-
+        public DateTime DateTime { get; set; }
         public ICollection<FoundUrl> FoundUrls { get; set; }
     }
 }

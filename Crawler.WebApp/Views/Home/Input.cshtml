@@ -1,0 +1,43 @@
+﻿@{
+    ViewData["Title"] = "Input";
+}
+
+@model IEnumerable<Crawler.Persistence.Entities.InitialUrl>
+
+<div>
+    <form asp-controller="Home" asp-action="Submit">
+        <div class="form-group">
+            <label for="url-input">Enter Url:</label>
+            <input type="text" id="url-input" name="Url">
+            <button type="submit">Submit</button>
+        </div>
+    </form>
+    <div>
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+        }
+    </div>
+</div>
+
+<h2>Test results</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Url</th>
+            <th>Date</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody class="table">
+        @foreach (var url in Model)
+        {
+            <tr>
+                <td>@url.BaseUrl</td>
+                <td>@url.DateTime</td>
+                <td>@Html.ActionLink("See results", "Result", "Home", new { id = url.Id }, new{@class = "actionLink"})</td>
+            </tr>
+        }
+    </tbody>
+</table>

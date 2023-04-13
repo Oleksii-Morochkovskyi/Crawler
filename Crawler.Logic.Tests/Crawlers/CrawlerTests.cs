@@ -1,4 +1,4 @@
-﻿using Crawler.ConsoleOutput;
+﻿using Crawler.WebApp;
 using Crawler.Logic.Crawlers;
 using Crawler.Logic.Enums;
 using Crawler.Logic.Interfaces;

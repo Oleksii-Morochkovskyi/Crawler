@@ -14,11 +14,11 @@ namespace Crawler.ConsoleOutput
             _initialUrlRepository = initialUrlRepository;
         }
 
-        public async Task AddUrlsAsync(IEnumerable<UrlResponse> urls, string baseUrl)
+        public async Task<int> AddUrlsAsync(IEnumerable<UrlResponse> urls, string baseUrl)
         {
             var initialUrl = await _initialUrlRepository.AddInitialUrlAsync(baseUrl);
 
-            await _foundUrlRepository.AddFoundUrlsAsync(initialUrl, urls);
+            return await _foundUrlRepository.AddFoundUrlsAsync(initialUrl, urls);
         }
     }
 }

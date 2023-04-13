@@ -10,7 +10,7 @@ using Crawler.Persistence.Interfaces;
 using Moq;
 using NUnit.Framework;
 
-namespace Crawler.ConsoleOutput.Tests
+namespace Crawler.WebApp.Tests
 {
     public class ConsoleProcessorTests
     {

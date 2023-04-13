@@ -14,7 +14,7 @@ namespace Crawler.Persistence.Repositories
 
         public async Task<InitialUrl> AddInitialUrlAsync(string url)
         {
-            var initialUrl = new InitialUrl { BaseUrl = url };
+            var initialUrl = new InitialUrl { BaseUrl = url, DateTime = DateTime.Now};
 
             _dbContext.InitialUrls.Add(initialUrl);
 
@@ -22,5 +22,11 @@ namespace Crawler.Persistence.Repositories
 
             return initialUrl;
         }
+
+        public IEnumerable<InitialUrl> GetInitialUrls()
+        {
+            return _dbContext.InitialUrls.ToList();
+        }
+        
     }
 }

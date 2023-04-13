@@ -13,7 +13,7 @@ namespace Crawler.Persistence.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task AddFoundUrlsAsync(InitialUrl initialUrl, IEnumerable<UrlResponse> urls)
+        public async Task<int> AddFoundUrlsAsync(InitialUrl initialUrl, IEnumerable<UrlResponse> urls)
         {
             var foundUrls = urls.Select(url => new FoundUrl
             {
@@ -27,6 +27,13 @@ namespace Crawler.Persistence.Repositories
             _dbContext.FoundUrls.AddRange(foundUrls);
 
             await _dbContext.SaveChangesAsync();
+
+            return initialUrl.Id;
+        }
+
+        public IEnumerable<FoundUrl> GetUrlsByInitialUrlId(int id)
+        {
+            return _dbContext.FoundUrls.Where(x=>x.InitialUrlId == id).ToList();
         }
     }
 }

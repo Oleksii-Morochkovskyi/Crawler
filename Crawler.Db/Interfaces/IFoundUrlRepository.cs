@@ -5,6 +5,7 @@ namespace Crawler.Persistence.Interfaces
 {
     public interface IFoundUrlRepository
     {
-        Task AddFoundUrlsAsync(InitialUrl initialUrl, IEnumerable<UrlResponse> urls);
+        Task<int> AddFoundUrlsAsync(InitialUrl initialUrl, IEnumerable<UrlResponse> urls);
+        IEnumerable<FoundUrl> GetUrlsByInitialUrlId(int id);
     }
 }
