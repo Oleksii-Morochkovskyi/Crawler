@@ -1,14 +1,17 @@
 ﻿using Crawler.Persistence.Interfaces;
 
-namespace Crawler.WebApp
+namespace Crawler.Services
 {
-    public class DatabaseInteraction
+    public class DatabaseInteractionService //think about renaming
     {
         private readonly IFoundUrlRepository _foundUrlRepository;
         private readonly IInitialUrlRepository _initialUrlRepository;
         private readonly Logic.Crawlers.Crawler _crawler;
 
-        public DatabaseInteraction(IFoundUrlRepository foundUrlRepository, IInitialUrlRepository initialUrlRepository, Logic.Crawlers.Crawler crawler)
+        public DatabaseInteractionService(
+            IFoundUrlRepository foundUrlRepository,
+            IInitialUrlRepository initialUrlRepository,
+            Logic.Crawlers.Crawler crawler)
         {
             _foundUrlRepository = foundUrlRepository;
             _initialUrlRepository = initialUrlRepository;

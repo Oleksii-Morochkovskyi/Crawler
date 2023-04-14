@@ -1,6 +1,7 @@
 ﻿using Crawler.ConsoleOutput;
 using Crawler.Logic;
 using Crawler.Persistence;
+using Crawler.Services;
 
 namespace Crawler.WebApp
 {
@@ -12,6 +13,7 @@ namespace Crawler.WebApp
             services.AddConsoleDependencies();
             services.AddWebAppDependencies();
             services.AddCrawlerDependencies();
+            services.AddServiceDependencies();
 
             return services;
         }

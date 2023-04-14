@@ -8,7 +8,9 @@ namespace Crawler.ConsoleOutput
         private readonly IFoundUrlRepository _foundUrlRepository;
         private readonly IInitialUrlRepository _initialUrlRepository;
 
-        public DatabaseInteraction(IFoundUrlRepository foundUrlRepository, IInitialUrlRepository initialUrlRepository)
+        public DatabaseInteraction(
+            IFoundUrlRepository foundUrlRepository,
+            IInitialUrlRepository initialUrlRepository)
         {
             _foundUrlRepository = foundUrlRepository;
             _initialUrlRepository = initialUrlRepository;

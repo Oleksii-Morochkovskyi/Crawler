@@ -3,6 +3,7 @@ using Crawler.Persistence.Interfaces;
 using Crawler.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using Crawler.Services;
 
 namespace Crawler.WebApp.Controllers
 {
@@ -16,7 +17,14 @@ namespace Crawler.WebApp.Controllers
         private readonly InitialUrlViewModel _initialUrlViewModel;
         private readonly ResultViewModel _resultViewModel;
 
-        public HomeController(UrlValidator validator, IFoundUrlRepository foundUrlRepository, IInitialUrlRepository initialUrlRepository, DatabaseInteraction databaseInteraction, FoundUrlViewModel foundUrlViewModel, InitialUrlViewModel initialUrlViewModel, ResultViewModel resultViewModel)
+        public HomeController(
+            UrlValidator validator,
+            IFoundUrlRepository foundUrlRepository,
+            IInitialUrlRepository initialUrlRepository,
+            DatabaseInteraction databaseInteraction,
+            FoundUrlViewModel foundUrlViewModel,
+            InitialUrlViewModel initialUrlViewModel,
+            ResultViewModel resultViewModel)
         {
             _validator = validator;
             _foundUrlRepository = foundUrlRepository;

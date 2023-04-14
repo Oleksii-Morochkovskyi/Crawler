@@ -10,7 +10,10 @@ namespace Crawler.Logic.Crawlers
         private readonly IConsoleHandler _consoleHandler;
         private readonly UrlValidator _urlValidator;
 
-        public HtmlCrawler(IConsoleHandler consoleHandler, HtmlParser parser, UrlValidator validator)
+        public HtmlCrawler(
+            IConsoleHandler consoleHandler,
+            HtmlParser parser,
+            UrlValidator validator)
         {
             _consoleHandler = consoleHandler;
             _parser = parser;

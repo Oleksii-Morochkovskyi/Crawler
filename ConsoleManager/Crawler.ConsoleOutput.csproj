@@ -21,8 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Crawler.Db\Crawler.Persistence.csproj" />
-    <ProjectReference Include="..\TestTask\Crawler.Logic.csproj" />
+    <ProjectReference Include="..\Crawler.Services\Crawler.Services.csproj" />
   </ItemGroup>
 
   <ItemGroup>

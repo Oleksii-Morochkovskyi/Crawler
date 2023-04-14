@@ -9,7 +9,6 @@ namespace Crawler.WebApp
             services.AddScoped<FoundUrlViewModel>();
             services.AddScoped<InitialUrlViewModel>();
             services.AddScoped<ResultViewModel>();
-            services.AddScoped<DatabaseInteraction>();
 
             return services;
         }

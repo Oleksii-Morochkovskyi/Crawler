@@ -12,7 +12,11 @@ namespace Crawler.ConsoleOutput
         private readonly Logic.Crawlers.Crawler _crawler;
         private readonly DatabaseInteraction _dbInteraction;
 
-        public ConsoleProcessor(IConsoleHandler consoleHandler, UrlValidator validator, Logic.Crawlers.Crawler crawler, DatabaseInteraction dbInteraction)
+        public ConsoleProcessor(
+            IConsoleHandler consoleHandler,
+            UrlValidator validator,
+            Logic.Crawlers.Crawler crawler,
+            DatabaseInteraction dbInteraction)
         {
             _consoleHandler = consoleHandler;
             _validator = validator;

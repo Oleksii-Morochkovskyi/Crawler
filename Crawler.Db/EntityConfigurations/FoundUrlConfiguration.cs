@@ -11,7 +11,7 @@ namespace Crawler.Persistence.EntityConfigurations
             builder.HasOne(u => u.InitialUrl)
                 .WithMany(x => x.FoundUrls)
                 .HasForeignKey(u => u.InitialUrlId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }
