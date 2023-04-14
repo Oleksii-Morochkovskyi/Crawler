@@ -1,3 +1,4 @@
+using Crawler.ConsoleOutput;
 using Crawler.Logic.Crawlers;
 using Crawler.Logic.Enums;
 using Crawler.Logic.Helpers;
