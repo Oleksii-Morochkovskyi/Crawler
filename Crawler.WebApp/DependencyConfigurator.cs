@@ -1,17 +1,12 @@
 ﻿using Crawler.ConsoleOutput;
-using Crawler.Persistence;
 using Crawler.Logic;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.Graph.Models;
-using WebApplication = Microsoft.Graph.Models.WebApplication;
+using Crawler.Persistence;
 
 namespace Crawler.WebApp
 {
     public class DependencyConfigurator
     {
-        public Microsoft.AspNetCore.Builder.WebApplication ConfigureHost(IConfiguration configurator, WebApplicationBuilder builder)
+        public WebApplication ConfigureHost(IConfiguration configurator, WebApplicationBuilder builder)
         {
             builder.Host.ConfigureServices(services =>
             {

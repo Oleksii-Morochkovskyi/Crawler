@@ -32,7 +32,7 @@ namespace Crawler.ConsoleOutput
 
             PrintNumberOfLinks(results);
 
-            await _dbInteraction.AddUrlsAsync(results, inputUrl);
+           // await _dbInteraction.AddUrlsAsync(results, inputUrl);
         }
 
         public string GetAddress()

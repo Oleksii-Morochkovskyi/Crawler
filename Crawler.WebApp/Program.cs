@@ -34,7 +34,7 @@ namespace Crawler.WebApp
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Input}/{id?}");
+                pattern: "{controller=Home}/{action=Start}/{id?}");
             
             app.Run();
         }

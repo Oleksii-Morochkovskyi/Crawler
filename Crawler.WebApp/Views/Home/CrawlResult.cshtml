@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Result";
+    ViewData["Title"] = "CrawlResult";
 }
 
 @using Crawler.Logic.Enums
@@ -33,10 +33,10 @@
     </thead>
     <tbody class="table">
         @{
-            var XmlExceptHtml = Model.Where(x => x.Location == Location.Xml)
+            var xmlExceptHtml = Model.Where(x => x.Location == Location.Xml)
             .Select(x => x.Url);
 
-            foreach (var item in XmlExceptHtml)
+            foreach (var item in xmlExceptHtml)
             {
                 <tr>
                     <td>@item</td>
@@ -54,10 +54,10 @@
     </thead>
     <tbody class="table">
         @{
-            var HtmlExceptXml = Model.Where(x => x.Location == Location.Html)
+            var htmlExceptXml = Model.Where(x => x.Location == Location.Html)
             .Select(x => x.Url);
 
-            foreach (var item in HtmlExceptXml)
+            foreach (var item in htmlExceptXml)
             {
                 <tr>
                     <td>@item</td>
@@ -69,6 +69,6 @@
 
 <form method="get" asp-page="/">
 
-    @Html.ActionLink("Go Back", "Input", "Home", null, new { @class = "actionLink" })
+    @Html.ActionLink("Go Back", "Start", "Home", null, new { @class = "actionLink" })
 
 </form>

@@ -10,23 +10,21 @@ namespace Crawler.WebApp.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly Crawler.Logic.Crawlers.Crawler _crawler;
         private readonly UrlValidator _validator;
         private readonly IFoundUrlRepository _foundUrlRepository;
         private readonly IInitialUrlRepository _initialUrlRepository;
         private readonly DatabaseInteraction _databaseInteraction;
 
-        public HomeController(ILogger<HomeController> logger, UrlValidator validator, Logic.Crawlers.Crawler crawler, IFoundUrlRepository foundUrlRepository, IInitialUrlRepository initialUrlRepository, DatabaseInteraction databaseInteraction)
+        public HomeController(ILogger<HomeController> logger, UrlValidator validator, IFoundUrlRepository foundUrlRepository, IInitialUrlRepository initialUrlRepository, DatabaseInteraction databaseInteraction)
         {
             _logger = logger;
-            _crawler = crawler;
             _validator = validator;
             _foundUrlRepository = foundUrlRepository;
             _initialUrlRepository = initialUrlRepository;
             _databaseInteraction = databaseInteraction;
         }
 
-        public IActionResult Input()
+        public IActionResult Start()
         {
             var initialUrls = _initialUrlRepository.GetInitialUrls();
 
@@ -38,27 +36,24 @@ namespace Crawler.WebApp.Controllers
         {
             var input = Request.Form["Url"];
 
-            if (!_validator.IsValidUrl(input))
+            if (_validator.IsValidUrl(input))
             {
-                TempData["ErrorMessage"] = "Invalid Url. Please try again.";
-                return RedirectToAction("Input");
+                return RedirectToAction("Crawl", new { url = input });
             }
 
-            return RedirectToAction("Crawl", new { url = input });
+            TempData["ErrorMessage"] = "Invalid Url. Please try again.";
+
+            return RedirectToAction("Start");
         }
 
         public async Task<IActionResult> Crawl(string url)
         {
-            var initialUrl = url.TrimEnd('/');
+            var initialUrlId = await _databaseInteraction.AddUrlsAsync(url);
 
-            var result = await _crawler.StartCrawlerAsync(initialUrl);
-
-            var initialUrlId = await _databaseInteraction.AddUrlsAsync(result, initialUrl);
-
-            return RedirectToAction("Result", new { id = initialUrlId });
+            return RedirectToAction("CrawlResult", new { id = initialUrlId });
         }
     
-        public IActionResult Result(int id)
+        public IActionResult CrawlResult(int id)
         {
             var foundUrls= _foundUrlRepository.GetUrlsByInitialUrlId(id);
 
