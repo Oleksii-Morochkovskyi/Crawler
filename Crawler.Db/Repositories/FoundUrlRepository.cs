@@ -1,6 +1,7 @@
 ﻿using Crawler.Logic.Models;
 using Crawler.Persistence.Entities;
 using Crawler.Persistence.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Crawler.Persistence.Repositories
 {
@@ -31,9 +32,9 @@ namespace Crawler.Persistence.Repositories
             return initialUrl.Id;
         }
 
-        public IEnumerable<FoundUrl> GetUrlsByInitialUrlId(int id)
+        public async Task<IEnumerable<FoundUrl>> GetUrlsByInitialUrlIdAsync(int id)
         {
-            return _dbContext.FoundUrls.Where(x=>x.InitialUrlId == id).ToList();
+            return await _dbContext.FoundUrls.Where(x=>x.InitialUrlId == id).ToListAsync();
         }
     }
 }

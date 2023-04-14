@@ -13,11 +13,10 @@ namespace Crawler.WebApp
                 .AddJsonFile("appsettings.json")
                 .Build();
 
-            var configurator = new DependencyConfigurator();
+            builder.Services.ConfigureServices(connectionConfiguration);
 
-            var app = configurator.ConfigureHost(connectionConfiguration, builder);
+            var app = builder.Build();
 
-            
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Home/Error");
@@ -34,7 +33,7 @@ namespace Crawler.WebApp
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Start}/{id?}");
+                pattern: "{controller=Home}/{action=Index}/{id?}");
             
             app.Run();
         }

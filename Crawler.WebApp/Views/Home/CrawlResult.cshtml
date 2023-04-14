@@ -2,8 +2,7 @@
     ViewData["Title"] = "CrawlResult";
 }
 
-@using Crawler.Logic.Enums
-@model IEnumerable<Crawler.Persistence.Entities.FoundUrl>
+@model ResultViewModel
 
 <h1>List of URLs with Response Time</h1>
 
@@ -15,7 +14,7 @@
     </tr>
     </thead>
     <tbody class="table">
-    @foreach (var item in Model)
+    @foreach (var item in Model.FoundUrls)
     {
         <tr>
             <td>@item.Url</td>
@@ -33,10 +32,8 @@
     </thead>
     <tbody class="table">
         @{
-            var xmlExceptHtml = Model.Where(x => x.Location == Location.Xml)
-            .Select(x => x.Url);
 
-            foreach (var item in xmlExceptHtml)
+            foreach (var item in Model.UrlsFromXml)
             {
                 <tr>
                     <td>@item</td>
@@ -54,10 +51,8 @@
     </thead>
     <tbody class="table">
         @{
-            var htmlExceptXml = Model.Where(x => x.Location == Location.Html)
-            .Select(x => x.Url);
 
-            foreach (var item in htmlExceptXml)
+            foreach (var item in Model.UrlsFromHtml)
             {
                 <tr>
                     <td>@item</td>
@@ -69,6 +64,6 @@
 
 <form method="get" asp-page="/">
 
-    @Html.ActionLink("Go Back", "Start", "Home", null, new { @class = "actionLink" })
+    @Html.ActionLink("Go Back", "Index", "Home", null, new { @class = "actionLink" })
 
 </form>

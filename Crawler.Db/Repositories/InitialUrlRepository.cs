@@ -1,5 +1,6 @@
 ﻿using Crawler.Persistence.Entities;
 using Crawler.Persistence.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Crawler.Persistence.Repositories
 {
@@ -23,9 +24,9 @@ namespace Crawler.Persistence.Repositories
             return initialUrl;
         }
 
-        public IEnumerable<InitialUrl> GetInitialUrls()
+        public async Task<IEnumerable<InitialUrl>> GetInitialUrlsAsync()
         {
-            return _dbContext.InitialUrls.ToList();
+            return await _dbContext.InitialUrls.ToListAsync();
         }
         
     }

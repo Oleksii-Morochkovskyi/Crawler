@@ -1,8 +1,9 @@
 ﻿@{
-    ViewData["Title"] = "Input";
+    ViewData["Title"] = "Index";
 }
 
-@model IEnumerable<Crawler.Persistence.Entities.InitialUrl>
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model IEnumerable<InitialUrlViewModel>
 
 <div>
     <form asp-controller="Home" asp-action="Submit">

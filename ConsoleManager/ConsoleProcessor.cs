@@ -23,7 +23,7 @@ namespace Crawler.ConsoleOutput
         public async Task ExecuteAsync()
         {
             var inputUrl = GetAddress();
-            
+
             var results = await _crawler.StartCrawlerAsync(inputUrl);
 
             PrintDifference(results);
@@ -32,7 +32,7 @@ namespace Crawler.ConsoleOutput
 
             PrintNumberOfLinks(results);
 
-           // await _dbInteraction.AddUrlsAsync(results, inputUrl);
+            await _dbInteraction.AddUrlsAsync(results, inputUrl);
         }
 
         public string GetAddress()

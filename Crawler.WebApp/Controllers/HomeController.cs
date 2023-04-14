@@ -3,61 +3,65 @@ using Crawler.Persistence.Interfaces;
 using Crawler.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using Crawler.ConsoleOutput;
 
 namespace Crawler.WebApp.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
         private readonly UrlValidator _validator;
         private readonly IFoundUrlRepository _foundUrlRepository;
         private readonly IInitialUrlRepository _initialUrlRepository;
         private readonly DatabaseInteraction _databaseInteraction;
+        private readonly FoundUrlViewModel _foundUrlViewModel;
+        private readonly InitialUrlViewModel _initialUrlViewModel;
+        private readonly ResultViewModel _resultViewModel;
 
-        public HomeController(ILogger<HomeController> logger, UrlValidator validator, IFoundUrlRepository foundUrlRepository, IInitialUrlRepository initialUrlRepository, DatabaseInteraction databaseInteraction)
+        public HomeController(UrlValidator validator, IFoundUrlRepository foundUrlRepository, IInitialUrlRepository initialUrlRepository, DatabaseInteraction databaseInteraction, FoundUrlViewModel foundUrlViewModel, InitialUrlViewModel initialUrlViewModel, ResultViewModel resultViewModel)
         {
-            _logger = logger;
             _validator = validator;
             _foundUrlRepository = foundUrlRepository;
             _initialUrlRepository = initialUrlRepository;
             _databaseInteraction = databaseInteraction;
+            _foundUrlViewModel = foundUrlViewModel;
+            _initialUrlViewModel = initialUrlViewModel;
+            _resultViewModel = resultViewModel;
         }
 
-        public IActionResult Start()
+        public async Task<IActionResult> Index()
         {
-            var initialUrls = _initialUrlRepository.GetInitialUrls();
+            var initialUrls = await _initialUrlRepository.GetInitialUrlsAsync();
 
-            return View((initialUrls));
+            var viewModel = _initialUrlViewModel.MapInitialUrls(initialUrls);
+
+            return View(viewModel);
         }
 
         [HttpPost]
-        public IActionResult Submit()
+        public async Task<IActionResult> Submit()
         {
             var input = Request.Form["Url"];
 
             if (_validator.IsValidUrl(input))
             {
-                return RedirectToAction("Crawl", new { url = input });
+                var initialUrlId = await _databaseInteraction.AddUrlsAsync(input);
+
+                return RedirectToAction("CrawlResult", new { id = initialUrlId });
             }
 
             TempData["ErrorMessage"] = "Invalid Url. Please try again.";
 
-            return RedirectToAction("Start");
+            return RedirectToAction("Index");
         }
 
-        public async Task<IActionResult> Crawl(string url)
+        public async Task<IActionResult> CrawlResult(int id)
         {
-            var initialUrlId = await _databaseInteraction.AddUrlsAsync(url);
+            var foundUrls = await _foundUrlRepository.GetUrlsByInitialUrlIdAsync(id);
 
-            return RedirectToAction("CrawlResult", new { id = initialUrlId });
-        }
-    
-        public IActionResult CrawlResult(int id)
-        {
-            var foundUrls= _foundUrlRepository.GetUrlsByInitialUrlId(id);
+            var viewModel = _foundUrlViewModel.MapFoundUrls(foundUrls);
 
-            return View(foundUrls);
+            var result = _resultViewModel.GetResultViewModel(viewModel);
+
+            return View(result);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
