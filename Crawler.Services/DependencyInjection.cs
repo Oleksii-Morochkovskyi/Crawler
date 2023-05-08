@@ -1,4 +1,4 @@
-﻿using Crawler.WebApp;
+﻿
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -12,7 +12,7 @@ namespace Crawler.Services
     {
         public static IServiceCollection AddServiceDependencies(this IServiceCollection services)
         {
-            services.AddScoped<DatabaseInteraction>();
+            services.AddScoped<DatabaseInteractionService>();
 
             return services;
         }

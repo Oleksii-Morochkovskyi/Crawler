@@ -1,13 +1,14 @@
-﻿using Crawler.Logic.Validators;
+using Crawler.Logic.Validators;
 using Crawler.Persistence.Interfaces;
-using Crawler.WebApp.Models;
-using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
 using Crawler.Services;
+using Crawler.WebApi.Models;
+using Microsoft.AspNetCore.Mvc;
 
-namespace Crawler.WebApp.Controllers
+namespace Crawler.WebApi.Controllers
 {
-    public class HomeController : Controller
+    [ApiController]
+    [Route("api/crawler")]
+    public class CrawlerController : ControllerBase
     {
         private readonly UrlValidator _validator;
         private readonly DatabaseInteractionService _databaseInteractionService;
@@ -15,7 +16,7 @@ namespace Crawler.WebApp.Controllers
         private readonly InitialUrlViewModel _initialUrlViewModel;
         private readonly ResultViewModel _resultViewModel;
 
-        public HomeController(
+        public CrawlerController(
             UrlValidator validator,
             DatabaseInteractionService databaseInteractionService,
             FoundUrlViewModel foundUrlViewModel,
@@ -29,33 +30,32 @@ namespace Crawler.WebApp.Controllers
             _resultViewModel = resultViewModel;
         }
 
-        public async Task<IActionResult> Index()
+        [HttpGet]
+        public async Task<IActionResult> Get()
         {
             var initialUrls = await _databaseInteractionService.GetInitialUrlsAsync();
 
             var viewModel = _initialUrlViewModel.MapInitialUrls(initialUrls);
 
-            return View(viewModel);
+            return new ObjectResult(viewModel);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Submit()
+        public async Task<IActionResult> Post([FromBody] string url)
         {
-            var input = Request.Form["Url"];
-
-            if (_validator.IsValidUrl(input))
+            if (!_validator.IsValidUrl(url))
             {
-                var initialUrlId = await _databaseInteractionService.AddUrlsAsync(input);
-
-                return RedirectToAction("CrawlResult", new { id = initialUrlId });
+                return BadRequest();
             }
 
-            TempData["ErrorMessage"] = "Invalid Url. Please try again.";
+            var initialUrlId = await _databaseInteractionService.AddUrlsAsync(url);
 
-            return RedirectToAction("Index");
+            return new ObjectResult(initialUrlId);
+            
         }
 
-        public async Task<IActionResult> CrawlResult(int id)
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> Get(int id)
         {
             var foundUrls = await _databaseInteractionService.GetUrlsByInitialUrlIdAsync(id);
 
@@ -63,13 +63,7 @@ namespace Crawler.WebApp.Controllers
 
             var result = _resultViewModel.GetResultViewModel(viewModel);
 
-            return View(result);
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return new ObjectResult(result);
         }
     }
 }

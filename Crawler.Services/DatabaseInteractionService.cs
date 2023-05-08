@@ -1,8 +1,10 @@
-﻿using Crawler.Persistence.Interfaces;
+﻿using Crawler.Persistence.Entities;
+using Crawler.Persistence.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Crawler.Services
 {
-    public class DatabaseInteractionService //think about renaming
+    public class DatabaseInteractionService
     {
         private readonly IFoundUrlRepository _foundUrlRepository;
         private readonly IInitialUrlRepository _initialUrlRepository;
@@ -27,6 +29,16 @@ namespace Crawler.Services
             var initialUrl = await _initialUrlRepository.AddInitialUrlAsync(baseUrl);
 
             return await _foundUrlRepository.AddFoundUrlsAsync(initialUrl, result);
+        }
+
+        public async Task<IEnumerable<InitialUrl>> GetInitialUrlsAsync()
+        {
+            return await _initialUrlRepository.GetInitialUrlsAsync();
+        }
+
+        public async Task<IEnumerable<FoundUrl>> GetUrlsByInitialUrlIdAsync(int id)
+        {
+            return await _foundUrlRepository.GetUrlsByInitialUrlIdAsync(id);
         }
     }
 }
