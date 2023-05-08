@@ -18,11 +18,18 @@ builder.Services.ConfigureServices(connectionConfiguration);
 
 var app = builder.Build();
 
+//app.Environment.EnvironmentName = "Production";
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+}
+
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Error");
 }
 
 app.UseHttpsRedirection();
