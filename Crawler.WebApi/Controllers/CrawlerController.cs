@@ -1,7 +1,6 @@
 using Crawler.Logic.Validators;
-using Crawler.Persistence.Interfaces;
 using Crawler.Services;
-using Crawler.WebApi.Models;
+using Crawler.WebApp.Helpers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Crawler.WebApi.Controllers
@@ -12,22 +11,16 @@ namespace Crawler.WebApi.Controllers
     {
         private readonly UrlValidator _validator;
         private readonly DatabaseInteractionService _databaseInteractionService;
-        private readonly FoundUrlViewModel _foundUrlViewModel;
-        private readonly InitialUrlViewModel _initialUrlViewModel;
-        private readonly ResultViewModel _resultViewModel;
+        private readonly MapModelsHelper _mapModelsHelper;
 
         public CrawlerController(
             UrlValidator validator,
             DatabaseInteractionService databaseInteractionService,
-            FoundUrlViewModel foundUrlViewModel,
-            InitialUrlViewModel initialUrlViewModel,
-            ResultViewModel resultViewModel)
+            MapModelsHelper mapModelsHelper)
         {
             _validator = validator;
             _databaseInteractionService = databaseInteractionService;
-            _foundUrlViewModel = foundUrlViewModel;
-            _initialUrlViewModel = initialUrlViewModel;
-            _resultViewModel = resultViewModel;
+            _mapModelsHelper = mapModelsHelper;
         }
 
         [HttpGet]
@@ -35,9 +28,9 @@ namespace Crawler.WebApi.Controllers
         {
             var initialUrls = await _databaseInteractionService.GetInitialUrlsAsync();
 
-            var viewModel = _initialUrlViewModel.MapInitialUrls(initialUrls);
+            var viewModel = _mapModelsHelper.MapInitialUrls(initialUrls);
 
-            return new ObjectResult(viewModel);
+            return new JsonResult(viewModel);
         }
 
         [HttpPost]
@@ -45,25 +38,13 @@ namespace Crawler.WebApi.Controllers
         {
             if (!_validator.IsValidUrl(url))
             {
-                return BadRequest();
+                return BadRequest(new { message = "You entered wrong Url" });
             }
 
             var initialUrlId = await _databaseInteractionService.AddUrlsAsync(url);
 
-            return new ObjectResult(initialUrlId);
+            return new JsonResult(initialUrlId);
             
-        }
-
-        [HttpGet("{id:int}")]
-        public async Task<IActionResult> Get(int id)
-        {
-            var foundUrls = await _databaseInteractionService.GetUrlsByInitialUrlIdAsync(id);
-
-            var viewModel = _foundUrlViewModel.MapFoundUrls(foundUrls);
-
-            var result = _resultViewModel.GetResultViewModel(viewModel);
-
-            return new ObjectResult(result);
         }
     }
 }

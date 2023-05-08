@@ -1,4 +1,11 @@
-﻿using Crawler.WebApp.Models;
+﻿
+using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Crawler.WebApp.Helpers;
 
 namespace Crawler.WebApp
 {
@@ -6,9 +13,7 @@ namespace Crawler.WebApp
     {
         public static IServiceCollection AddWebAppDependencies(this IServiceCollection services)
         {
-            services.AddScoped<FoundUrlViewModel>();
-            services.AddScoped<InitialUrlViewModel>();
-            services.AddScoped<ResultViewModel>();
+            services.AddScoped<MapModelsHelper>();
 
             return services;
         }

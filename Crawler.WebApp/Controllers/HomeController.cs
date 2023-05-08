@@ -4,6 +4,7 @@ using Crawler.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using Crawler.Services;
+using Crawler.WebApp.Helpers;
 
 namespace Crawler.WebApp.Controllers
 {
@@ -11,29 +12,23 @@ namespace Crawler.WebApp.Controllers
     {
         private readonly UrlValidator _validator;
         private readonly DatabaseInteractionService _databaseInteractionService;
-        private readonly FoundUrlViewModel _foundUrlViewModel;
-        private readonly InitialUrlViewModel _initialUrlViewModel;
-        private readonly ResultViewModel _resultViewModel;
+        private readonly MapModelsHelper _mapModelsHelper;
 
         public HomeController(
             UrlValidator validator,
             DatabaseInteractionService databaseInteractionService,
-            FoundUrlViewModel foundUrlViewModel,
-            InitialUrlViewModel initialUrlViewModel,
-            ResultViewModel resultViewModel)
+            MapModelsHelper mapModelsHelper)
         {
             _validator = validator;
             _databaseInteractionService = databaseInteractionService;
-            _foundUrlViewModel = foundUrlViewModel;
-            _initialUrlViewModel = initialUrlViewModel;
-            _resultViewModel = resultViewModel;
+            _mapModelsHelper = mapModelsHelper;
         }
 
         public async Task<IActionResult> Index()
         {
             var initialUrls = await _databaseInteractionService.GetInitialUrlsAsync();
 
-            var viewModel = _initialUrlViewModel.MapInitialUrls(initialUrls);
+            var viewModel = _mapModelsHelper.MapInitialUrls(initialUrls);
 
             return View(viewModel);
         }
@@ -59,9 +54,7 @@ namespace Crawler.WebApp.Controllers
         {
             var foundUrls = await _databaseInteractionService.GetUrlsByInitialUrlIdAsync(id);
 
-            var viewModel = _foundUrlViewModel.MapFoundUrls(foundUrls);
-
-            var result = _resultViewModel.GetResultViewModel(viewModel);
+            var result = _mapModelsHelper.GetResultViewModel(foundUrls);
 
             return View(result);
         }

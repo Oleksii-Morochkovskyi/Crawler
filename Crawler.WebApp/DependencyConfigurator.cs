@@ -11,9 +11,9 @@ namespace Crawler.WebApp
         {
             services.AddDatabaseDependencies(configurator);
             services.AddConsoleDependencies();
-            services.AddWebAppDependencies();
             services.AddCrawlerDependencies();
             services.AddServiceDependencies();
+            services.AddWebAppDependencies();
 
             return services;
         }
