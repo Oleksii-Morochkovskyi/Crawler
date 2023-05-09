@@ -1,23 +1,33 @@
-﻿using Crawler.Services;
-using Crawler.WebApp.Helpers;
+﻿using Crawler.Services.Helpers;
+using Crawler.Services.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Crawler.WebApi.Controllers
 {
-    [Route("api/crawlResult")]
+    [Route("api/[controller]")]
     [ApiController]
-    public class CrawlResultController : ControllerBase
+    public class ResultController : ControllerBase
     {
         private readonly DatabaseInteractionService _databaseInteractionService;
         private readonly MapModelsHelper _mapModelsHelper;
 
-        public CrawlResultController(
+        public ResultController(
             DatabaseInteractionService databaseInteractionService,
             MapModelsHelper mapModelsHelper)
         {
             _databaseInteractionService = databaseInteractionService;
             _mapModelsHelper = mapModelsHelper;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+            var initialUrls = await _databaseInteractionService.GetInitialUrlsAsync();
+
+            var viewModel = _mapModelsHelper.MapInitialUrls(initialUrls);
+
+            return new JsonResult(viewModel);
         }
 
         [HttpGet("{id:int}")]

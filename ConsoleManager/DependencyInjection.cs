@@ -8,8 +8,7 @@ namespace Crawler.ConsoleOutput
         public static IServiceCollection AddConsoleDependencies(this IServiceCollection services)
         {
             services.AddScoped<ConsoleProcessor>();
-            services.AddScoped<ConsoleOutput.DatabaseInteraction>();
-            services.AddScoped<IConsoleHandler, ConsoleWrapper>();
+            services.AddScoped<DatabaseInteraction>();
 
             return services;
         }

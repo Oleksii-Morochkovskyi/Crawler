@@ -1,7 +1,7 @@
 ﻿using Crawler.Logic.Enums;
 using Crawler.Persistence.Entities;
 
-namespace Crawler.WebApp.Models
+namespace Crawler.Services.Models
 {
     public class FoundUrlViewModel
     {
@@ -9,6 +9,5 @@ namespace Crawler.WebApp.Models
         public int ResponseTimeMs { get; set; }
         public Location Location { get; set; }
         public int InitialUrlId { get; set; }
-
     }
 }

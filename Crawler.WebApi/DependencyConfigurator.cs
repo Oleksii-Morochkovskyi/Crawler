@@ -2,7 +2,7 @@
 using Crawler.Persistence;
 using Crawler.Services;
 
-namespace Crawler.WebApp
+namespace Crawler.WebApi
 {
     public static class DependencyConfigurator
     {

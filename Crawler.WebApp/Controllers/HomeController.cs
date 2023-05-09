@@ -1,10 +1,9 @@
 ﻿using Crawler.Logic.Validators;
-using Crawler.Persistence.Interfaces;
-using Crawler.WebApp.Models;
+using Crawler.Services.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using Crawler.Services;
-using Crawler.WebApp.Helpers;
+using Crawler.Services.Helpers;
+using Crawler.Services.Services;
 
 namespace Crawler.WebApp.Controllers
 {

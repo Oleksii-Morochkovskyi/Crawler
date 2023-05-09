@@ -1,10 +1,9 @@
 ﻿
+using Crawler.Logic.Interfaces;
+using Crawler.Services.Helpers;
+using Crawler.Services.Services;
+using Crawler.Services.Wrappers;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Crawler.Services
 {
@@ -13,6 +12,8 @@ namespace Crawler.Services
         public static IServiceCollection AddServiceDependencies(this IServiceCollection services)
         {
             services.AddScoped<DatabaseInteractionService>();
+            services.AddScoped<MapModelsHelper>();
+            services.AddScoped<IConsoleHandler, ConsoleWrapper>();
 
             return services;
         }

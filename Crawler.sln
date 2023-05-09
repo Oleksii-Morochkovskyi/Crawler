@@ -15,9 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Crawler.Persistence", "Craw
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Crawler.WebApp", "Crawler.WebApp\Crawler.WebApp.csproj", "{E6D6CAB8-BB78-4A1A-AC23-854C094D6B95}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Crawler.Services", "Crawler.Services\Crawler.Services.csproj", "{10E1F1A7-134A-45BF-8342-8B9FD1E9BD26}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Crawler.Utils", "Crawler.Services\Crawler.Utils.csproj", "{10E1F1A7-134A-45BF-8342-8B9FD1E9BD26}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crawler.WebApi", "Crawler.WebApi\Crawler.WebApi.csproj", "{E3D67FA8-9EC9-4B5A-9858-36F807463E58}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Crawler.WebApi", "Crawler.WebApi\Crawler.WebApi.csproj", "{E3D67FA8-9EC9-4B5A-9858-36F807463E58}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

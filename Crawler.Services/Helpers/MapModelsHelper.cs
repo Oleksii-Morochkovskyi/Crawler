@@ -1,8 +1,8 @@
 ﻿using Crawler.Logic.Enums;
 using Crawler.Persistence.Entities;
-using Crawler.WebApp.Models;
+using Crawler.Services.Models;
 
-namespace Crawler.WebApp.Helpers
+namespace Crawler.Services.Helpers
 {
     public class MapModelsHelper
     {

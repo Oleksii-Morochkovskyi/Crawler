@@ -1,36 +1,22 @@
 using Crawler.Logic.Validators;
-using Crawler.Services;
-using Crawler.WebApp.Helpers;
+using Crawler.Services.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Crawler.WebApi.Controllers
 {
     [ApiController]
-    [Route("api/crawler")]
+    [Route("api/[controller]")]
     public class CrawlerController : ControllerBase
     {
         private readonly UrlValidator _validator;
         private readonly DatabaseInteractionService _databaseInteractionService;
-        private readonly MapModelsHelper _mapModelsHelper;
 
         public CrawlerController(
             UrlValidator validator,
-            DatabaseInteractionService databaseInteractionService,
-            MapModelsHelper mapModelsHelper)
+            DatabaseInteractionService databaseInteractionService)
         {
             _validator = validator;
             _databaseInteractionService = databaseInteractionService;
-            _mapModelsHelper = mapModelsHelper;
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> Get()
-        {
-            var initialUrls = await _databaseInteractionService.GetInitialUrlsAsync();
-
-            var viewModel = _mapModelsHelper.MapInitialUrls(initialUrls);
-
-            return new JsonResult(viewModel);
         }
 
         [HttpPost]
@@ -44,7 +30,6 @@ namespace Crawler.WebApi.Controllers
             var initialUrlId = await _databaseInteractionService.AddUrlsAsync(url);
 
             return new JsonResult(initialUrlId);
-            
         }
     }
 }

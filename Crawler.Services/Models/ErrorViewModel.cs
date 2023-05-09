@@ -1,4 +1,4 @@
-namespace Crawler.WebApp.Models
+namespace Crawler.Services.Models
 {
     public class ErrorViewModel
     {
