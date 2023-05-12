@@ -1,12 +1,12 @@
+using System.Text.Json.Nodes;
 using Crawler.Logic.Validators;
-using Crawler.Services.Services;
+using Crawler.Utils.Services;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 
 namespace Crawler.WebApi.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class CrawlerController : ControllerBase
+    public class CrawlerController : BaseApiController
     {
         private readonly UrlValidator _validator;
         private readonly DatabaseInteractionService _databaseInteractionService;
@@ -20,8 +20,10 @@ namespace Crawler.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] string url)
+        public async Task<IActionResult> Post([FromBody] JsonObject body)
         {
+            var url = body["url"].ToString();
+
             if (!_validator.IsValidUrl(url))
             {
                 return BadRequest(new { message = "You entered wrong Url" });

@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System.Text.Json;
 
-namespace Crawler.WebApi
+namespace Crawler.WebApi.Middlewares
 {
     public class ErrorHandlerMiddleware
     {

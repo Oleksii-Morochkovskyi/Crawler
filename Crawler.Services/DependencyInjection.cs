@@ -1,11 +1,10 @@
-﻿
-using Crawler.Logic.Interfaces;
+﻿using Crawler.Logic.Interfaces;
 using Crawler.Services.Helpers;
-using Crawler.Services.Services;
 using Crawler.Services.Wrappers;
+using Crawler.Utils.Services;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Crawler.Services
+namespace Crawler.Utils
 {
     public static class DependencyInjection
     {

@@ -1,13 +1,13 @@
 ﻿using Crawler.Services.Helpers;
-using Crawler.Services.Services;
+using Crawler.Services.Models;
+using Crawler.Utils.Services;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Crawler.WebApi.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ResultController : ControllerBase
+    public class ResultController : BaseApiController
     {
         private readonly DatabaseInteractionService _databaseInteractionService;
         private readonly MapModelsHelper _mapModelsHelper;

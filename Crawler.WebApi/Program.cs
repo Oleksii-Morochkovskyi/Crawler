@@ -1,4 +1,5 @@
 using Crawler.WebApi;
+using Crawler.WebApi.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,16 @@ IConfiguration connectionConfiguration = new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
     .AddJsonFile("appsettings.json")
     .Build();
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.WithOrigins("http://localhost:8080")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
 
 builder.Services.ConfigureServices(connectionConfiguration);
 
@@ -31,8 +42,12 @@ app.UseHttpsRedirection();
 
 app.MapControllers();
 
+app.UseMiddleware<ErrorHandlerMiddleware>();
+
+app.UseRouting();
+
 app.UseAuthorization();
 
-app.UseMiddleware<ErrorHandlerMiddleware>();
+app.UseCors();
 
 app.Run();

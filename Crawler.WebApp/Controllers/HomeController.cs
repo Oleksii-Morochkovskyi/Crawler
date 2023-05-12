@@ -3,7 +3,7 @@ using Crawler.Services.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using Crawler.Services.Helpers;
-using Crawler.Services.Services;
+using Crawler.Utils.Services;
 
 namespace Crawler.WebApp.Controllers
 {

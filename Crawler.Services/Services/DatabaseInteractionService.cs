@@ -1,7 +1,7 @@
 ﻿using Crawler.Persistence.Entities;
 using Crawler.Persistence.Interfaces;
 
-namespace Crawler.Services.Services
+namespace Crawler.Utils.Services
 {
     public class DatabaseInteractionService
     {

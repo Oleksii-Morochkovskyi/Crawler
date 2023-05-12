@@ -1,6 +1,6 @@
 ﻿using Crawler.Logic;
 using Crawler.Persistence;
-using Crawler.Services;
+using Crawler.Utils;
 
 namespace Crawler.WebApp
 {
