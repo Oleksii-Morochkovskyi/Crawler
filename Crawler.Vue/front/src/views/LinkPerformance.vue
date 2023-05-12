@@ -58,11 +58,11 @@ export default defineComponent({
   data() {
     const linkId = this.$route.params.id;
     const linkPerformance = ref<LinkPerformance>();
-    const error = ref("");
+    const apiUrl = process.env.VUE_APP_APIURL;
     return {
-      error,
       linkId,
       linkPerformance,
+      apiUrl,
     };
   },
   created() {
@@ -70,20 +70,11 @@ export default defineComponent({
   },
   methods: {
     async getLinkPerformance() {
-      try {
-        const response = await axios.get(
-          `https://localhost:7270/api/Result/${this.linkId}`
-        );
-        console.log(response);
-        const data = response.data;
-        Object.assign(this, {
-          linkPerformance: data,
-        });
-        console.log("this.linkPerformance?.urls");
-        console.log(this.linkPerformance);
-      } catch (e) {
-        this.error = "Error occurred while crawling the website.";
-      }
+      const response = await axios.get(this.apiUrl + `Result/` + this.linkId);
+      const data = response.data;
+      Object.assign(this, {
+        linkPerformance: data,
+      });
     },
   },
 });

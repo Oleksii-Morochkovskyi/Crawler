@@ -11,7 +11,7 @@
     </form>
     <h2>Crawled links</h2>
 
-    <div v-if="links.length">
+    <div v-if="links.length>0">
       <table  class="table">
         <thead>
           <tr>
@@ -48,15 +48,17 @@ export default defineComponent({
     const error = ref("");
     const inputUrl = ref("");
     const isMakingRequest = false;
+    const apiUrl = process.env.VUE_APP_APIURL;
     return {
       error,
       inputUrl,
-      links: [],
+      links,
       isMakingRequest,
+      apiUrl,
     };
   },
   created() {
-    this.crawledUrls();
+    this.getCrawledUrls();
   },
   methods: {
     formatDate(date: string) {
@@ -65,11 +67,8 @@ export default defineComponent({
     async crawlLink() {
       try {
         this.isMakingRequest = true;
-        const body = {
-          url: this.inputUrl,
-        };
-        console.log(body); // eslint-disable-next-line
-        const response = await axios.post("https://localhost:7270/api/Crawler", body);
+        // eslint-disable-next-line
+        const response = await axios.post(this.apiUrl + "Crawler/?uriString=" + this.inputUrl);
         const linkId = response.data;
 
         router.push({ name: "result", params: { id: linkId } });
@@ -79,9 +78,9 @@ export default defineComponent({
         this.isMakingRequest = false;
       }
     },
-    async crawledUrls() {
+    async getCrawledUrls() {
       try {
-        const response = await axios.get("https://localhost:7270/api/Result");
+        const response = await axios.get(this.apiUrl + "Result");
         const data = response.data;
         this.links = data.map(
           (link: any) => new CrawledLinks(link.id, link.baseUrl, link.dateTime)

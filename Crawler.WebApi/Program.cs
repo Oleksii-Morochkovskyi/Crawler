@@ -27,11 +27,6 @@ builder.Services.ConfigureServices(connectionConfiguration);
 
 var app = builder.Build();
 
-//app.UseDefaultFiles();
-
-//app.UseStaticFiles();
-//app.Environment.EnvironmentName = "Production";
-
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

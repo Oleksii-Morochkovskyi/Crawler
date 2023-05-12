@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{AF4A20CE-9E4D-4D5E-BDB0-BBE052384230}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Crawler.Vue</RootNamespace>
+    <AssemblyName>Crawler.Vue</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="front\.env" />
+    <None Include="front\package-lock.json" />
+    <None Include="front\package.json" />
+    <None Include="front\README.md" />
+    <None Include="front\src\App.vue" />
+    <None Include="front\src\views\HomePage.vue" />
+    <None Include="front\src\views\LinkPerformance.vue" />
+    <None Include="front\tsconfig.json" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="front\.gitignore" />
+    <Content Include="front\babel.config.js" />
+    <Content Include="front\public\favicon.ico" />
+    <Content Include="front\public\index.html" />
+    <Content Include="front\src\assets\logo.png" />
+    <Content Include="front\src\assets\style.css" />
+    <Content Include="front\vue.config.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="front\src\components\CrawledLinks.ts" />
+    <TypeScriptCompile Include="front\src\components\LinkData.ts" />
+    <TypeScriptCompile Include="front\src\components\LinkPerformance.ts" />
+    <TypeScriptCompile Include="front\src\components\Location.ts" />
+    <TypeScriptCompile Include="front\src\main.ts" />
+    <TypeScriptCompile Include="front\src\router\index.ts" />
+    <TypeScriptCompile Include="front\src\shims-vue.d.ts" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

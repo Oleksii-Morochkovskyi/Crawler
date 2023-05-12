@@ -20,16 +20,15 @@ namespace Crawler.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] JsonObject body)
+        public async Task<IActionResult> Post(string? uriString)
         {
-            var url = body["url"].ToString();
 
-            if (!_validator.IsValidUrl(url))
+            if (!_validator.IsValidUrl(uriString))
             {
                 return BadRequest(new { message = "You entered wrong Url" });
             }
 
-            var initialUrlId = await _databaseInteractionService.AddUrlsAsync(url);
+            var initialUrlId = await _databaseInteractionService.AddUrlsAsync(uriString);
 
             return new JsonResult(initialUrlId);
         }
