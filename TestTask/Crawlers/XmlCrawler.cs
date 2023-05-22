@@ -13,7 +13,10 @@ namespace Crawler.Logic.Crawlers
         private readonly IConsoleHandler _consoleHandler;
         private readonly HttpClientService _httpClientService;
 
-        public XmlCrawler(IConsoleHandler consoleHandler, UrlHelper helper, UrlValidator validator, HttpClientService httpClientService)
+        public XmlCrawler(IConsoleHandler consoleHandler,
+            UrlHelper helper,
+            UrlValidator validator,
+            HttpClientService httpClientService)
         {
             _urlHelper = helper;
             _validator = validator;

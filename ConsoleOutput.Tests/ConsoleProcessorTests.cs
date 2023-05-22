@@ -1,5 +1,5 @@
+using Crawler.ConsoleOutput;
 using Crawler.Logic.Crawlers;
-using NUnit.Framework;
 using Crawler.Logic.Enums;
 using Crawler.Logic.Helpers;
 using Crawler.Logic.Interfaces;
@@ -7,9 +7,11 @@ using Crawler.Logic.Models;
 using Crawler.Logic.Parsers;
 using Crawler.Logic.Services;
 using Crawler.Logic.Validators;
+using Crawler.Persistence.Interfaces;
 using Moq;
+using NUnit.Framework;
 
-namespace Crawler.ConsoleOutput.Tests
+namespace Crawler.WebApp.Tests
 {
     public class ConsoleProcessorTests
     {
@@ -24,10 +26,16 @@ namespace Crawler.ConsoleOutput.Tests
         private HtmlParser _parser;
         private HttpClientService _httpClientService;
         private HttpClient _httpClient;
+        private Mock<DatabaseInteraction> _dbInteractionMock;
+        private Mock<IFoundUrlRepository> _foundUrlRepositoryMock;
+        private Mock<IInitialUrlRepository> _initialUrlRepositoryMock;
 
         [SetUp]
         public void Setup()
         {
+            _foundUrlRepositoryMock = new Mock<IFoundUrlRepository>();
+            _initialUrlRepositoryMock = new Mock<IInitialUrlRepository>();
+            _dbInteractionMock = new Mock<DatabaseInteraction>(_foundUrlRepositoryMock.Object, _initialUrlRepositoryMock.Object);
             _httpClient = new HttpClient();
             _httpClientService = new HttpClientService(_httpClient);
             _validatorMock = new Mock<UrlValidator>();
@@ -38,7 +46,8 @@ namespace Crawler.ConsoleOutput.Tests
             _parser = new HtmlParser(_httpClientService, _helperMock.Object);
             _htmlCrawler = new HtmlCrawler(_writerMock.Object, _parser, _validatorMock.Object);
             _crawlerMock = new Mock<Logic.Crawlers.Crawler>(_responseTimeService, _htmlCrawler, _xmlCrawler);
-            _console = new ConsoleProcessor(_writerMock.Object, _validatorMock.Object, _crawlerMock.Object);
+            _console = new ConsoleProcessor(_writerMock.Object, _validatorMock.Object, _crawlerMock.Object, _dbInteractionMock.Object);
+            
         }
 
         [Test]

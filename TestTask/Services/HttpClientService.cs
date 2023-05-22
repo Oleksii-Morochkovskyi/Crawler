@@ -5,9 +5,9 @@ namespace Crawler.Logic.Services
     {
         private readonly HttpClient _httpClient;
 
-        public HttpClientService(HttpClient client)
+        public HttpClientService(HttpClient httpClient)
         {
-            _httpClient = client;
+            _httpClient = httpClient;
         }
 
         public virtual async Task<string> GetStringAsync(string url)

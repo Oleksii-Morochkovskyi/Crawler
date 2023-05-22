@@ -10,25 +10,33 @@ namespace Crawler.ConsoleOutput
         private readonly IConsoleHandler _consoleHandler;
         private readonly UrlValidator _validator;
         private readonly Logic.Crawlers.Crawler _crawler;
+        private readonly DatabaseInteraction _dbInteraction;
 
-        public ConsoleProcessor(IConsoleHandler consoleHandler, UrlValidator validator, Logic.Crawlers.Crawler crawler)
+        public ConsoleProcessor(
+            IConsoleHandler consoleHandler,
+            UrlValidator validator,
+            Logic.Crawlers.Crawler crawler,
+            DatabaseInteraction dbInteraction)
         {
             _consoleHandler = consoleHandler;
             _validator = validator;
             _crawler = crawler;
+            _dbInteraction = dbInteraction;
         }
 
         public async Task ExecuteAsync()
         {
             var inputUrl = GetAddress();
-            
+
             var results = await _crawler.StartCrawlerAsync(inputUrl);
-            
+
             PrintDifference(results);
 
             PrintTimeResponse(results);
 
             PrintNumberOfLinks(results);
+
+            await _dbInteraction.AddUrlsAsync(results, inputUrl);
         }
 
         public string GetAddress()

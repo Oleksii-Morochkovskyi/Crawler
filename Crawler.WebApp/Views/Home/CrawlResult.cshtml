@@ -1,0 +1,69 @@
+﻿@{
+    ViewData["Title"] = "CrawlResult";
+}
+
+@model ResultViewModel
+
+<h1>List of URLs with Response Time</h1>
+
+<table>
+    <thead>
+    <tr>
+        <th>Url</th>
+        <th>Response Time (ms)</th>
+    </tr>
+    </thead>
+    <tbody class="table">
+    @foreach (var item in Model.FoundUrls)
+    {
+        <tr>
+            <td>@item.Url</td>
+            <td>@item.ResponseTimeMs</td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<table>
+    <thead>
+        <tr>
+            <th>Urls that not found at website</th>
+        </tr>
+    </thead>
+    <tbody class="table">
+        @{
+
+            foreach (var item in Model.UrlsFromXml)
+            {
+                <tr>
+                    <td>@item</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<table>
+    <thead>
+        <tr>
+            <th>Urls that not found at sitemap.xml</th>
+        </tr>
+    </thead>
+    <tbody class="table">
+        @{
+
+            foreach (var item in Model.UrlsFromHtml)
+            {
+                <tr>
+                    <td>@item</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<form method="get" asp-page="/">
+
+    @Html.ActionLink("Go Back", "Index", "Home", null, new { @class = "actionLink" })
+
+</form>

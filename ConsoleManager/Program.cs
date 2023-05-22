@@ -1,8 +1,5 @@
-﻿using Crawler.Logic.Crawlers;
-using Crawler.Logic.Helpers;
-using Crawler.Logic.Parsers;
-using Crawler.Logic.Services;
-using Crawler.Logic.Validators;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Crawler.ConsoleOutput
 {
@@ -10,19 +7,20 @@ namespace Crawler.ConsoleOutput
     {
         static async Task Main(string[] args)
         {
-            var consoleHandler = new ConsoleWrapper();
-            var validator = new UrlValidator();
-            using var httpClient = new HttpClient();
-            var httpClientService = new HttpClientService(httpClient);
-            var helper = new UrlHelper();
-            var responseTimeService = new ResponseTimeService(httpClientService, consoleHandler);
-            var htmlParser = new HtmlParser(httpClientService, helper);
-            var htmlCrawler = new HtmlCrawler(consoleHandler, htmlParser, validator);
-            var xmlCrawler = new XmlCrawler(consoleHandler, helper, validator, httpClientService);
-            var crawler = new Crawler.Logic.Crawlers.Crawler(responseTimeService, htmlCrawler, xmlCrawler);
-            var console = new ConsoleProcessor(consoleHandler, validator, crawler);
+            IConfiguration connectionConfiguration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json")
+                .Build();
 
-            await console.ExecuteAsync();
+            var configurator = new DependencyConfigurator();
+
+            var builder = configurator.ConfigureHost(connectionConfiguration);
+
+            using var host = builder.Build();
+
+            var consoleProcessor = host.Services.GetRequiredService<ConsoleProcessor>();
+
+            await consoleProcessor.ExecuteAsync();
         }
     }
 }

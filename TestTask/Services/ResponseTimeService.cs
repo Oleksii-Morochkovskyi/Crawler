@@ -9,7 +9,9 @@ namespace Crawler.Logic.Services
         private readonly HttpClientService _httpClientService;
         private readonly IConsoleHandler _consoleHandler;
 
-        public ResponseTimeService(HttpClientService clientService, IConsoleHandler consoleHandler)
+        public ResponseTimeService(
+            HttpClientService clientService,
+            IConsoleHandler consoleHandler)
         {
             _httpClientService = clientService;
             _consoleHandler = consoleHandler;

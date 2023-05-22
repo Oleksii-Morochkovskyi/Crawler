@@ -9,7 +9,9 @@ namespace Crawler.Logic.Parsers
         private readonly HttpClientService _httpClientService;
         private readonly UrlHelper _urlHelper;
 
-        public HtmlParser(HttpClientService httpClientService, UrlHelper helper)
+        public HtmlParser(
+            HttpClientService httpClientService,
+            UrlHelper helper)
         {
             _httpClientService = httpClientService;
             _urlHelper = helper;

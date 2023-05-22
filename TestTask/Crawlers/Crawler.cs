@@ -10,7 +10,10 @@ namespace Crawler.Logic.Crawlers
         private readonly HtmlCrawler _htmlCrawler;
         private readonly XmlCrawler _xmlCrawler;
 
-        public Crawler(ResponseTimeService responseTimeService, HtmlCrawler htmlCrawler, XmlCrawler xmlCrawler)
+        public Crawler(
+            ResponseTimeService responseTimeService,
+            HtmlCrawler htmlCrawler,
+            XmlCrawler xmlCrawler)
         {
             _responseTimeService = responseTimeService;
             _htmlCrawler = htmlCrawler;
