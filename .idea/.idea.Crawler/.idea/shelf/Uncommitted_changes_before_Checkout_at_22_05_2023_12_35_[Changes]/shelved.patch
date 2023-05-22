@@ -1,0 +1,178 @@
+Index: ConsoleManager/DependencyConfigurator.cs
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>using Crawler.Persistence;\r\nusing Crawler.Logic;\r\nusing Microsoft.Extensions.Configuration;\r\nusing Microsoft.Extensions.Hosting;\r\nusing Microsoft.Extensions.Logging;\r\n\r\nnamespace Crawler.ConsoleOutput\r\n{\r\n    public class DependencyConfigurator\r\n    {\r\n        public IHostBuilder ConfigureHost(IConfiguration configurator)\r\n        {\r\n            var builder = Host.CreateDefaultBuilder();\r\n\r\n            builder.ConfigureLogging(logging => logging.ClearProviders())\r\n                .ConfigureServices(services =>\r\n                {\r\n                    services.AddDatabaseDependencies(configurator);\r\n                    services.AddConsoleDependencies();\r\n                    services.AddCrawlerDependencies();\r\n                });\r\n\r\n            return builder;\r\n        }\r\n    }\r\n}
+===================================================================
+diff --git a/ConsoleManager/DependencyConfigurator.cs b/ConsoleManager/DependencyConfigurator.cs
+--- a/ConsoleManager/DependencyConfigurator.cs	
++++ b/ConsoleManager/DependencyConfigurator.cs	
+@@ -3,6 +3,7 @@
+ using Microsoft.Extensions.Configuration;
+ using Microsoft.Extensions.Hosting;
+ using Microsoft.Extensions.Logging;
++using Crawler.Utils;
+ 
+ namespace Crawler.ConsoleOutput
+ {
+@@ -18,6 +19,7 @@
+                     services.AddDatabaseDependencies(configurator);
+                     services.AddConsoleDependencies();
+                     services.AddCrawlerDependencies();
++                    services.AddUtilDependencies();
+                 });
+ 
+             return builder;
+Index: Crawler.Vue/front/.env
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>VUE_APP_APIURL='https://localhost:7270/api/'
+===================================================================
+diff --git a/Crawler.Vue/front/.env b/Crawler.Vue/front/.env
+--- a/Crawler.Vue/front/.env	
++++ b/Crawler.Vue/front/.env	
+@@ -1,1 +1,1 @@
+-VUE_APP_APIURL='https://localhost:7270/api/'
+\ No newline at end of file
++VUE_APP_APIURL='http://webapi.local/api/'
+\ No newline at end of file
+Index: Crawler.WebApi/Properties/launchSettings.json
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>{\r\n  \"$schema\": \"https://json.schemastore.org/launchsettings.json\",\r\n  \"iisSettings\": {\r\n    \"windowsAuthentication\": false,\r\n    \"anonymousAuthentication\": true,\r\n    \"iisExpress\": {\r\n      \"applicationUrl\": \"http://localhost:59231\",\r\n      \"sslPort\": 44389\r\n    }\r\n  },\r\n  \"profiles\": {\r\n    \"Crawler.WebApi\": {\r\n      \"commandName\": \"Project\",\r\n      \"dotnetRunMessages\": true,\r\n      \"launchBrowser\": true,\r\n      \"launchUrl\": \"swagger\",\r\n      \"applicationUrl\": \"https://localhost:7270;http://localhost:5270\",\r\n      \"environmentVariables\": {\r\n        \"ASPNETCORE_ENVIRONMENT\": \"Development\"\r\n      }\r\n    },\r\n    \"IIS Express\": {\r\n      \"commandName\": \"IISExpress\",\r\n      \"launchBrowser\": true,\r\n      \"launchUrl\": \"swagger\",\r\n      \"environmentVariables\": {\r\n        \"ASPNETCORE_ENVIRONMENT\": \"Development\"\r\n      }\r\n    }\r\n  }\r\n}\r\n
+===================================================================
+diff --git a/Crawler.WebApi/Properties/launchSettings.json b/Crawler.WebApi/Properties/launchSettings.json
+--- a/Crawler.WebApi/Properties/launchSettings.json	
++++ b/Crawler.WebApi/Properties/launchSettings.json	
+@@ -1,23 +1,14 @@
+ {
+-  "$schema": "https://json.schemastore.org/launchsettings.json",
+-  "iisSettings": {
+-    "windowsAuthentication": false,
+-    "anonymousAuthentication": true,
+-    "iisExpress": {
+-      "applicationUrl": "http://localhost:59231",
+-      "sslPort": 44389
+-    }
+-  },
+   "profiles": {
+     "Crawler.WebApi": {
+       "commandName": "Project",
+-      "dotnetRunMessages": true,
+       "launchBrowser": true,
+       "launchUrl": "swagger",
+-      "applicationUrl": "https://localhost:7270;http://localhost:5270",
+       "environmentVariables": {
+         "ASPNETCORE_ENVIRONMENT": "Development"
+-      }
++      },
++      "dotnetRunMessages": true,
++      "applicationUrl": "https://localhost:7270;http://localhost:5270"
+     },
+     "IIS Express": {
+       "commandName": "IISExpress",
+@@ -25,7 +16,28 @@
+       "launchUrl": "swagger",
+       "environmentVariables": {
+         "ASPNETCORE_ENVIRONMENT": "Development"
++      }
++    },
++    "IIS webapi.local": {
++      "commandName": "IIS",
++      "launchBrowser": true,
++      "launchUrl": "swagger",
++      "environmentVariables": {
++        "ASPNETCORE_ENVIRONMENT": "Development"
+       }
+     }
+-  }
+-}
++  },
++  "$schema": "https://json.schemastore.org/launchsettings.json",
++  "iisSettings": {
++    "windowsAuthentication": false,
++    "anonymousAuthentication": true,
++    "iis": {
++      "applicationUrl": "http://webapi.local",
++      "sslPort": 0
++    },
++    "iisExpress": {
++      "applicationUrl": "http://localhost:59231",
++      "sslPort": 44389
++    }
++  }
++}
+\ No newline at end of file
+Index: Crawler.WebApp/DependencyConfigurator.cs
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>using Crawler.Logic;\r\nusing Crawler.Persistence;\r\nusing Crawler.Utils;\r\n\r\nnamespace Crawler.WebApp\r\n{\r\n    public static class DependencyConfigurator\r\n    {\r\n        public static IServiceCollection ConfigureServices(this IServiceCollection services, IConfiguration configurator)\r\n        {\r\n            services.AddDatabaseDependencies(configurator);\r\n            services.AddCrawlerDependencies();\r\n            services.AddServiceDependencies();\r\n\r\n            return services;\r\n        }\r\n    }\r\n}\r\n
+===================================================================
+diff --git a/Crawler.WebApp/DependencyConfigurator.cs b/Crawler.WebApp/DependencyConfigurator.cs
+--- a/Crawler.WebApp/DependencyConfigurator.cs	
++++ b/Crawler.WebApp/DependencyConfigurator.cs	
+@@ -10,7 +10,7 @@
+         {
+             services.AddDatabaseDependencies(configurator);
+             services.AddCrawlerDependencies();
+-            services.AddServiceDependencies();
++            services.AddUtilDependencies();
+ 
+             return services;
+         }
+Index: Crawler.Services/DependencyInjection.cs
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>using Crawler.Logic.Interfaces;\r\nusing Crawler.Services.Helpers;\r\nusing Crawler.Services.Wrappers;\r\nusing Crawler.Utils.Services;\r\nusing Microsoft.Extensions.DependencyInjection;\r\n\r\nnamespace Crawler.Utils\r\n{\r\n    public static class DependencyInjection\r\n    {\r\n        public static IServiceCollection AddServiceDependencies(this IServiceCollection services)\r\n        {\r\n            services.AddScoped<DatabaseInteractionService>();\r\n            services.AddScoped<MapModelsHelper>();\r\n            services.AddScoped<IConsoleHandler, ConsoleWrapper>();\r\n\r\n            return services;\r\n        }\r\n    }\r\n}\r\n
+===================================================================
+diff --git a/Crawler.Services/DependencyInjection.cs b/Crawler.Services/DependencyInjection.cs
+--- a/Crawler.Services/DependencyInjection.cs	
++++ b/Crawler.Services/DependencyInjection.cs	
+@@ -8,7 +8,7 @@
+ {
+     public static class DependencyInjection
+     {
+-        public static IServiceCollection AddServiceDependencies(this IServiceCollection services)
++        public static IServiceCollection AddUtilDependencies(this IServiceCollection services)
+         {
+             services.AddScoped<DatabaseInteractionService>();
+             services.AddScoped<MapModelsHelper>();
+Index: Crawler.WebApi/DependencyConfigurator.cs
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>using Crawler.Logic;\r\nusing Crawler.Persistence;\r\nusing Crawler.Utils;\r\n\r\nnamespace Crawler.WebApi\r\n{\r\n    public static class DependencyConfigurator\r\n    {\r\n        public static IServiceCollection ConfigureServices(this IServiceCollection services, IConfiguration configurator)\r\n        {\r\n            services.AddDatabaseDependencies(configurator);\r\n            services.AddCrawlerDependencies();\r\n            services.AddServiceDependencies();\r\n\r\n            return services;\r\n        }\r\n    }\r\n}\r\n
+===================================================================
+diff --git a/Crawler.WebApi/DependencyConfigurator.cs b/Crawler.WebApi/DependencyConfigurator.cs
+--- a/Crawler.WebApi/DependencyConfigurator.cs	
++++ b/Crawler.WebApi/DependencyConfigurator.cs	
+@@ -10,7 +10,7 @@
+         {
+             services.AddDatabaseDependencies(configurator);
+             services.AddCrawlerDependencies();
+-            services.AddServiceDependencies();
++            services.AddUtilDependencies();
+ 
+             return services;
+         }
+Index: Crawler.WebApi/appsettings.json
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>{\r\n  \"ConnectionStrings\": {\r\n    \"DefaultConnection\": \"Server=localhost;Database=master;Trusted_Connection=True;TrustServerCertificate=true\"\r\n  },\r\n  \"Logging\": {\r\n    \"LogLevel\": {\r\n      \"Default\": \"Information\",\r\n      \"Microsoft.AspNetCore\": \"Warning\"\r\n    }\r\n  },\r\n  \"AllowedHosts\": \"*\"\r\n}\r\n
+===================================================================
+diff --git a/Crawler.WebApi/appsettings.json b/Crawler.WebApi/appsettings.json
+--- a/Crawler.WebApi/appsettings.json	
++++ b/Crawler.WebApi/appsettings.json	
+@@ -1,6 +1,7 @@
+ {
+   "ConnectionStrings": {
+-    "DefaultConnection": "Server=localhost;Database=master;Trusted_Connection=True;TrustServerCertificate=true"
++    "DefaultConnection": "Server=tcp:custom-server-for-me.database.windows.net,1433;Initial Catalog=crawler_db;Persist Security Info=False;User ID=crawler_user;Password=Aleksey345667;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
++    //"DefaultConnection": "Server=tcp:sql-server-remote.database.windows.net,1433;Initial Catalog=crawler_DB;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+   },
+   "Logging": {
+     "LogLevel": {
+@@ -10,3 +11,4 @@
+   },
+   "AllowedHosts": "*"
+ }
++ 
+\ No newline at end of file
