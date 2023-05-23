@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Crawler.Domain\Crawler.Domain.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="Class1.cs" />
+      <Compile Remove="Crawlers\Crawler.cs" />
+      <Compile Remove="Crawlers\HtmlCrawler.cs" />
+      <Compile Remove="Crawlers\XmlCrawler.cs" />
+      <Compile Remove="Parsers\HtmlParser.cs" />
+      <Compile Remove="Services\ResponseTimeService.cs" />
+      <Compile Remove="Mappers\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="HtmlAgilityPack" Version="1.11.46" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="Mappers\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Mappers\**" />
+    </ItemGroup>
+
+</Project>

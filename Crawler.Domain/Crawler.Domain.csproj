@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Compile Remove="Class1.cs" />
+      <Compile Remove="Helpers\**" />
+      <Compile Remove="VIewModels\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="Helpers\**" />
+      <EmbeddedResource Remove="VIewModels\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Helpers\**" />
+      <None Remove="VIewModels\**" />
+    </ItemGroup>
+
+</Project>
