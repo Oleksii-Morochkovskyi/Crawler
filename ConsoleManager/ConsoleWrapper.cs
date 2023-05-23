@@ -1,4 +1,4 @@
-﻿using Crawler.Logic.Interfaces;
+﻿using Crawler.Application.Interfaces;
 
 namespace Crawler.ConsoleOutput
 {

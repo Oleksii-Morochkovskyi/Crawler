@@ -1,8 +1,8 @@
-﻿using Crawler.Logic.Helpers;
-using Crawler.Logic.Parsers;
+﻿using Crawler.Application.Helpers;
+using Crawler.Application.Parsers;
+using Crawler.Application.Services;
 using Moq;
 using NUnit.Framework;
-using Crawler.Logic.Services;
 
 namespace Crawler.Logic.Tests.Parsers
 {

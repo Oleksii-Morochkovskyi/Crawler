@@ -1,5 +1,4 @@
-﻿using Crawler.Persistence.Entities;
-
+﻿
 namespace Crawler.Services.Models
 {
     public class InitialUrlViewModel

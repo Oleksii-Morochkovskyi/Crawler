@@ -1,6 +1,4 @@
-﻿using Crawler.Logic;
-using Crawler.Persistence;
-using Crawler.Utils;
+﻿using Crawler.InfrastructureIoC;
 
 namespace Crawler.WebApp
 {
@@ -9,8 +7,7 @@ namespace Crawler.WebApp
         public static IServiceCollection ConfigureServices(this IServiceCollection services, IConfiguration configurator)
         {
             services.AddDatabaseDependencies(configurator);
-            services.AddCrawlerDependencies();
-            services.AddServiceDependencies();
+            services.AddApplicationDependencies();
 
             return services;
         }

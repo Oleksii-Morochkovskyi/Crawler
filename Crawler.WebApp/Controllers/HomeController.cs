@@ -1,9 +1,9 @@
-﻿using Crawler.Logic.Validators;
-using Crawler.Services.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using Crawler.Services.Helpers;
-using Crawler.Utils.Services;
+using Crawler.Application.Mappers;
+using Crawler.Application.Validators;
+using Crawler.Application.Services;
+using Crawler.Domain.ViewModels;
 
 namespace Crawler.WebApp.Controllers
 {
@@ -11,23 +11,23 @@ namespace Crawler.WebApp.Controllers
     {
         private readonly UrlValidator _validator;
         private readonly DatabaseInteractionService _databaseInteractionService;
-        private readonly MapModelsHelper _mapModelsHelper;
+        private readonly ModelMapper _modelMapper;
 
         public HomeController(
             UrlValidator validator,
             DatabaseInteractionService databaseInteractionService,
-            MapModelsHelper mapModelsHelper)
+            ModelMapper modelMapper)
         {
             _validator = validator;
             _databaseInteractionService = databaseInteractionService;
-            _mapModelsHelper = mapModelsHelper;
+            _modelMapper = modelMapper;
         }
 
         public async Task<IActionResult> Index()
         {
             var initialUrls = await _databaseInteractionService.GetInitialUrlsAsync();
 
-            var viewModel = _mapModelsHelper.MapInitialUrls(initialUrls);
+            var viewModel = _modelMapper.MapInitialUrls(initialUrls);
 
             return View(viewModel);
         }
@@ -53,7 +53,7 @@ namespace Crawler.WebApp.Controllers
         {
             var foundUrls = await _databaseInteractionService.GetUrlsByInitialUrlIdAsync(id);
 
-            var result = _mapModelsHelper.GetResultViewModel(foundUrls);
+            var result = _modelMapper.GetResultViewModel(foundUrls);
 
             return View(result);
         }

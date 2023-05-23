@@ -1,5 +1,4 @@
-﻿using Crawler.Logic.Enums;
-
+﻿
 namespace Crawler.Services.Models
 {
     public class ResultViewModel

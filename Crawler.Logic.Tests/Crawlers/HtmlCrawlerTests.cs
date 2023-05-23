@@ -1,9 +1,10 @@
-﻿using Crawler.Logic.Crawlers;
-using Crawler.Logic.Helpers;
-using Crawler.Logic.Interfaces;
-using Crawler.Logic.Parsers;
-using Crawler.Logic.Services;
-using Crawler.Logic.Validators;
+﻿
+using Crawler.Application.Crawlers;
+using Crawler.Application.Helpers;
+using Crawler.Application.Interfaces;
+using Crawler.Application.Parsers;
+using Crawler.Application.Services;
+using Crawler.Application.Validators;
 using Moq;
 using NUnit.Framework;
 

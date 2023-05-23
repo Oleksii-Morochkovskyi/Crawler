@@ -1,8 +1,6 @@
-using System.Text.Json.Nodes;
-using Crawler.Logic.Validators;
-using Crawler.Utils.Services;
+using Crawler.Application.Validators;
+using Crawler.Application.Services;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Linq;
 
 namespace Crawler.WebApi.Controllers
 {

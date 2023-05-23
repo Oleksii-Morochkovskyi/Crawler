@@ -1,4 +1,4 @@
-using Crawler.Logic.Validators;
+using Crawler.Application.Validators;
 using NUnit.Framework;
 
 namespace Crawler.Logic.Tests.Validators

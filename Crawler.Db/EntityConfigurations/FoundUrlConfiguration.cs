@@ -1,4 +1,4 @@
-﻿using Crawler.Persistence.Entities;
+﻿using Crawler.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

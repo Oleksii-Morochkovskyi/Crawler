@@ -1,7 +1,5 @@
-﻿using Crawler.Services.Helpers;
-using Crawler.Services.Models;
-using Crawler.Utils.Services;
-using Microsoft.AspNetCore.Cors;
+﻿using Crawler.Application.Mappers;
+using Crawler.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 
@@ -10,14 +8,14 @@ namespace Crawler.WebApi.Controllers
     public class ResultController : BaseApiController
     {
         private readonly DatabaseInteractionService _databaseInteractionService;
-        private readonly MapModelsHelper _mapModelsHelper;
+        private readonly ModelMapper _modelMapper;
 
         public ResultController(
             DatabaseInteractionService databaseInteractionService,
-            MapModelsHelper mapModelsHelper)
+            ModelMapper modelMapper)
         {
             _databaseInteractionService = databaseInteractionService;
-            _mapModelsHelper = mapModelsHelper;
+            _modelMapper = modelMapper;
         }
 
         [HttpGet]
@@ -25,7 +23,7 @@ namespace Crawler.WebApi.Controllers
         {
             var initialUrls = await _databaseInteractionService.GetInitialUrlsAsync();
 
-            var viewModel = _mapModelsHelper.MapInitialUrls(initialUrls);
+            var viewModel = _modelMapper.MapInitialUrls(initialUrls);
 
             return new JsonResult(viewModel);
         }
@@ -40,7 +38,7 @@ namespace Crawler.WebApi.Controllers
                 return NotFound(new { message = "Crawl result was not found" });
             }
 
-            var result = _mapModelsHelper.GetResultViewModel(foundUrls);
+            var result = _modelMapper.GetResultViewModel(foundUrls);
 
             return new JsonResult(result);
         }

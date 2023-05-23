@@ -1,5 +1,4 @@
 ﻿using Crawler.Logic.Enums;
-using Crawler.Persistence.Entities;
 
 namespace Crawler.Services.Models
 {

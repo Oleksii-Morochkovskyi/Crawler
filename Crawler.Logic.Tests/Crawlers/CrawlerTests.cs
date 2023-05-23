@@ -1,14 +1,15 @@
-﻿using Crawler.ConsoleOutput;
-using Crawler.Logic.Crawlers;
-using Crawler.Logic.Enums;
-using Crawler.Logic.Interfaces;
-using Crawler.Logic.Models;
-using Crawler.Logic.Parsers;
-using Crawler.Logic.Services;
-using Crawler.Logic.Validators;
+﻿using System.Net.Mime;
+using Crawler.Application.Crawlers;
+using Crawler.Application.Interfaces;
+using Crawler.Application.Parsers;
+using Crawler.Application.Services;
+using Crawler.Application.Validators;
+using Crawler.Application.Wrappers;
+using Crawler.Domain.Enums;
+using Crawler.Domain.Entities;
 using Moq;
 using NUnit.Framework;
-using UrlHelper = Crawler.Logic.Helpers.UrlHelper;
+using Crawler.Application.Helpers;
 
 namespace Crawler.Logic.Tests.Crawlers
 {
@@ -23,7 +24,7 @@ namespace Crawler.Logic.Tests.Crawlers
         private Mock<HtmlCrawler> _htmlCrawlerMock;
         private Mock<XmlCrawler> _xmlCrawlerMock;
         private Mock<ResponseTimeService> _responseTimeServiceMock;
-        private Logic.Crawlers.Crawler _crawler;
+        private Application.Crawlers.Crawler _crawler;
 
         [SetUp]
         public void SetUp()
@@ -37,7 +38,7 @@ namespace Crawler.Logic.Tests.Crawlers
             _htmlCrawlerMock = new Mock<HtmlCrawler>(_consoleHandler, _htmlParser, _validator);
             _xmlCrawlerMock = new Mock<XmlCrawler>(_consoleHandler, _helper, _validator, _httpClientService);
             _responseTimeServiceMock = new Mock<ResponseTimeService>(_httpClientService, _consoleHandler);
-            _crawler = new Logic.Crawlers.Crawler(_responseTimeServiceMock.Object, _htmlCrawlerMock.Object, _xmlCrawlerMock.Object);
+            _crawler = new Application.Crawlers.Crawler(_responseTimeServiceMock.Object, _htmlCrawlerMock.Object, _xmlCrawlerMock.Object);
         }
 
         [Test]

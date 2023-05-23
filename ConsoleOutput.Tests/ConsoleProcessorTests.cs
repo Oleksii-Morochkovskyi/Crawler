@@ -1,13 +1,12 @@
+using Crawler.Application.Crawlers;
+using Crawler.Application.Helpers;
+using Crawler.Application.Interfaces;
+using Crawler.Application.Parsers;
+using Crawler.Application.Services;
+using Crawler.Application.Validators;
 using Crawler.ConsoleOutput;
-using Crawler.Logic.Crawlers;
-using Crawler.Logic.Enums;
-using Crawler.Logic.Helpers;
-using Crawler.Logic.Interfaces;
-using Crawler.Logic.Models;
-using Crawler.Logic.Parsers;
-using Crawler.Logic.Services;
-using Crawler.Logic.Validators;
-using Crawler.Persistence.Interfaces;
+using Crawler.Domain.Enums;
+using Crawler.Domain.Entities;
 using Moq;
 using NUnit.Framework;
 
@@ -17,7 +16,7 @@ namespace Crawler.WebApp.Tests
     {
         private ConsoleProcessor _console;
         private Mock<IConsoleHandler> _writerMock;
-        private Mock<Logic.Crawlers.Crawler> _crawlerMock;
+        private Mock<Application.Crawlers.Crawler> _crawlerMock;
         private Mock<UrlValidator> _validatorMock;
         private ResponseTimeService _responseTimeService;
         private HtmlCrawler _htmlCrawler;
@@ -45,7 +44,7 @@ namespace Crawler.WebApp.Tests
             _xmlCrawler = new XmlCrawler(_writerMock.Object, _helperMock.Object, _validatorMock.Object, _httpClientService);
             _parser = new HtmlParser(_httpClientService, _helperMock.Object);
             _htmlCrawler = new HtmlCrawler(_writerMock.Object, _parser, _validatorMock.Object);
-            _crawlerMock = new Mock<Logic.Crawlers.Crawler>(_responseTimeService, _htmlCrawler, _xmlCrawler);
+            _crawlerMock = new Mock<Application.Crawlers.Crawler>(_responseTimeService, _htmlCrawler, _xmlCrawler);
             _console = new ConsoleProcessor(_writerMock.Object, _validatorMock.Object, _crawlerMock.Object, _dbInteractionMock.Object);
             
         }

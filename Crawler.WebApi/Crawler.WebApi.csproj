@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Crawler.Services\Crawler.Utils.csproj" />
+    <ProjectReference Include="..\Crawler.InfrastructureIoC\Crawler.InfrastructureIoC.csproj" />
   </ItemGroup>
 
 </Project>
