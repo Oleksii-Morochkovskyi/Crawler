@@ -10,6 +10,9 @@ using Crawler.Domain.Entities;
 using Moq;
 using NUnit.Framework;
 using Crawler.Application.Helpers;
+using Crawler.Logic.Crawlers;
+using Crawler.Logic.Parsers;
+using Crawler.Logic.Services;
 
 namespace Crawler.Logic.Tests.Crawlers
 {
@@ -24,7 +27,7 @@ namespace Crawler.Logic.Tests.Crawlers
         private Mock<HtmlCrawler> _htmlCrawlerMock;
         private Mock<XmlCrawler> _xmlCrawlerMock;
         private Mock<ResponseTimeService> _responseTimeServiceMock;
-        private Application.Crawlers.Crawler _crawler;
+        private Logic.Crawlers.Crawler _crawler;
 
         [SetUp]
         public void SetUp()
@@ -38,7 +41,7 @@ namespace Crawler.Logic.Tests.Crawlers
             _htmlCrawlerMock = new Mock<HtmlCrawler>(_consoleHandler, _htmlParser, _validator);
             _xmlCrawlerMock = new Mock<XmlCrawler>(_consoleHandler, _helper, _validator, _httpClientService);
             _responseTimeServiceMock = new Mock<ResponseTimeService>(_httpClientService, _consoleHandler);
-            _crawler = new Application.Crawlers.Crawler(_responseTimeServiceMock.Object, _htmlCrawlerMock.Object, _xmlCrawlerMock.Object);
+            _crawler = new Logic.Crawlers.Crawler(_responseTimeServiceMock.Object, _htmlCrawlerMock.Object, _xmlCrawlerMock.Object);
         }
 
         [Test]

@@ -1,4 +1,5 @@
-﻿using Crawler.Domain.Entities;
+﻿using Crawler.Application.Crawlers.Interfaces;
+using Crawler.Domain.Entities;
 using Crawler.Application.Interfaces;
 
 namespace Crawler.Application.Services
@@ -7,12 +8,12 @@ namespace Crawler.Application.Services
     {
         private readonly IFoundUrlRepository _foundUrlRepository;
         private readonly IInitialUrlRepository _initialUrlRepository;
-        private readonly Application.Crawlers.Crawler _crawler;
+        private readonly ICrawler _crawler;
 
         public DatabaseInteractionService(
             IFoundUrlRepository foundUrlRepository,
             IInitialUrlRepository initialUrlRepository,
-            Application.Crawlers.Crawler crawler)
+            ICrawler crawler)
         {
             _foundUrlRepository = foundUrlRepository;
             _initialUrlRepository = initialUrlRepository;

@@ -23,6 +23,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crawler.Application", "Craw
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crawler.InfrastructureIoC", "Crawler.InfrastructureIoC\Crawler.InfrastructureIoC.csproj", "{2EC8DB73-D2B4-411D-AEF4-F3E3C4FE2D5A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crawler.Logic", "Crawler.Logic\Crawler.Logic.csproj", "{1FFA2D46-B785-4AF1-97D6-84EA8F7A9F31}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crawler.Utils", "Crawler.Utils\Crawler.Utils.csproj", "{A9FCB2EB-AE92-442F-8686-B4EFA526A6FC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +73,14 @@ Global
 		{2EC8DB73-D2B4-411D-AEF4-F3E3C4FE2D5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2EC8DB73-D2B4-411D-AEF4-F3E3C4FE2D5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2EC8DB73-D2B4-411D-AEF4-F3E3C4FE2D5A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1FFA2D46-B785-4AF1-97D6-84EA8F7A9F31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1FFA2D46-B785-4AF1-97D6-84EA8F7A9F31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1FFA2D46-B785-4AF1-97D6-84EA8F7A9F31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1FFA2D46-B785-4AF1-97D6-84EA8F7A9F31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9FCB2EB-AE92-442F-8686-B4EFA526A6FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9FCB2EB-AE92-442F-8686-B4EFA526A6FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9FCB2EB-AE92-442F-8686-B4EFA526A6FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9FCB2EB-AE92-442F-8686-B4EFA526A6FC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,6 +1,7 @@
 ﻿using Crawler.Application.Helpers;
 using Crawler.Application.Parsers;
 using Crawler.Application.Services;
+using Crawler.Logic.Parsers;
 using Moq;
 using NUnit.Framework;
 

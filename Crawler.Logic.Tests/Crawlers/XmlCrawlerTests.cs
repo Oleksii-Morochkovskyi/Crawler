@@ -3,6 +3,7 @@ using Crawler.Application.Helpers;
 using Crawler.Application.Interfaces;
 using Crawler.Application.Services;
 using Crawler.Application.Validators;
+using Crawler.Logic.Crawlers;
 using Moq;
 using NUnit.Framework;
 

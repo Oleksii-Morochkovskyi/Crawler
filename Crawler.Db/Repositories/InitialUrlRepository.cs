@@ -1,7 +1,5 @@
 ﻿using Crawler.Application.Interfaces;
 using Crawler.Domain.Entities;
-using Crawler.Domain.Entities;
-using Crawler.Application.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Crawler.Persistence.Repositories

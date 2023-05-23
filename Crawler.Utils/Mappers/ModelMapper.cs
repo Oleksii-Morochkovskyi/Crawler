@@ -2,7 +2,7 @@
 using Crawler.Domain.Entities;
 using Crawler.Utils.ViewModels;
 
-namespace Crawler.Application.Mappers
+namespace Crawler.Utils.Mappers
 {
     public class ModelMapper
     {

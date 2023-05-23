@@ -5,6 +5,8 @@ using Crawler.Application.Interfaces;
 using Crawler.Application.Parsers;
 using Crawler.Application.Services;
 using Crawler.Application.Validators;
+using Crawler.Logic.Crawlers;
+using Crawler.Logic.Parsers;
 using Moq;
 using NUnit.Framework;
 

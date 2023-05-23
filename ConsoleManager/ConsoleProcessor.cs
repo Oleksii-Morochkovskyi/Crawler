@@ -1,4 +1,5 @@
-﻿using Crawler.Application.Interfaces;
+﻿using Crawler.Application.Crawlers.Interfaces;
+using Crawler.Application.Interfaces;
 using Crawler.Application.Validators;
 using Crawler.Domain.Entities;
 using Crawler.Domain.Enums;
@@ -9,13 +10,13 @@ namespace Crawler.ConsoleOutput
     {
         private readonly IConsoleHandler _consoleHandler;
         private readonly UrlValidator _validator;
-        private readonly Application.Crawlers.Crawler _crawler;
+        private readonly ICrawler _crawler;
         private readonly DatabaseInteraction _dbInteraction;
 
         public ConsoleProcessor(
             IConsoleHandler consoleHandler,
             UrlValidator validator,
-            Application.Crawlers.Crawler crawler,
+            ICrawler crawler,
             DatabaseInteraction dbInteraction)
         {
             _consoleHandler = consoleHandler;

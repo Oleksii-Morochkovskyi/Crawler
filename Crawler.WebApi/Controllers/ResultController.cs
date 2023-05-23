@@ -1,4 +1,4 @@
-﻿using Crawler.Application.Mappers;
+﻿using Crawler.Utils.Mappers;
 using Crawler.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
