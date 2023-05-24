@@ -2,7 +2,6 @@
 using Crawler.Logic.Helpers;
 using Crawler.Application.Services;
 using Crawler.Logic.Validators;
-using Crawler.Application.Wrappers;
 
 namespace Crawler.Logic.Crawlers
 {
@@ -10,17 +9,14 @@ namespace Crawler.Logic.Crawlers
     {
         private readonly UrlHelper _urlHelper;
         private readonly UrlValidator _validator;
-        private readonly ConsoleWrapper _consoleWrapper;
         private readonly HttpClientService _httpClientService;
 
-        public XmlCrawler(ConsoleWrapper consoleWrapper,
-            UrlHelper helper,
+        public XmlCrawler(UrlHelper helper,
             UrlValidator validator,
             HttpClientService httpClientService)
         {
             _urlHelper = helper;
             _validator = validator;
-            _consoleWrapper = consoleWrapper;
             _httpClientService = httpClientService;
         }
 
@@ -28,17 +24,10 @@ namespace Crawler.Logic.Crawlers
         {
             ICollection<string> urlList = new HashSet<string>();
             var sitemapUrl = address + "/sitemap.xml";
+            
+            var locNodes = await GetXmlLocNodes(sitemapUrl);
 
-            try
-            {
-                var locNodes = await GetXmlLocNodes(sitemapUrl);
-
-                urlList = ExtractLinksAsync(locNodes, address);
-            }
-            catch (Exception e)
-            {
-                _consoleWrapper.Write(e.Message);
-            }
+            urlList = ExtractLinksAsync(locNodes, address);
 
             return urlList;
         }

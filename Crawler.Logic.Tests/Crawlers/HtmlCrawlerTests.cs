@@ -1,5 +1,4 @@
 ﻿using Crawler.Application.Services;
-using Crawler.Application.Wrappers;
 using Crawler.Logic.Crawlers;
 using Crawler.Logic.Helpers;
 using Crawler.Logic.Parsers;
@@ -11,7 +10,6 @@ namespace Crawler.Logic.Tests.Crawlers
 {
     public class HtmlCrawlerTests
     {
-        private Mock<ConsoleWrapper> _consoleMock;
         private Mock<HttpClientService> _httpClientMock;
         private Mock<UrlValidator> _urlValidator;
         private HttpClient _httpClient;
@@ -25,10 +23,9 @@ namespace Crawler.Logic.Tests.Crawlers
             _httpClient = new HttpClient();
             _urlValidator = new Mock<UrlValidator>();
             _urlHelper = new Mock<UrlHelper>();
-            _consoleMock = new Mock<ConsoleWrapper>();
             _httpClientMock = new Mock<HttpClientService>(_httpClient);
             _parserMock = new Mock<HtmlParser>(_httpClientMock.Object, _urlHelper.Object);
-            _crawler = new HtmlCrawler(_consoleMock.Object, _parserMock.Object, _urlValidator.Object);
+            _crawler = new HtmlCrawler(_parserMock.Object, _urlValidator.Object);
         }
 
         [Test]
@@ -62,18 +59,6 @@ namespace Crawler.Logic.Tests.Crawlers
             var result = await _crawler.CrawlAsync(url);
 
             Assert.That(expectedResult, Is.EqualTo(result));
-        }
-
-        [Test]
-        public async Task CrawlAsync_CatchesException_PrintsExceptionMessage()
-        {
-            var url = "https://example.com";
-
-            _parserMock.SetupSequence(x => x.ParseAsync(url, url)).ThrowsAsync(new Exception("Test exception"));
-            
-            await _crawler.CrawlAsync(url);
-
-            _consoleMock.Verify(x => x.Write("Test exception"));
         }
     }
 }

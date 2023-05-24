@@ -1,7 +1,6 @@
 ﻿using Crawler.Application.Crawlers.Interfaces;
 using Crawler.Application.Interfaces;
 using Crawler.Application.Services;
-using Crawler.Application.Wrappers;
 using Crawler.Logic.Crawlers;
 using Crawler.Logic.Helpers;
 using Crawler.Logic.Parsers;
@@ -32,7 +31,6 @@ namespace Crawler.InfrastructureIoC
             services.AddHttpClient<HttpClientService>();
             services.RemoveAll<IHttpMessageHandlerBuilderFilter>();
             services.AddScoped<DatabaseInteractionService>();
-            services.AddScoped<ConsoleWrapper>();
             return services;
         }
 

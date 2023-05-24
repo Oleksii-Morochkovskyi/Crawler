@@ -1,5 +1,4 @@
 ﻿using Crawler.Application.Services;
-using Crawler.Application.Wrappers;
 using Crawler.Logic.Crawlers;
 using Crawler.Logic.Helpers;
 using Crawler.Logic.Validators;
@@ -12,7 +11,6 @@ namespace Crawler.Logic.Tests.Crawlers
     {
         private Mock<UrlHelper> _urlHelperMock;
         private Mock<UrlValidator> _validatorMock;
-        private Mock<ConsoleWrapper> _consoleMock;
         private Mock<HttpClientService> _httpClientServiceMock;
         private HttpClient _httpClient;
         private XmlCrawler _crawler;
@@ -22,10 +20,9 @@ namespace Crawler.Logic.Tests.Crawlers
         {
             _urlHelperMock = new Mock<UrlHelper>();
             _validatorMock = new Mock<UrlValidator>();
-            _consoleMock = new Mock<ConsoleWrapper>();
             _httpClient = new HttpClient();
             _httpClientServiceMock = new Mock<HttpClientService>(_httpClient);
-            _crawler = new XmlCrawler(_consoleMock.Object, _urlHelperMock.Object, _validatorMock.Object, _httpClientServiceMock.Object);
+            _crawler = new XmlCrawler(_urlHelperMock.Object, _validatorMock.Object, _httpClientServiceMock.Object);
 
         }
 
@@ -58,18 +55,6 @@ namespace Crawler.Logic.Tests.Crawlers
             var result = await _crawler.CrawlAsync(url);
 
             Assert.That(expectedUrls, Is.EqualTo(result));
-        }
-
-        [Test]
-        public async Task CrawlAsync_UrlOfSiteWithoutSitemap_ShouldThrowException()
-        {
-            var url = "https://www.example.com";
-
-            _httpClientServiceMock.Setup(x => x.GetStringAsync(url + "/sitemap.xml")).ThrowsAsync(new Exception("Test exception"));
-
-            var result = await _crawler.CrawlAsync(url);
-
-            _consoleMock.Verify(x => x.Write("Test exception"));
         }
     }
 }

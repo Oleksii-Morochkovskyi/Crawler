@@ -1,6 +1,6 @@
 using Crawler.Application.Interfaces;
 using Crawler.Application.Services;
-using Crawler.Application.Wrappers;
+using Crawler.ConsoleOutput.Wrappers;
 using Crawler.Domain.Enums;
 using Crawler.Domain.Entities;
 using Crawler.Logic.Crawlers;
@@ -41,10 +41,10 @@ namespace Crawler.ConsoleOutput.Tests
             _validatorMock = new Mock<UrlValidator>();
             _writerMock = new Mock<ConsoleWrapper>();
             _helperMock = new Mock<UrlHelper>();
-            _responseTimeService = new ResponseTimeService(_httpClientService, _writerMock.Object);
-            _xmlCrawler = new XmlCrawler(_writerMock.Object, _helperMock.Object, _validatorMock.Object, _httpClientService);
+            _responseTimeService = new ResponseTimeService(_httpClientService);
+            _xmlCrawler = new XmlCrawler(_helperMock.Object, _validatorMock.Object, _httpClientService);
             _parser = new HtmlParser(_httpClientService, _helperMock.Object);
-            _htmlCrawler = new HtmlCrawler(_writerMock.Object, _parser, _validatorMock.Object);
+            _htmlCrawler = new HtmlCrawler(_parser, _validatorMock.Object);
             _crawlerMock = new Mock<Logic.Crawlers.Crawler>(_responseTimeService, _htmlCrawler, _xmlCrawler);
             _console = new ConsoleProcessor(_writerMock.Object, _validatorMock.Object, _crawlerMock.Object, _dbInteractionMock.Object);
         }

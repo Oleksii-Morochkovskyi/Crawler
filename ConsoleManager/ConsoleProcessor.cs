@@ -1,5 +1,5 @@
 ﻿using Crawler.Application.Crawlers.Interfaces;
-using Crawler.Application.Wrappers;
+using Crawler.ConsoleOutput.Wrappers;
 using Crawler.Domain.Entities;
 using Crawler.Domain.Enums;
 using Crawler.Logic.Validators;
@@ -27,17 +27,24 @@ namespace Crawler.ConsoleOutput
 
         public async Task ExecuteAsync()
         {
-            var inputUrl = GetAddress();
+            try
+            {
+                var inputUrl = GetAddress();
 
-            var results = await _crawler.StartCrawlerAsync(inputUrl);
+                var results = await _crawler.StartCrawlerAsync(inputUrl);
 
-            PrintDifference(results);
+                PrintDifference(results);
 
-            PrintTimeResponse(results);
+                PrintTimeResponse(results);
 
-            PrintNumberOfLinks(results);
+                PrintNumberOfLinks(results);
 
-            await _dbInteraction.AddUrlsAsync(results, inputUrl);
+                await _dbInteraction.AddUrlsAsync(results, inputUrl);
+            }
+            catch (Exception e)
+            {
+                _consoleWrapper.Write(e.Message);
+            }
         }
 
         public string GetAddress()

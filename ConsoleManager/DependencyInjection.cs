@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Crawler.ConsoleOutput.Wrappers;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Crawler.ConsoleOutput
 {
@@ -8,6 +9,7 @@ namespace Crawler.ConsoleOutput
         {
             services.AddScoped<ConsoleProcessor>();
             services.AddScoped<DatabaseInteraction>();
+            services.AddScoped<ConsoleWrapper>();
             
             return services;
         }

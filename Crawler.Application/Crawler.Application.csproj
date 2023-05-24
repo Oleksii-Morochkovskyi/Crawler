@@ -25,6 +25,7 @@
       <Compile Remove="Validators\**" />
       <Compile Remove="Helpers\**" />
       <Compile Remove="Services\Interfaces\**" />
+      <Compile Remove="Wrappers\**" />
     </ItemGroup>
 
     <ItemGroup>
@@ -37,6 +38,7 @@
       <EmbeddedResource Remove="Validators\**" />
       <EmbeddedResource Remove="Helpers\**" />
       <EmbeddedResource Remove="Services\Interfaces\**" />
+      <EmbeddedResource Remove="Wrappers\**" />
     </ItemGroup>
 
     <ItemGroup>
@@ -45,6 +47,7 @@
       <None Remove="Validators\**" />
       <None Remove="Helpers\**" />
       <None Remove="Services\Interfaces\**" />
+      <None Remove="Wrappers\**" />
     </ItemGroup>
 
 </Project>

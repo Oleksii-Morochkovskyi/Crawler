@@ -1,5 +1,4 @@
-﻿using Crawler.Application.Interfaces;
-
+﻿
 namespace Crawler.ConsoleOutput.Wrappers
 {
     public class ConsoleWrapper

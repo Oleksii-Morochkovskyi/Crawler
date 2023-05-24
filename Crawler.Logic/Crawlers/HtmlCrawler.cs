@@ -1,5 +1,4 @@
 ﻿using Crawler.Logic.Validators;
-using Crawler.Application.Wrappers;
 using Crawler.Logic.Parsers;
 
 namespace Crawler.Logic.Crawlers
@@ -7,15 +6,12 @@ namespace Crawler.Logic.Crawlers
     public class HtmlCrawler
     {
         private readonly HtmlParser _parser;
-        private readonly ConsoleWrapper _consoleWrapper;
         private readonly UrlValidator _urlValidator;
 
         public HtmlCrawler(
-            ConsoleWrapper consoleWrapper,
             HtmlParser parser,
             UrlValidator validator)
         {
-            _consoleWrapper = consoleWrapper;
             _parser = parser;
             _urlValidator = validator;
         }
@@ -44,8 +40,6 @@ namespace Crawler.Logic.Crawlers
                     checkedUrls.Add(urlsToCheck.First());
 
                     urlsToCheck.Remove(urlsToCheck.First());
-
-                    _consoleWrapper.Write(e.Message);
                 }
             }
 

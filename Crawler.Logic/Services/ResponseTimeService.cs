@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using Crawler.Application.Services;
-using Crawler.Application.Wrappers;
 using Crawler.Domain.Entities;
 
 namespace Crawler.Logic.Services
@@ -8,14 +7,10 @@ namespace Crawler.Logic.Services
     public class ResponseTimeService
     {
         private readonly HttpClientService _httpClientService;
-        private readonly ConsoleWrapper _consoleWrapper;
 
-        public ResponseTimeService(
-            HttpClientService clientService,
-            ConsoleWrapper consoleWrapper)
+        public ResponseTimeService(HttpClientService clientService)
         {
             _httpClientService = clientService;
-            _consoleWrapper = consoleWrapper;
         }
 
         public virtual async Task<IEnumerable<UrlResponse>> GetResponseTimeAsync(IEnumerable<string> urls)
@@ -24,22 +19,15 @@ namespace Crawler.Logic.Services
 
             foreach (var url in urls)
             {
-                try
-                {
-                    var time = await CalculateTimeAsync(url);
+                var time = await CalculateTimeAsync(url);
 
-                    var response = new UrlResponse
-                    {
-                        Url = url,
-                        ResponseTimeMs = time
-                    };
-
-                    responseTimeList.Add(response);
-                }
-                catch (Exception e)
+                var response = new UrlResponse
                 {
-                    _consoleWrapper.Write(e.Message);
-                }
+                    Url = url,
+                    ResponseTimeMs = time
+                };
+
+                responseTimeList.Add(response);
             }
 
             return responseTimeList;

@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Crawler.InfrastructureIoC\Crawler.InfrastructureIoC.csproj" />
     <ProjectReference Include="..\Crawler.Utils\Crawler.Utils.csproj" />
   </ItemGroup>
 
