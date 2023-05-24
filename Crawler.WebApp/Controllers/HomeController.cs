@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using Crawler.Utils.Mappers;
-using Crawler.Application.Validators;
 using Crawler.Application.Services;
+using Crawler.Logic.Validators;
 using Crawler.Utils.ViewModels;
 
 namespace Crawler.WebApp.Controllers

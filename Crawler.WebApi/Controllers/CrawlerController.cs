@@ -1,5 +1,5 @@
-using Crawler.Application.Validators;
 using Crawler.Application.Services;
+using Crawler.Logic.Validators;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Crawler.WebApi.Controllers

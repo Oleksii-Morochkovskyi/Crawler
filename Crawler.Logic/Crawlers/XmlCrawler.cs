@@ -1,27 +1,26 @@
 ﻿using System.Xml;
-using Crawler.Application.Crawlers.Interfaces;
-using Crawler.Application.Helpers;
-using Crawler.Application.Interfaces;
+using Crawler.Logic.Helpers;
 using Crawler.Application.Services;
-using Crawler.Application.Validators;
+using Crawler.Logic.Validators;
+using Crawler.Application.Wrappers;
 
 namespace Crawler.Logic.Crawlers
 {
-    public class XmlCrawler : IXmlCrawler
+    public class XmlCrawler
     {
         private readonly UrlHelper _urlHelper;
         private readonly UrlValidator _validator;
-        private readonly IConsoleHandler _consoleHandler;
+        private readonly ConsoleWrapper _consoleWrapper;
         private readonly HttpClientService _httpClientService;
 
-        public XmlCrawler(IConsoleHandler consoleHandler,
+        public XmlCrawler(ConsoleWrapper consoleWrapper,
             UrlHelper helper,
             UrlValidator validator,
             HttpClientService httpClientService)
         {
             _urlHelper = helper;
             _validator = validator;
-            _consoleHandler = consoleHandler;
+            _consoleWrapper = consoleWrapper;
             _httpClientService = httpClientService;
         }
 
@@ -38,13 +37,13 @@ namespace Crawler.Logic.Crawlers
             }
             catch (Exception e)
             {
-                _consoleHandler.Write(e.Message);
+                _consoleWrapper.Write(e.Message);
             }
 
             return urlList;
         }
 
-        public async Task<XmlNodeList> GetXmlLocNodes(string address)
+        private async Task<XmlNodeList> GetXmlLocNodes(string address)
         {
             var xmlDoc = new XmlDocument();
 
@@ -55,7 +54,7 @@ namespace Crawler.Logic.Crawlers
             return xmlDoc.GetElementsByTagName("loc");
         }
 
-        public ICollection<string> ExtractLinksAsync(XmlNodeList nodes, string baseUrl)
+        private ICollection<string> ExtractLinksAsync(XmlNodeList nodes, string baseUrl)
         {
             ICollection<string> urlList = new HashSet<string>();
 

@@ -14,40 +14,41 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fbdc852b-d1dc-4760-8ed1-1e511249836a" name="Changes" comment="refactor code to match clean architecture">
-      <change afterPath="$PROJECT_DIR$/Crawler.Application/Crawlers/Interfaces/ICrawler.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Crawler.Application/Crawlers/Interfaces/IHtmlCrawler.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Crawler.Application/Crawlers/Interfaces/IXmlCrawler.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Crawler.Application/Parsers/Interfaces/IHtmlParser.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Crawler.Application/Services/Interfaces/IResponseTimeService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Crawler.Logic/Crawlers/Crawler.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Crawler.Logic/Crawlers/HtmlCrawler.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Crawler.Logic/Crawlers/XmlCrawler.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Crawler.Logic/Parsers/HtmlParser.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Crawler.Logic/Services/ResponseTimeService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Crawler.Utils/Mappers/ModelMapper.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Crawler.Utils/VIewModels/ErrorViewModel.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Crawler.Utils/VIewModels/FoundUrlViewModel.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Crawler.Utils/VIewModels/InitialUrlViewModel.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Crawler.Utils/VIewModels/ResultViewModel.cs" afterDir="false" />
+    <list default="true" id="fbdc852b-d1dc-4760-8ed1-1e511249836a" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/ConsoleManager/Wrappers/ConsoleWrapper.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Crawler.Application/Class1.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Crawler.Domain/Class1.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Crawler.Logic/Helpers/UrlHelper.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Crawler.Logic/Validators/UrlValidator.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Crawler.Utils/Class1.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Crawler.Utils/DependencyConfigurator.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Crawler/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Crawler/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ConsoleManager/ConsoleProcessor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ConsoleManager/ConsoleProcessor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ConsoleManager/Crawler.ConsoleOutput.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/ConsoleManager/Crawler.ConsoleOutput.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ConsoleManager/DependencyInjection.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ConsoleManager/DependencyInjection.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ConsoleOutput.Tests/ConsoleProcessorTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ConsoleOutput.Tests/ConsoleProcessorTests.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Crawler.Application/Mappers/ModelMapper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Crawler.Application/Mappers/ModelMapper.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Crawler.Application/Services/DatabaseInteractionService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Crawler.Application/Services/DatabaseInteractionService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Crawler.Application/Crawler.Application.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Crawler.Application/Crawler.Application.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Crawler.Application/Wrappers/ConsoleWrapper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Crawler.Application/Wrappers/ConsoleWrapper.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Crawler.Db/Crawler.Persistence.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Crawler.Db/Crawler.Persistence.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Crawler.Db/Repositories/FoundUrlRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Crawler.Db/Repositories/FoundUrlRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Crawler.Db/Repositories/InitialUrlRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Crawler.Db/Repositories/InitialUrlRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Crawler.Logic.Tests/Crawler.Logic.Tests.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Crawler.Logic.Tests/Crawler.Logic.Tests.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Crawler.InfrastructureIoC/Crawler.InfrastructureIoC.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Crawler.InfrastructureIoC/Crawler.InfrastructureIoC.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Crawler.InfrastructureIoC/DependencyContainer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Crawler.InfrastructureIoC/DependencyContainer.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Crawler.Logic.Tests/Crawlers/CrawlerTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Crawler.Logic.Tests/Crawlers/CrawlerTests.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Crawler.Logic.Tests/Crawlers/HtmlCrawlerTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Crawler.Logic.Tests/Crawlers/HtmlCrawlerTests.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Crawler.Logic.Tests/Crawlers/XmlCrawlerTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Crawler.Logic.Tests/Crawlers/XmlCrawlerTests.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Crawler.Logic.Tests/Parsers/HtmlParserTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Crawler.Logic.Tests/Parsers/HtmlParserTests.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Crawler.WebApi/Controllers/BaseApiController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Crawler.WebApi/Controllers/BaseApiController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Crawler.WebApi/Controllers/ResultController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Crawler.WebApi/Controllers/ResultController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Crawler.Logic.Tests/Validators/UrlValidatorTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Crawler.Logic.Tests/Validators/UrlValidatorTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Crawler.Logic/Crawlers/Crawler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Crawler.Logic/Crawlers/Crawler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Crawler.Logic/Crawlers/HtmlCrawler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Crawler.Logic/Crawlers/HtmlCrawler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Crawler.Logic/Crawlers/XmlCrawler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Crawler.Logic/Crawlers/XmlCrawler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Crawler.Logic/Parsers/HtmlParser.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Crawler.Logic/Parsers/HtmlParser.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Crawler.Logic/Services/ResponseTimeService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Crawler.Logic/Services/ResponseTimeService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Crawler.Utils/Crawler.Utils.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Crawler.Utils/Crawler.Utils.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Crawler.WebApi/Controllers/CrawlerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Crawler.WebApi/Controllers/CrawlerController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Crawler.WebApi/Crawler.WebApi.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Crawler.WebApi/Crawler.WebApi.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Crawler.WebApi/DependencyConfigurator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Crawler.WebApi/DependencyConfigurator.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Crawler.WebApp/Controllers/HomeController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Crawler.WebApp/Controllers/HomeController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Crawler.WebApp/Views/_ViewImports.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Crawler.WebApp/Views/_ViewImports.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Crawler.sln" beforeDir="false" afterPath="$PROJECT_DIR$/Crawler.sln" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Crawler.WebApp/Crawler.WebApp.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Crawler.WebApp/Crawler.WebApp.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Crawler.WebApp/DependencyConfigurator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Crawler.WebApp/DependencyConfigurator.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,18 +66,22 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/ConsoleManager/ConsoleWrapper.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ConsoleManager/DependencyInjection.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ConsoleManager/Wrappers/ConsoleWrapper.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Crawler.Application/Class1.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Crawler.Application/Crawlers/Crawler.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Crawler.Application/Crawlers/HtmlCrawler.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Crawler.Application/Crawlers/Interfaces/IHtmlCrawler.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Crawler.Application/Crawlers/XmlCrawler.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Crawler.Application/Mappers/ModelMapper.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Crawler.Application/Parsers/HtmlParser.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Crawler.Application/Services/Interfaces/IResponseTimeService.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Crawler.Application/Services/ResponseTimeService.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Crawler.Db/DependencyInjection.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Crawler.Db/Interfaces/IFoundUrlRepository.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/leshi/source/repos/Crawler/Crawler.Db/Migrations/20230407131618_initial.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Crawler.Domain/Class1.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Crawler.Services/DependencyInjection.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Crawler.Services/Services/DatabaseInteractionService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Crawler.Utils/Class1.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProblemsViewState">
@@ -108,7 +113,7 @@
     ]
   }
 }</component>
-  <component name="RunManager" selected=".NET Launch Settings Profile.Crawler.WebApp">
+  <component name="RunManager" selected=".NET Project.Crawler.ConsoleOutput">
     <configuration name="Crawler.WebApi: CrawlerWebApi - Web Deploy" type="DotNetMsBuildPublish" factoryName="Publish to IIS">
       <riderPublish publish_profile="CrawlerWebApi - Web Deploy.pubxml" pubxml_path="$PROJECT_DIR$/Crawler.WebApi/Properties/PublishProfiles/CrawlerWebApi - Web Deploy.pubxml" uuid_high="-2029294219888604326" uuid_low="-7469159543092134312" />
       <method v="2" />
@@ -235,7 +240,8 @@
       <updated>1684746704496</updated>
       <workItem from="1684746705545" duration="451000" />
       <workItem from="1684747683446" duration="830000" />
-      <workItem from="1684829576038" duration="14276000" />
+      <workItem from="1684829576038" duration="15808000" />
+      <workItem from="1684920331108" duration="4782000" />
     </task>
     <task id="LOCAL-00001" summary="added unversioned files">
       <created>1684748456936</created>
@@ -251,7 +257,21 @@
       <option name="project" value="LOCAL" />
       <updated>1684845212594</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="moved crawler logic to separate project. Adjust clean architecture">
+      <created>1684859313300</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1684859313300</updated>
+    </task>
+    <task id="LOCAL-00004" summary="add csproj files">
+      <created>1684862570961</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1684862570961</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -278,6 +298,8 @@
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
     <MESSAGE value="added unversioned files" />
     <MESSAGE value="refactor code to match clean architecture" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor code to match clean architecture" />
+    <MESSAGE value="moved crawler logic to separate project. Adjust clean architecture" />
+    <MESSAGE value="add csproj files" />
+    <option name="LAST_COMMIT_MESSAGE" value="add csproj files" />
   </component>
 </project>

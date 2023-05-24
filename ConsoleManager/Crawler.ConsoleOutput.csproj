@@ -18,6 +18,7 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Remove="Wrappers\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,6 +27,11 @@
 
   <ItemGroup>
     <Compile Remove="ConsoleWrapper.cs" />
+    <Compile Remove="Wrappers\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="Wrappers\**" />
   </ItemGroup>
 
 </Project>

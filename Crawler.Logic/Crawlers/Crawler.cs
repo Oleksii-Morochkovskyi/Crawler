@@ -1,20 +1,20 @@
 ﻿using Crawler.Domain.Entities;
 using Crawler.Domain.Enums;
 using Crawler.Application.Crawlers.Interfaces;
-using Crawler.Application.Services.Interfaces;
+using Crawler.Logic.Services;
 
 namespace Crawler.Logic.Crawlers
 {
     public class Crawler : ICrawler
     {
-        private readonly IResponseTimeService _responseTimeService;
-        private readonly IHtmlCrawler _htmlCrawler;
-        private readonly IXmlCrawler _xmlCrawler;
+        private readonly ResponseTimeService _responseTimeService;
+        private readonly HtmlCrawler _htmlCrawler;
+        private readonly XmlCrawler _xmlCrawler;
 
         public Crawler(
-            IResponseTimeService responseTimeService,
-            IHtmlCrawler htmlCrawler,
-            IXmlCrawler xmlCrawler)
+            ResponseTimeService responseTimeService,
+            HtmlCrawler htmlCrawler,
+            XmlCrawler xmlCrawler)
         {
             _responseTimeService = responseTimeService;
             _htmlCrawler = htmlCrawler;

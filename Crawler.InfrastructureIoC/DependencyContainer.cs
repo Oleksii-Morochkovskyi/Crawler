@@ -1,17 +1,14 @@
 ﻿using Crawler.Application.Crawlers.Interfaces;
-using Crawler.Application.Helpers;
 using Crawler.Application.Interfaces;
-using Crawler.Application.Parsers.Interfaces;
 using Crawler.Application.Services;
-using Crawler.Application.Services.Interfaces;
-using Crawler.Application.Validators;
 using Crawler.Application.Wrappers;
 using Crawler.Logic.Crawlers;
+using Crawler.Logic.Helpers;
 using Crawler.Logic.Parsers;
 using Crawler.Logic.Services;
+using Crawler.Logic.Validators;
 using Crawler.Persistence;
 using Crawler.Persistence.Repositories;
-using Crawler.Utils.Mappers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,16 +25,14 @@ namespace Crawler.InfrastructureIoC
             services.AddScoped<UrlValidator>();
             services.AddScoped<ICrawler, Logic.Crawlers.Crawler>();
             services.AddScoped<HttpClientService>();
-            services.AddScoped<IResponseTimeService, ResponseTimeService>();
-            services.AddScoped<IHtmlCrawler, HtmlCrawler>();
-            services.AddScoped<IHtmlParser, HtmlParser>();
-            services.AddScoped<IXmlCrawler, XmlCrawler>();
+            services.AddScoped<ResponseTimeService>();
+            services.AddScoped<HtmlCrawler>();
+            services.AddScoped<HtmlParser>();
+            services.AddScoped<XmlCrawler>();
             services.AddHttpClient<HttpClientService>();
             services.RemoveAll<IHttpMessageHandlerBuilderFilter>();
             services.AddScoped<DatabaseInteractionService>();
-            services.AddScoped<ModelMapper>();
-            services.AddScoped<IConsoleHandler, ConsoleWrapper>();
-
+            services.AddScoped<ConsoleWrapper>();
             return services;
         }
 

@@ -1,22 +1,21 @@
 ﻿using System.Diagnostics;
-using Crawler.Application.Interfaces;
 using Crawler.Application.Services;
-using Crawler.Application.Services.Interfaces;
+using Crawler.Application.Wrappers;
 using Crawler.Domain.Entities;
 
 namespace Crawler.Logic.Services
 {
-    public class ResponseTimeService : IResponseTimeService
+    public class ResponseTimeService
     {
         private readonly HttpClientService _httpClientService;
-        private readonly IConsoleHandler _consoleHandler;
+        private readonly ConsoleWrapper _consoleWrapper;
 
         public ResponseTimeService(
             HttpClientService clientService,
-            IConsoleHandler consoleHandler)
+            ConsoleWrapper consoleWrapper)
         {
             _httpClientService = clientService;
-            _consoleHandler = consoleHandler;
+            _consoleWrapper = consoleWrapper;
         }
 
         public virtual async Task<IEnumerable<UrlResponse>> GetResponseTimeAsync(IEnumerable<string> urls)
@@ -39,14 +38,14 @@ namespace Crawler.Logic.Services
                 }
                 catch (Exception e)
                 {
-                    _consoleHandler.Write(e.Message);
+                    _consoleWrapper.Write(e.Message);
                 }
             }
 
             return responseTimeList;
         }
 
-        public async Task<int> CalculateTimeAsync(string url)
+        private async Task<int> CalculateTimeAsync(string url)
         {
             var timer = Stopwatch.StartNew();
 

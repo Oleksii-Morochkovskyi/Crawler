@@ -1,12 +1,9 @@
-﻿
-using Crawler.Application.Crawlers;
-using Crawler.Application.Helpers;
-using Crawler.Application.Interfaces;
-using Crawler.Application.Parsers;
-using Crawler.Application.Services;
-using Crawler.Application.Validators;
+﻿using Crawler.Application.Services;
+using Crawler.Application.Wrappers;
 using Crawler.Logic.Crawlers;
+using Crawler.Logic.Helpers;
 using Crawler.Logic.Parsers;
+using Crawler.Logic.Validators;
 using Moq;
 using NUnit.Framework;
 
@@ -14,7 +11,7 @@ namespace Crawler.Logic.Tests.Crawlers
 {
     public class HtmlCrawlerTests
     {
-        private Mock<IConsoleHandler> _consoleMock;
+        private Mock<ConsoleWrapper> _consoleMock;
         private Mock<HttpClientService> _httpClientMock;
         private Mock<UrlValidator> _urlValidator;
         private HttpClient _httpClient;
@@ -28,7 +25,7 @@ namespace Crawler.Logic.Tests.Crawlers
             _httpClient = new HttpClient();
             _urlValidator = new Mock<UrlValidator>();
             _urlHelper = new Mock<UrlHelper>();
-            _consoleMock = new Mock<IConsoleHandler>();
+            _consoleMock = new Mock<ConsoleWrapper>();
             _httpClientMock = new Mock<HttpClientService>(_httpClient);
             _parserMock = new Mock<HtmlParser>(_httpClientMock.Object, _urlHelper.Object);
             _crawler = new HtmlCrawler(_consoleMock.Object, _parserMock.Object, _urlValidator.Object);

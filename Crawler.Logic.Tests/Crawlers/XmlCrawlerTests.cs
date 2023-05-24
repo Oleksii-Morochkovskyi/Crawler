@@ -1,9 +1,8 @@
-﻿using Crawler.Application.Crawlers;
-using Crawler.Application.Helpers;
-using Crawler.Application.Interfaces;
-using Crawler.Application.Services;
-using Crawler.Application.Validators;
+﻿using Crawler.Application.Services;
+using Crawler.Application.Wrappers;
 using Crawler.Logic.Crawlers;
+using Crawler.Logic.Helpers;
+using Crawler.Logic.Validators;
 using Moq;
 using NUnit.Framework;
 
@@ -13,7 +12,7 @@ namespace Crawler.Logic.Tests.Crawlers
     {
         private Mock<UrlHelper> _urlHelperMock;
         private Mock<UrlValidator> _validatorMock;
-        private Mock<IConsoleHandler> _consoleHandlerMock;
+        private Mock<ConsoleWrapper> _consoleMock;
         private Mock<HttpClientService> _httpClientServiceMock;
         private HttpClient _httpClient;
         private XmlCrawler _crawler;
@@ -23,10 +22,10 @@ namespace Crawler.Logic.Tests.Crawlers
         {
             _urlHelperMock = new Mock<UrlHelper>();
             _validatorMock = new Mock<UrlValidator>();
-            _consoleHandlerMock = new Mock<IConsoleHandler>();
+            _consoleMock = new Mock<ConsoleWrapper>();
             _httpClient = new HttpClient();
             _httpClientServiceMock = new Mock<HttpClientService>(_httpClient);
-            _crawler = new XmlCrawler(_consoleHandlerMock.Object, _urlHelperMock.Object, _validatorMock.Object, _httpClientServiceMock.Object);
+            _crawler = new XmlCrawler(_consoleMock.Object, _urlHelperMock.Object, _validatorMock.Object, _httpClientServiceMock.Object);
 
         }
 
@@ -70,7 +69,7 @@ namespace Crawler.Logic.Tests.Crawlers
 
             var result = await _crawler.CrawlAsync(url);
 
-            _consoleHandlerMock.Verify(x => x.Write("Test exception"));
+            _consoleMock.Verify(x => x.Write("Test exception"));
         }
     }
 }

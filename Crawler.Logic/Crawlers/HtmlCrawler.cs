@@ -1,22 +1,21 @@
-﻿using Crawler.Application.Crawlers.Interfaces;
-using Crawler.Application.Interfaces;
-using Crawler.Application.Parsers.Interfaces;
-using Crawler.Application.Validators;
+﻿using Crawler.Logic.Validators;
+using Crawler.Application.Wrappers;
+using Crawler.Logic.Parsers;
 
 namespace Crawler.Logic.Crawlers
 {
-    public class HtmlCrawler : IHtmlCrawler
+    public class HtmlCrawler
     {
-        private readonly IHtmlParser _parser;
-        private readonly IConsoleHandler _consoleHandler;
+        private readonly HtmlParser _parser;
+        private readonly ConsoleWrapper _consoleWrapper;
         private readonly UrlValidator _urlValidator;
 
         public HtmlCrawler(
-            IConsoleHandler consoleHandler,
-            IHtmlParser parser,
+            ConsoleWrapper consoleWrapper,
+            HtmlParser parser,
             UrlValidator validator)
         {
-            _consoleHandler = consoleHandler;
+            _consoleWrapper = consoleWrapper;
             _parser = parser;
             _urlValidator = validator;
         }
@@ -46,14 +45,14 @@ namespace Crawler.Logic.Crawlers
 
                     urlsToCheck.Remove(urlsToCheck.First());
 
-                    _consoleHandler.Write(e.Message);
+                    _consoleWrapper.Write(e.Message);
                 }
             }
 
             return checkedUrls;
         }
 
-        public ICollection<string> FilterLinks(string baseUrl, ICollection<string> checkedUrls,
+        private ICollection<string> FilterLinks(string baseUrl, ICollection<string> checkedUrls,
             ICollection<string> urlsToCheck, ICollection<string> parsedUrls)
         {
             foreach (var url in parsedUrls)

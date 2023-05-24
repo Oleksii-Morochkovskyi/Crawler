@@ -1,12 +1,13 @@
-using Crawler.Application.Helpers;
 using Crawler.Application.Interfaces;
 using Crawler.Application.Services;
-using Crawler.Application.Validators;
+using Crawler.Application.Wrappers;
 using Crawler.Domain.Enums;
 using Crawler.Domain.Entities;
 using Crawler.Logic.Crawlers;
+using Crawler.Logic.Helpers;
 using Crawler.Logic.Parsers;
 using Crawler.Logic.Services;
+using Crawler.Logic.Validators;
 using Moq;
 using NUnit.Framework;
 
@@ -15,7 +16,7 @@ namespace Crawler.ConsoleOutput.Tests
     public class ConsoleProcessorTests
     {
         private ConsoleProcessor _console;
-        private Mock<IConsoleHandler> _writerMock;
+        private Mock<ConsoleWrapper> _writerMock;
         private Mock<Logic.Crawlers.Crawler> _crawlerMock;
         private Mock<UrlValidator> _validatorMock;
         private ResponseTimeService _responseTimeService;
@@ -38,7 +39,7 @@ namespace Crawler.ConsoleOutput.Tests
             _httpClient = new HttpClient();
             _httpClientService = new HttpClientService(_httpClient);
             _validatorMock = new Mock<UrlValidator>();
-            _writerMock = new Mock<IConsoleHandler>();
+            _writerMock = new Mock<ConsoleWrapper>();
             _helperMock = new Mock<UrlHelper>();
             _responseTimeService = new ResponseTimeService(_httpClientService, _writerMock.Object);
             _xmlCrawler = new XmlCrawler(_writerMock.Object, _helperMock.Object, _validatorMock.Object, _httpClientService);

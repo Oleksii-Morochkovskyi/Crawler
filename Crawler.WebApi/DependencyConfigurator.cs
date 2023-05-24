@@ -1,4 +1,5 @@
 ﻿using Crawler.InfrastructureIoC;
+using Crawler.Utils;
 
 namespace Crawler.WebApi
 {
@@ -8,7 +9,8 @@ namespace Crawler.WebApi
         {
             services.AddDatabaseDependencies(configurator);
             services.AddApplicationDependencies();
-
+            services.AddUtilDependencies();
+            
             return services;
         }
     }

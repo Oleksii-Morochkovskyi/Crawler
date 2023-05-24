@@ -18,6 +18,13 @@
       <Compile Remove="Parsers\HtmlParser.cs" />
       <Compile Remove="Services\ResponseTimeService.cs" />
       <Compile Remove="Mappers\**" />
+      <Compile Remove="Crawlers\Interfaces\IHtmlCrawler.cs" />
+      <Compile Remove="Crawlers\Interfaces\IXmlCrawler.cs" />
+      <Compile Remove="Parsers\**" />
+      <Compile Remove="Interfaces\IConsoleHandler.cs" />
+      <Compile Remove="Validators\**" />
+      <Compile Remove="Helpers\**" />
+      <Compile Remove="Services\Interfaces\**" />
     </ItemGroup>
 
     <ItemGroup>
@@ -26,10 +33,18 @@
 
     <ItemGroup>
       <EmbeddedResource Remove="Mappers\**" />
+      <EmbeddedResource Remove="Parsers\**" />
+      <EmbeddedResource Remove="Validators\**" />
+      <EmbeddedResource Remove="Helpers\**" />
+      <EmbeddedResource Remove="Services\Interfaces\**" />
     </ItemGroup>
 
     <ItemGroup>
       <None Remove="Mappers\**" />
+      <None Remove="Parsers\**" />
+      <None Remove="Validators\**" />
+      <None Remove="Helpers\**" />
+      <None Remove="Services\Interfaces\**" />
     </ItemGroup>
 
 </Project>

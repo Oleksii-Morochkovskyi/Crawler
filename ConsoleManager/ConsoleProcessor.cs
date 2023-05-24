@@ -1,25 +1,25 @@
 ﻿using Crawler.Application.Crawlers.Interfaces;
-using Crawler.Application.Interfaces;
-using Crawler.Application.Validators;
+using Crawler.Application.Wrappers;
 using Crawler.Domain.Entities;
 using Crawler.Domain.Enums;
+using Crawler.Logic.Validators;
 
 namespace Crawler.ConsoleOutput
 {
     public class ConsoleProcessor
     {
-        private readonly IConsoleHandler _consoleHandler;
+        private readonly ConsoleWrapper _consoleWrapper;
         private readonly UrlValidator _validator;
         private readonly ICrawler _crawler;
         private readonly DatabaseInteraction _dbInteraction;
 
         public ConsoleProcessor(
-            IConsoleHandler consoleHandler,
+            ConsoleWrapper consoleWrapper,
             UrlValidator validator,
             ICrawler crawler,
             DatabaseInteraction dbInteraction)
         {
-            _consoleHandler = consoleHandler;
+            _consoleWrapper = consoleWrapper;
             _validator = validator;
             _crawler = crawler;
             _dbInteraction = dbInteraction;
@@ -44,16 +44,16 @@ namespace Crawler.ConsoleOutput
         {
             while (true)
             {
-                _consoleHandler.Write("Enter URL: ");
+                _consoleWrapper.Write("Enter URL: ");
 
-                var input = _consoleHandler.Read();
+                var input = _consoleWrapper.Read();
 
                 if (_validator.IsValidUrl(input))
                 {
                     return input.TrimEnd('/');
                 }
 
-                _consoleHandler.Write("You have entered wrong url. Please try again...\n");
+                _consoleWrapper.Write("You have entered wrong url. Please try again...\n");
             }
         }
 
@@ -64,10 +64,10 @@ namespace Crawler.ConsoleOutput
             var xmlExceptHtml = results.Where(x => x.Location == Location.Xml)
                 .Select(x => x.Url);
 
-            _consoleHandler.Write("\nUrls FOUND BY CRAWLING THE WEBSITE but not in sitemap.xml: \n");
+            _consoleWrapper.Write("\nUrls FOUND BY CRAWLING THE WEBSITE but not in sitemap.xml: \n");
             PrintList(htmlExceptXml);
 
-            _consoleHandler.Write("\nUrls FOUND IN SITEMAP.XML but not founded after crawling a website: \n");
+            _consoleWrapper.Write("\nUrls FOUND IN SITEMAP.XML but not founded after crawling a website: \n");
             PrintList(xmlExceptHtml);
         }
 
@@ -75,18 +75,18 @@ namespace Crawler.ConsoleOutput
         {
             foreach (var url in urls)
             {
-                _consoleHandler.Write(url);
+                _consoleWrapper.Write(url);
             }
         }
 
         private void PrintTimeResponse(IEnumerable<UrlResponse> urls)
         {
-            _consoleHandler.Write("\n\nList with url and response time for each page: \n");
-            _consoleHandler.Write("URL".PadRight(70) + "Timing (ms)\n");
+            _consoleWrapper.Write("\n\nList with url and response time for each page: \n");
+            _consoleWrapper.Write("URL".PadRight(70) + "Timing (ms)\n");
 
             foreach (var url in urls)
             {
-                _consoleHandler.Write(url.Url.PadRight(70) + url.ResponseTimeMs + "ms");
+                _consoleWrapper.Write(url.Url.PadRight(70) + url.ResponseTimeMs + "ms");
             }
         }
 
@@ -95,9 +95,9 @@ namespace Crawler.ConsoleOutput
             var countOfUrlsFromHtml = urls.Count(x => x.Location == Location.Html);
             var countOfUrlsFromXml = urls.Count(x => x.Location == Location.Xml);
 
-            _consoleHandler.Write($"\nUrls(html documents) found after crawling a website: {urls.Count() - countOfUrlsFromXml}");
+            _consoleWrapper.Write($"\nUrls(html documents) found after crawling a website: {urls.Count() - countOfUrlsFromXml}");
 
-            _consoleHandler.Write($"\nUrls found in sitemap: {urls.Count() - countOfUrlsFromHtml}");
+            _consoleWrapper.Write($"\nUrls found in sitemap: {urls.Count() - countOfUrlsFromHtml}");
         }
     }
 }

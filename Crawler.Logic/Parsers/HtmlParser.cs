@@ -1,11 +1,10 @@
-﻿using Crawler.Application.Helpers;
-using Crawler.Application.Parsers.Interfaces;
+﻿using Crawler.Logic.Helpers;
 using Crawler.Application.Services;
 using HtmlAgilityPack;
 
 namespace Crawler.Logic.Parsers
 {
-    public class HtmlParser : IHtmlParser
+    public class HtmlParser
     {
         private readonly HttpClientService _httpClientService;
         private readonly UrlHelper _urlHelper;
@@ -27,7 +26,7 @@ namespace Crawler.Logic.Parsers
             return ExtractLinks(nodes, baseUrl);
         }
 
-        public async Task<HtmlDocument> GetHtmlAsync(string url)
+        private async Task<HtmlDocument> GetHtmlAsync(string url)
         {
             var html = await _httpClientService.GetStringAsync(url);
 
@@ -37,7 +36,7 @@ namespace Crawler.Logic.Parsers
             return htmlDoc;
         }
 
-        public ICollection<string> ExtractLinks(HtmlNodeCollection nodes, string baseUrl)
+        private ICollection<string> ExtractLinks(HtmlNodeCollection nodes, string baseUrl)
         {
             ICollection<string> parsedUrls = new HashSet<string>();
 
